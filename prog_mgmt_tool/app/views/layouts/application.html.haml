@@ -27,20 +27,7 @@
     = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
     = javascript_include_tag "application"
   %body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
-          %a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          = link_to "Home", root_path, class: 'brand'
-          .container.nav-collapse
-            %ul.nav
-              %li= link_to "Modules", controller: "modules"
-              %li= link_to "Program", controller: "programs"
-              %li= link_to "Home", controller: "landing_page"
-          / /.nav-collapse
+    = render 'layouts/header'
     .container
       .row
         .span9
