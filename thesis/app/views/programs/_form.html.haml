@@ -1,0 +1,12 @@
+= form_for :program do |p|
+	%p
+		= p.label :program_type
+		= p.text_field :program_type
+	%p
+		= p.label :cycle
+		= p.text_field :cycle
+	%p
+		= p.label :credits
+		= p.text_field :credits
+	%p
+		= p.submit

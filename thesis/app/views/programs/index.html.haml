@@ -1,0 +1,20 @@
+%h1 Listing programs
+=link_to 'New Program', new_program_path
+%table
+	%tr
+		%th Program Type
+		%th Cycle
+		%th Credits
+		%th
+		%th
+		%th
+	- @programs.each do |p|
+		%tr
+			%td= p.program_type
+			%td= p.cycle
+			%td= p.credits
+			%td= link_to 'Show', p
+			%td= link_to 'Edit', edit_program_path(p)
+			%td= link_to 'Delete', program_path(p), method: :delete, data: { confirm: 'Are you sure?'}
+
+ 
