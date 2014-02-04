@@ -11,13 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140204143610) do
+ActiveRecord::Schema.define(version: 20140204152747) do
+
+  create_table "course_entities", force: true do |t|
+    t.date     "date"
+    t.integer  "credits"
+    t.string   "professor"
+    t.string   "url"
+    t.integer  "course_id"
+    t.integer  "semester_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "course_entities", ["course_id"], name: "index_course_entities_on_course_id"
+  add_index "course_entities", ["semester_id"], name: "index_course_entities_on_semester_id"
 
   create_table "courses", force: true do |t|
     t.string   "name"
     t.string   "sigle"
-    t.integer  "credits"
-    t.string   "url"
     t.integer  "pmodule_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -40,6 +52,12 @@ ActiveRecord::Schema.define(version: 20140204143610) do
     t.string   "cycle"
     t.string   "program_type"
     t.integer  "credits"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "semesters", force: true do |t|
+    t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

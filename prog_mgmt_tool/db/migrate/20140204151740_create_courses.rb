@@ -3,8 +3,6 @@ class CreateCourses < ActiveRecord::Migration
     create_table :courses do |t|
       t.string :name
       t.string :sigle
-      t.integer :credits
-      t.string :url
       t.references :pmodule, index: true
 
       t.timestamps
