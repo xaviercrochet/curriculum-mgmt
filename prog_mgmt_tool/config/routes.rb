@@ -13,6 +13,7 @@ Thesis::Application.routes.draw do
   root "landing_page#index"
   match '/signup', to: 'users#new', via: 'get'
   resources :programs
+  resources :users
 
   end
   
