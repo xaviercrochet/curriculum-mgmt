@@ -3,7 +3,9 @@ class ProgramsController < ApplicationController
   	@programs = Program.all
   end
 
+
   def new
+    @program = Program.new
   end
 
   def destroy
