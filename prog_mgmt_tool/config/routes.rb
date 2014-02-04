@@ -1,17 +1,17 @@
 Thesis::Application.routes.draw do
+  get "users/new"
+  get "users/update"
+  get "users/show"
+  get "users/index"
   get "pmodules/index"
   get "pmodules/show"
   get "pmodules/update"
   get "pmodules/new"
-  get "pmodule/index"
-  get "pmodule/show"
-  get "pmodule/update"
-  get "pmodule/new"
   get "programs/index"
   get "landing_page/index"
   get "modules/index"
   root "landing_page#index"
-
+  match '/signup', to: 'users#new', via: 'get'
   resources :programs
 
   end
