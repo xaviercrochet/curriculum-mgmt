@@ -15,10 +15,14 @@ class ProgramsController < ApplicationController
   	redirect_to programs_path
   end
 
+  def edit
+    @program = Program.find(params[:id])
+  end
+
   def update
   	@program = Program.find(params[:id])
 
-  	if @program.update(params[:program]).permit(:cycle, :program_type, :credits)
+  	if @program.update(params[:program].permit(:cycle, :program_type, :credits))
   		redirect_to @program
   	else
   		render 'edit'

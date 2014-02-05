@@ -1,0 +1,9 @@
+= form_for @course do |f|
+	%p
+		= f.label :name
+		= f.text_field :name, value: 'Introduction à l\'informatique'
+	%p
+		= f.label :sigle
+		= f.text_field :sigle, value: 'sinf4242'
+	%p
+		= f.submit
