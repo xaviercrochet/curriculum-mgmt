@@ -7,11 +7,10 @@
 		%th
 		%th
 		%th
-	%tr
-- @courses.each do |c|
-	%tr
-		%td= c.name
-		%td= c.sigle
-		%td= link_to 'Show', c
-		%td= link_to 'Edit', edit_course_path(c)
-		%td= link_to 'Delete', course_path(c), method: :delete, data: { confirm: 'Are you sure?'}
+	- @courses.each do |c|
+		%tr
+			%td= c.name
+			%td= c.sigle
+			%td= link_to 'Show', c
+			%td= link_to 'Edit', edit_course_path(c)
+			%td= link_to 'Delete', course_path(c), method: :delete, data: { confirm: 'Are you sure?'}

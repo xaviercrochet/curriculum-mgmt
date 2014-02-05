@@ -1,0 +1,19 @@
+%p
+	- link = course_entity.url
+	%strong 
+	= link_to 'URL', link
+
+%p
+	%strong Year:
+	= course_entity.year
+
+%p
+	%strong Professor:
+	= course_entity.professor
+
+%p
+	%strong Credits:
+	= course_entity.credits
+
+%p
+	= link_to 'Delete', [course_entity.course, course_entity], method: :delete, data: { confirm: 'Are you sure?'}

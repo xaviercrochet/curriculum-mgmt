@@ -1,4 +1,8 @@
 Thesis::Application.routes.draw do
+  get "course_entities/index"
+  get "course_entities/show"
+  get "course_entities/new"
+  get "course_entities/edit"
   get "courses/new"
   get "courses/update"
   get "courses/show"
@@ -21,7 +25,9 @@ Thesis::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: 'delete'
   resources :programs
   resources :users
-  resources :courses
+  resources :courses do
+    resources :course_entities
+  end
 
   end
   
