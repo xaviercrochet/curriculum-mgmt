@@ -1,0 +1,2 @@
+module CourseConstraintsHelper
+end

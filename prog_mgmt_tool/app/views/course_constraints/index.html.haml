@@ -1,0 +1,11 @@
+%h1 Course Constraints
+- @course_constraints.each do |course_constraint|
+	%p
+		%strong Course:
+		= course_constraint.first_course_sigle
+		%strong is a 
+		= course_constraint.constraint_type
+		%strong for course:
+		= course_constraint.second_course_sigle
+%p
+= link_to 'New Constraint', new_program_course_constraint_path

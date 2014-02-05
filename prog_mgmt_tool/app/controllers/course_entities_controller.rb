@@ -1,4 +1,6 @@
 class CourseEntitiesController < ApplicationController
+  before_filter :course
+  
   def index
   end
 
@@ -6,7 +8,7 @@ class CourseEntitiesController < ApplicationController
     @course_entity = CourseEntity.new
   	
     params[:course_entity].permit(:year, :professor, :credits)
-    @course = Course.find(params[:course_id])
+    
     @course_entity.professor = params[:course_entity][:professor]
     @course_entity.credits = params[:course_entity][:credits]
     @course_entity.course_id = params[:course_id]
@@ -35,4 +37,10 @@ class CourseEntitiesController < ApplicationController
   	@course_entity.destroy
   	redirect_to course_path(@course)
   end
+
+  private
+
+    def course
+      @course = Course.find(params[:course_id])
+    end
 end
