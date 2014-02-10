@@ -1,3 +1,11 @@
 %h1 Editing course
-= render 'form'
-= link_to 'Back', courses_path
+= form_for ([@program, @course]) do |f|
+	%p
+		= f.label :name
+		= f.text_field :name, value: 'Introduction à la programmation'
+	%p
+		= f.label :sigle
+		= f.text_field :sigle, value: 'LSINF1101'
+	%p
+		= f.submit
+= link_to 'Back', program_courses_path(@program)

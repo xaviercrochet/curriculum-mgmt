@@ -24,12 +24,14 @@ Thesis::Application.routes.draw do
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
   resources :programs do
-    resources :course_constraints
+    resources :courses do
+      resources :course_entities
+      resources :course_constraints
+    end 
   end
+
   resources :users
-  resources :courses do
-    resources :course_entities
-  end
+  
 
 
 

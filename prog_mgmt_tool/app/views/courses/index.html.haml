@@ -1,5 +1,5 @@
 %h1 Listing courses
-= link_to 'New Course', new_course_path
+= link_to 'New Course', new_program_course_path(@program)
 %table
 	%tr
 		%th Course Name
@@ -7,10 +7,12 @@
 		%th
 		%th
 		%th
+		%th
 	- @courses.each do |c|
 		%tr
 			%td= c.name
 			%td= c.sigle
-			%td= link_to 'Show', c
-			%td= link_to 'Edit', edit_course_path(c)
-			%td= link_to 'Delete', course_path(c), method: :delete, data: { confirm: 'Are you sure?'}
+			%td= link_to 'Constraints', program_course_course_constraints_path(@program, c)
+			%td= link_to 'Show', program_course_path(@program, c)
+			%td= link_to 'Edit', edit_program_course_path(@program, c)
+			%td= link_to 'Delete', program_course_path(@program, c), method: :delete, data: { confirm: 'Are you sure?'}

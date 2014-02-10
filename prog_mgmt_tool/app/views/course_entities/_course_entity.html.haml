@@ -16,4 +16,5 @@
 	= course_entity.credits
 
 %p
-	= link_to 'Delete', [course_entity.course, course_entity], method: :delete, data: { confirm: 'Are you sure?'}
+	= link_to 'Edit', edit_program_course_course_entity_path(@program, @course, course_entity)
+	= link_to 'Delete', [@program, @course, course_entity], method: :delete, data: { confirm: 'Are you sure?'}

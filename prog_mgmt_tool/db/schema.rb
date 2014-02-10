@@ -16,15 +16,13 @@ ActiveRecord::Schema.define(version: 20140205155238) do
   create_table "course_constraints", force: true do |t|
     t.string   "constraint_type"
     t.integer  "program_id"
-    t.integer  "first_course_id"
-    t.string   "first_course_sigle"
+    t.integer  "course_id"
     t.integer  "second_course_id"
-    t.string   "second_course_sigle"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "course_constraints", ["first_course_id"], name: "index_course_constraints_on_first_course_id"
+  add_index "course_constraints", ["course_id"], name: "index_course_constraints_on_course_id"
   add_index "course_constraints", ["program_id"], name: "index_course_constraints_on_program_id"
   add_index "course_constraints", ["second_course_id"], name: "index_course_constraints_on_second_course_id"
 
@@ -46,11 +44,13 @@ ActiveRecord::Schema.define(version: 20140205155238) do
     t.string   "name"
     t.string   "sigle"
     t.integer  "pmodule_id"
+    t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "courses", ["pmodule_id"], name: "index_courses_on_pmodule_id"
+  add_index "courses", ["program_id"], name: "index_courses_on_program_id"
 
   create_table "p_modules", force: true do |t|
     t.string   "name"

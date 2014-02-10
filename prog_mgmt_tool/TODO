@@ -1,6 +1,6 @@
+refactor course_constraint => link to course in stead of program.
 refactor course_constraints model (more generic with multiple course)
 refactor course_constraints/_form.html.haml (read collection_select doc)
-refactor course controller
 ADDING program tag to courses
 aependencie
 Yeml Parser

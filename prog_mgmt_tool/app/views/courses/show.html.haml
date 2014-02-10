@@ -12,5 +12,5 @@
 %h2 Add a course entity
 = render 'course_entities/form'
 
-= link_to 'Edit', edit_course_path(@course)
-= link_to 'Back', courses_path
+= link_to 'Edit', edit_program_course_path(@program, @course)
+= link_to 'Back', program_courses_path
