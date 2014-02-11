@@ -1,0 +1,12 @@
+%h1 New Catalog
+= form_for @catalog do |f|
+	%p
+		= f.label :faculty
+		= f.text_field :faculty
+	%p
+		= f.label :department
+		= f.text_field :department
+	%p
+		= f.file_field :data
+	%p
+		= f.submit

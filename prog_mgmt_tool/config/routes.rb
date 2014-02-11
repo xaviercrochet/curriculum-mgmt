@@ -23,6 +23,8 @@ Thesis::Application.routes.draw do
   match '/signup', to: 'users#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
+ 
+  resources :catalogs
   resources :programs do
     resources :courses do
       resources :course_entities
@@ -31,10 +33,6 @@ Thesis::Application.routes.draw do
   end
 
   resources :users
-  
-
-
-
   end
   
   # The priority is based upon order of creation: first created -> highest priority.

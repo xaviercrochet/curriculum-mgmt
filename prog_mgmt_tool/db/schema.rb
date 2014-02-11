@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140205155238) do
+ActiveRecord::Schema.define(version: 20140211111826) do
+
+  create_table "catalogs", force: true do |t|
+    t.string   "faculty"
+    t.string   "department"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "filename"
+  end
 
   create_table "course_constraints", force: true do |t|
     t.string   "constraint_type"
