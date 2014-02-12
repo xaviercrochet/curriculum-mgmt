@@ -13,22 +13,22 @@ class Catalog < ActiveRecord::Base
 			node.values.each do |v|
 				
 				if v.eql? 'node'
-					p v
 					node.children.each do |n|
 						
 						if n.values[0].eql? 'label' and n.values[1].eql? 'String'
 							
-							if n.content.eql? 'SEPS CORE' or n.content.eql'MINEURE+Q3' or n.content.eql? 'OR' or n.content.eql? 'X' or n.content.eql? 'CESS' or n.content.eql? 'APPROFONDISSEMENT' or n.content.eql? 'BACHELIER' or n.content.eql? 'INTRO'
-								@pmodule = PModule.new
-								@pmodule.program_id = '1'
-								@pmodule.name = n.content
-								@pmodule.save
-							else
+							if /[a-zA-Z]{4,5}\d\d\d\d/.match(n.content)
 								p "Creating course ..."
 								@course = Course.new
 								@course.program_id = '1'
 								@course.sigle = n.content
 								@course.save
+
+							else
+								@pmodule = PModule.new
+								@pmodule.program_id = '1'
+								@pmodule.name = n.content
+								@pmodule.save
 							end
 						end
 					end
