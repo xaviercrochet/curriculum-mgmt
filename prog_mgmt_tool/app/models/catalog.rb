@@ -17,7 +17,7 @@ class Catalog < ActiveRecord::Base
 						
 						if n.values[0].eql? 'label' and n.values[1].eql? 'String'
 							
-							if /[a-zA-Z]{4,5}\d\d\d\d/.match(n.content)
+							if /[a-zA-Z]{4,5}\d\d\d\d/.match(n.content) #MATCHES LINGI4242, SINF4242, etc
 								p "Creating course ..."
 								@course = Course.new
 								@course.program_id = '1'
@@ -34,14 +34,6 @@ class Catalog < ActiveRecord::Base
 					end
 				end
 			end
-			#puts "values:"
-			#puts node.values
-			#puts "name: "+node.name
-			#puts "keys:"
-			#puts node.keys
-			#if node.keys.eql? 'label'
-			#	puts "COUCOU"
-			#end
 		end
 
 	end
