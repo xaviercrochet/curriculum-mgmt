@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
 class Catalog < ActiveRecord::Base
+	has_many :programs
 
 	def create_courses
 		f = File.open("private/seeds/"+self.filename)

@@ -32,5 +32,4 @@ class CatalogsController < ApplicationController
 		def catalog_params
 			params.require(:catalog).permit(:faculty, :department)
 		end
-
 end

@@ -1,6 +1,8 @@
 class ProgramsController < ApplicationController
+  before_filter :catalog
+  
   def index
-  	@programs = Program.all
+  	@programs = Program.where(catalog_id: @catalog.id)
   end
 
 
@@ -43,4 +45,8 @@ class ProgramsController < ApplicationController
  		def program_params
  			params.require(:program).permit(:cycle, :program_type, :credits)
  		end
+
+    def catalog
+      @catalog = Catalog.find(params[:catalog_id])
+    end
 end
