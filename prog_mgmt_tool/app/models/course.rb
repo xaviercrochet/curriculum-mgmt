@@ -1,6 +1,5 @@
 class Course < ActiveRecord::Base
-  belongs_to :pmodule
-  belongs_to :program
+  belongs_to :p_module
   has_many :course_entities, dependent: :destroy
   has_many :course_constraints, dependent: :destroy
   before_save {

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140213144540) do
+ActiveRecord::Schema.define(version: 20140213171543) do
 
   create_table "catalogs", force: true do |t|
     t.string   "faculty"
@@ -51,13 +51,13 @@ ActiveRecord::Schema.define(version: 20140213144540) do
   create_table "courses", force: true do |t|
     t.string   "name"
     t.string   "sigle"
-    t.integer  "pmodule_id"
+    t.integer  "p_module_id"
     t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "courses", ["pmodule_id"], name: "index_courses_on_pmodule_id"
+  add_index "courses", ["p_module_id"], name: "index_courses_on_p_module_id"
   add_index "courses", ["program_id"], name: "index_courses_on_program_id"
 
   create_table "p_modules", force: true do |t|

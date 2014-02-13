@@ -1,16 +1,9 @@
 %p
 	%strong Course Name:
 	= @course.name
-
 %p
 	%strong Course Sigle:
 	= @course.sigle
-- if @course.course_entities.count != 0
-	%h2 Course Entities
-	= render @course.course_entities
 
-%h2 Add a course entity
-= render 'course_entities/form'
-
-= link_to 'Edit', edit_program_course_path(@program, @course)
-= link_to 'Back', program_courses_path
+= link_to 'Edit', edit_catalog_program_p_module_course_path(@catalog, @program, @p_module, @course)
+= link_to 'Back', catalog_program_p_module_courses_path(@catalog, @program, @p_module)
