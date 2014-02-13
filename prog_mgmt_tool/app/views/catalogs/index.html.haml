@@ -1,2 +1,15 @@
 %h1 Course Catalogs
 = link_to 'New Catalog', new_catalog_path
+%table
+	%tr
+		%th Faculty
+		%th Department
+		%th 
+		%th
+		%th
+	- @catalogs.each do |c|
+		%tr
+			%td= c.faculty
+			%td= c.department
+			%td= link_to 'Show', c
+			%td= link_to 'Delete', c, method: :delete, data: {confirm: 'Are you sure?'}
