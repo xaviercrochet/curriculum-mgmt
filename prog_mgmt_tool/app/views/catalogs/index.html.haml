@@ -12,4 +12,5 @@
 			%td= c.faculty
 			%td= c.department
 			%td= link_to 'Show', c
+			%td= link_to 'Programs', catalog_programs_path(c)
 			%td= link_to 'Delete', c, method: :delete, data: {confirm: 'Are you sure?'}
