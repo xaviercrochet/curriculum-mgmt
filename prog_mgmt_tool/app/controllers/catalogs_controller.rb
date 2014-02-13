@@ -28,6 +28,12 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.find(params[:id])
 	end
 
+	def destroy
+		@catalog = Catalog.find(params[:id])
+		@catalog.destroy
+		redirect_to catalogs_path
+	end
+
 	private
 		def catalog_params
 			params.require(:catalog).permit(:faculty, :department)
