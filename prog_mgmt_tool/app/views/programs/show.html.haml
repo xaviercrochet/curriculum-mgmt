@@ -10,5 +10,5 @@
 	%strong Credits:
 	= @program.credits
 
-= link_to 'Courses', program_courses_path(@program)
-= link_to 'Back', programs_path
+= link_to 'Courses', catalog_program_courses_path(@catalog, @program)
+= link_to 'Back', catalog_programs_path

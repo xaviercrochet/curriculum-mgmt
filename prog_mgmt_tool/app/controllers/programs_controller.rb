@@ -11,10 +11,10 @@ class ProgramsController < ApplicationController
   end
 
   def destroy
-  	@program = Program.find(params[:id])
+  	@program = @catalog.programs.find(params[:id])
   	@program.destroy
 
-  	redirect_to programs_path
+  	redirect_to catalog_programs_path(@catalog)
   end
 
   def edit
@@ -22,19 +22,18 @@ class ProgramsController < ApplicationController
   end
 
   def update
-  	@program = Program.find(params[:id])
+  	@program = @catalog.programs.find(params[:id])
 
   	if @program.update(params[:program].permit(:cycle, :program_type, :credits))
-  		redirect_to @program
+  		redirect_to catalog_program_path(@catalog, @program)
   	else
   		render 'edit'
   	end
   end
 
   def create
-  	@program = Program.new(program_params)
-  	@program.save
-  	redirect_to @program
+    @program = @catalog.programs.create(program_params)
+  	redirect_to catalog_program_path(@catalog, @program)
   end
 
   def show

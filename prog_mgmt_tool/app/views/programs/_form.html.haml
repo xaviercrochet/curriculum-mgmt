@@ -1,12 +1,12 @@
-= form_for @program do |p|
+= form_for ([@catalog, @catalog.programs.build]) do |f|
 	%p
-		= p.label :program_type
-		= p.text_field :program_type
+		= f.label :program_type
+		= f.text_field :program_type
 	%p
-		= p.label :cycle
-		= p.text_field :cycle
+		= f.label :cycle
+		= f.text_field :cycle
 	%p
-		= p.label :credits
-		= p.text_field :credits
+		= f.label :credits
+		= f.text_field :credits
 	%p
-		= p.submit
+		= f.submit
