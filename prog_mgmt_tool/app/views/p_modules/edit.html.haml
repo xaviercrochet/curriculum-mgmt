@@ -1,0 +1,14 @@
+%h1 Editing Module
+= form_for([@catalog, @program, @p_module]) do |f|
+	%p
+		= f.label :name
+		= f.text_field :name
+	%p
+		= f.label :module_type
+		= f.text_field :module_type
+	%p
+		= f.label :credits
+		= f.text_field :credits
+	%p
+		= f.submit
+= link_to 'Back', catalog_program_p_modules_path(@catalog, @program)

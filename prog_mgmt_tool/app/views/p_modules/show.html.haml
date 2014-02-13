@@ -1,0 +1,13 @@
+%p
+	%strong Module Name:
+	= @p_module.name
+
+%p
+	%strong Type:
+	= @p_module.module_type
+
+%p
+	%strong Credits:
+	= @p_module.credits
+
+= link_to 'Back', catalog_program_p_modules_path(@catalog, @program)

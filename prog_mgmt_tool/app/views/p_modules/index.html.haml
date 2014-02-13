@@ -1,0 +1,20 @@
+%h1 Listing program modules
+= link_to 'New Module', new_catalog_program_p_module_path(@catalog, @program, @p_module)
+
+%table
+	%tr
+	%th Name 
+	%th Module Type
+	%th Credits
+	%th
+	%th
+	%th
+- @p_modules.each do |p|
+	%tr
+		%td= p.name
+		%td= p.module_type
+		%td= p.credits
+		%td= link_to 'Show', catalog_program_p_module_path(@catalog, @program, p)
+		%td= link_to 'Edit', edit_catalog_program_p_module_path(@catalog, @program, p)
+		%td= link_to 'Delete', catalog_program_p_module_path(@catalog, @program, p), method: :delete, data:{confirm: 'Are you sure?'}
+

@@ -1,6 +1,6 @@
 class Program < ActiveRecord::Base
 	has_many :course_constraints
-	has_many :pmodules
+	has_many :p_modules, dependent: :destroy
 	has_many :courses
 	belongs_to :catalog
 	before_save { 

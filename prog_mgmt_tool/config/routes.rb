@@ -11,10 +11,6 @@ Thesis::Application.routes.draw do
   get "users/update"
   get "users/show"
   get "users/index"
-  get "pmodules/index"
-  get "pmodules/show"
-  get "pmodules/update"
-  get "pmodules/new"
   get "programs/index"
   get "landing_page/index"
   get "modules/index"
@@ -26,10 +22,12 @@ Thesis::Application.routes.draw do
  
   resources :catalogs do
     resources :programs do
-      resources :courses do
-        resources :course_entities
-        resources :course_constraints
-      end 
+      resources :p_modules do
+        resources :courses do
+          resources :course_entities
+          resources :course_constraints
+        end 
+      end
     end
   end
 
