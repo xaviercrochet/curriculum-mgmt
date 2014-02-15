@@ -1,0 +1,20 @@
+%h1 Course Entities
+= link_to 'New entity', new_catalog_program_p_module_course_course_entity_path(@catalog, @program, @p_module, @course)
+%table
+	%tr
+		%th Year
+		%th Credits
+		%th Url
+		%th Professor
+		%th
+		%th
+		%th
+	- @course_entities.each do |c|
+		%tr
+			%td= c.year
+			%td= c.credits
+			%td= link_to 'Url', c.url
+			%td= c.professor
+			%td= link_to 'Show', catalog_program_p_module_course_course_entity_path(@catalog, @program, @p_module, @course, c)
+			%td= link_to 'Edit', edit_catalog_program_p_module_course_course_entity_path(@catalog, @program, @p_module, @course, c)
+			%td= link_to 'Delete', catalog_program_p_module_course_course_entity_path(@catalog, @program, @p_module, @course, c), method: :delete, data: { confirm: 'Are you sure?' } 

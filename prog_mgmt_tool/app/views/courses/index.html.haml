@@ -7,11 +7,15 @@
 		%th
 		%th
 		%th
+		%th
+		%th
 	- @courses.each do |c|
 		%tr
 			%td= c.name
 			%td= c.sigle
 			%td= link_to 'Show', catalog_program_p_module_course_path(@catalog, @program, @p_module, c)
 			%td= link_to 'Edit', edit_catalog_program_p_module_course_path(@catalog, @program, @p_module, c)
+			%td= link_to 'Entities', catalog_program_p_module_course_course_entities_path(@catalog, @program, @p_module, c)
+			%td= link_to 'Constraints', catalog_program_p_module_course_course_constraints_path(@catalog, @program, @p_module, c)
 			%td= link_to 'Delete', catalog_program_p_module_course_path(@catalog, @program, @p_module, c), method: :delete, data: { confirm: 'Are you sure?'}
 

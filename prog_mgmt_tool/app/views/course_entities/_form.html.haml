@@ -1,4 +1,4 @@
-= form_for([@program, @course, @course.course_entities.build]) do |f|
+= form_for([@catalog, @program, @p_module, @course, @course.course_entities.build]) do |f|
 	%p
 		= f.label :professor
 		= f.text_field :professor
@@ -8,7 +8,7 @@
 		= f.text_field :credits
 
 	%p
-		= select_year(Time.now)
+		= f.select_year(Time.now)
 
 	%p
 		= f.submit

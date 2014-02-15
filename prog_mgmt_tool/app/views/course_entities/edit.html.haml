@@ -1,5 +1,5 @@
 %h1 Editing course entity
-= form_for([@program, @course, @course_entity]) do |f|
+= form_for([@catalog, @program, @p_module, @course, @course_entity]) do |f|
 	%p
 		= f.label :professor
 		= f.text_field :professor
@@ -13,4 +13,4 @@
 
 	%p
 		= f.submit
-= link_to 'Back', program_course_path(@program, @course)
+= link_to 'Back', catalog_program_p_module_course_path(@catalog, @program, @p_module, @course)
