@@ -19,7 +19,7 @@ class CatalogsController < ApplicationController
 			@catalog.filename), 'wb') do |file|
 			file.write(uploaded_io.read)
 		end
-		@catalog.create_courses
+		@catalog.parse
 		redirect_to @catalog
 
 	end

@@ -1,9 +1,11 @@
 class CourseConstraintsController < ApplicationController
-	before_filter :program, :course, :courses
+	before_filter :program, :course, :courses, :catalog, :p_module
+	after_filter :second_course
 	
 	def index
 		#@course_constraints = CourseConstraint.where(:course_id => @course.id).includes(:second_course)
 		@course_constraints = CourseConstraint.where(course_id: @course.id).joins("INNER JOIN courses ON courses.id = course_constraints.second_course_id")
+		
 	end
 
 	def new
@@ -29,7 +31,7 @@ class CourseConstraintsController < ApplicationController
 		#@course_constraint.program_id = params[:program_id]
 		#@course_constraint.constraint_type = params[:course_constraint][:constraint_type]
 		#@course_constraint.save
-		redirect_to program_course_course_constraints_path(@program, @course)
+		redirect_to catalog_program_p_module_course_course_constraints_path(@catalog, @program, @p_module, @course)
 	end
 
 	def show
@@ -40,6 +42,14 @@ class CourseConstraintsController < ApplicationController
 
 	private
 
+		def catalog
+			@catalog = Catalog.find(params[:catalog_id])
+		end
+
+		def p_module
+			@p_module = PModule.find(params[:p_module_id])
+		end
+
 		def program
 			@program = Program.find(params[:program_id])
 		end
@@ -49,6 +59,7 @@ class CourseConstraintsController < ApplicationController
 		end
 
 		def courses
-			@courses = Course.where(:program_id => params[:program_id])
+			@courses = Course.joins(:program)
 		end
+
 end
