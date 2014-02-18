@@ -1,11 +1,10 @@
 class CourseConstraintsController < ApplicationController
 	before_filter :program, :course, :courses, :catalog, :p_module
-	after_filter :second_course
 	
 	def index
 		#@course_constraints = CourseConstraint.where(:course_id => @course.id).includes(:second_course)
-		@course_constraints = CourseConstraint.where(course_id: @course.id).joins("INNER JOIN courses ON courses.id = course_constraints.second_course_id")
-		
+		#@course_constraints = CourseConstraint.where(course_id: @course.id).joins("INNER JOIN courses ON courses.id = course_constraints.second_course_id")
+		@course_constraints = @course.course_constraints
 	end
 
 	def new

@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 20140213171543) do
 
   create_table "course_constraints", force: true do |t|
     t.string   "constraint_type"
-    t.integer  "program_id"
     t.integer  "course_id"
     t.integer  "second_course_id"
     t.datetime "created_at"
@@ -31,7 +30,6 @@ ActiveRecord::Schema.define(version: 20140213171543) do
   end
 
   add_index "course_constraints", ["course_id"], name: "index_course_constraints_on_course_id"
-  add_index "course_constraints", ["program_id"], name: "index_course_constraints_on_program_id"
   add_index "course_constraints", ["second_course_id"], name: "index_course_constraints_on_second_course_id"
 
   create_table "course_entities", force: true do |t|
