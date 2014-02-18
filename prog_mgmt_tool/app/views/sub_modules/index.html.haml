@@ -1,0 +1,17 @@
+%h1 Listing Sub-modules
+= link_to 'New Sub-Module', new_catalog_program_p_module_sub_module_path(@catalog, @program, @p_module, @sub_module)
+
+%table
+	%tr
+		%th Name
+		%th 
+		%th
+		%th
+		%th
+	- @sub_modules.each do |p|
+		%tr
+			%td= p.name
+			%td= link_to 'Show', catalog_program_p_module_sub_module_path(@catalog, @program, @p_module, p)
+			%td= link_to 'Edit', edit_catalog_program_p_module_sub_module_path(@catalog, @program, @p_module, p)
+			%td= link_to 'Courses', catalog_program_p_module_sub_module_courses_path(@catalog, @program, @p_module, p)
+			%td= link_to 'Delete',  catalog_program_p_module_sub_module_path(@catalog, @program, @p_module, p), method: :delete, data:{confirm: 'Are you sure?'} 

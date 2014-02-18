@@ -23,9 +23,15 @@ Thesis::Application.routes.draw do
   resources :catalogs do
     resources :programs do
       resources :p_modules do
+        resources :sub_modules do
+          resources :courses do
+            resources :course_entities
+            resources :course_constraints
+          end
+        end
         resources :courses do
-          resources :course_entities
-          resources :course_constraints
+            resources :course_entities
+            resources :course_constraints
         end 
       end
     end

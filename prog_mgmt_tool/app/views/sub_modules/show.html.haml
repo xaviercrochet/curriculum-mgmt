@@ -1,0 +1,6 @@
+%p
+	%strong Sub-Module Name:
+	= @sub_module.name
+
+= link_to 'Courses', catalog_program_p_module_sub_module_courses_path(@catalog, @program, @p_module, @sub_module)
+= link_to 'Back', catalog_program_p_module_sub_modules_path(@catalog, @program, @p_module)

@@ -1,0 +1,6 @@
+= form_for ([@catalog, @program, @p_module, @p_module.sub_modules.build]) do |f|
+	%p
+		= f.label :name
+		= f.text_field :name
+	%p
+		= f.submit
