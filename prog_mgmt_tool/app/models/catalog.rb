@@ -44,8 +44,10 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def parse
-		@objects = Hash.new
-		@objects_type = Hash.new
+		@programs = Hash.new
+		@modules = Hash.new
+		@courses = Hash.new
+		@constraints = Array.new
 		f = File.open("seeds/"+self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
@@ -58,14 +60,18 @@ class Catalog < ActiveRecord::Base
 			end
 				
 		end
+		insert_programs
+		insert_modules
+		insert_courses
+		insert_constraints
 	end
 
 	def parse_node(node)
 
-		name = "NIL"
-		is_group = "false"
-		gid = "none"
-		id = "none"
+		name = ""
+		is_group = false
+		gid = ""
+		id = ""
 		node.children.each do |c|
 			
 			
@@ -76,78 +82,91 @@ class Catalog < ActiveRecord::Base
 				id = c.content
 				#p "Id found for: " + name + " - Id :" + id
 			
-			elsif c.values[0].eql? 'isGroup' and c.values[1].eql? 'boolean'
+			elsif c.values[0].eql? 'isGroup' and c.values[1].eql? 'boolean' and c.content.eql? "true"
 				#p "Group found: " +  name + " - " + c.content
-				is_group = c.content
+				is_group = true
 			
 			elsif c.values[0].eql? 'gid' and c.values[1].eql? 'int'
 				gid = c.content
 				#p "Gid found for: " +name + " - Gid : "+gid
 			end
 		end
-		if not name.eql? "NIL"
-			p "Object parsed: " + name + " - " + id  + " - " + is_group + " - " + gid
+		if not name.eql? ""
+			p "Object parsed: " + name + " - " + id  + " - " + is_group.to_s + " - " + gid
 			create_object(name, is_group, gid, id)
 		end
 	end
 
 	def create_object(name, is_group, gid, id)
-		p "Creating object: "+name+ " - group ? " +is_group
+		p "Creating object: "+name+ " - group ? " +is_group.to_s
 
-		if is_group.eql? "true"
+		if is_group
 
-			if gid.eql? "none"
+			if gid.eql? ""
 				p "Creating program ..."
-				@program = Program.new
+				program = Hash.new
+				program['id'] = id
+				program['name'] = name
+				@programs[id] = program
+				/@program = Program.new
 				@program.cycle = name
 				@program.program_type = "NONE"
 				@program.catalog_id = self.id
 				@program.save
 				@objects[id] = @program.id
-				@objects_type[id] = "program"
+				@objects_type[id] = "program"/
 			else
 				p "Creating module ..."
-				@module = PModule.new
+				pmodule = Hash.new
+				pmodule['id'] = id
+				pmodule['gid'] = gid
+				pmodule['name'] = name
+				@modules[id] = pmodule
+				/@module = PModule.new
 				@module.name = name
 				@module.program_id = @objects[gid]
 				@module.save
 				@objects[id] = @module.id
-				@objects_type[id] = "module"
+				@objects_type[id] = "module"/
 			end
 		
 		else
 			p "Creating course ..."
-			@course = Course.new
+			course = Hash.new
+			course['id'] = id
+			course['gid'] = gid
+			course['name'] = name
+			@courses[id] = course
+			/@course = Course.new
 			@course.sigle = name
 			@course.p_module_id = @objects[gid]
 			@course.save
 			@objects[id] = @course.id
-			@objects_type[id] = "course"
+			@objects_type[id] = "course"/
 		end
 	end
 
 	def parse_edge(edge)
-		@source
-		@target
-		@constraint = "NONE"
+		constraint = Hash.new
 		p "Parsing Edge ... "
 		edge.children.each do |c|
 			if c.values.size > 0
 
 				
 				if c.values[0].eql? 'source' and c.values[1].eql? 'int'
-					@source = c
+					constraint['source'] = c.content
 
 				elsif c.values[0].eql? 'target' and c.values[1].eql? 'int'
-					@target = c
+					constraint['target'] = c.content
 				
 				elsif c.values[0].eql? 'graphics'
-					p "Entering graphic section"
 					c.children.each do |ch|
 						if ch.values.size > 0
 							if ch.values[0].eql? 'targetArrow' and ch.values[1].eql? 'String'
 								p "Prerequisite found."
-								@constraint = "PREREQUISITE"
+								constraint['type'] = "PREREQUISITE"
+							else
+								constraint['type'] = "COREQUISITE"
 							end
 						end
 					end
@@ -157,7 +176,7 @@ class Catalog < ActiveRecord::Base
 				
 			end
 		end
-		parse_edge_vertices
+		@constraints.push(constraint)
 		
 	end
 
@@ -189,6 +208,34 @@ class Catalog < ActiveRecord::Base
 		@cc.second_course_id = source.id
 		@cc.constraint_type = constraint_type
 		@cc.save
+	end
+
+	def insert_programs
+		p "Inserting programs into database ..."
+		@programs.each do |pr|
+			p pr.to_s
+		end
+	end
+
+	def insert_modules
+		p "Inserting modules into database ..."
+		@modules.each do |m|
+			p m.to_s
+		end
+	end
+
+	def insert_courses
+		p "Inserting courses into database ..."
+		@courses.each do |c|
+			p c.to_s
+		end
+	end
+
+	def insert_constraints
+		p "Inserting constraints into database ..."
+		@constraints.each do |c|
+			p c.to_s
+		end
 	end
 end
 
