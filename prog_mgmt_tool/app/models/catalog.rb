@@ -145,6 +145,7 @@ class Catalog < ActiveRecord::Base
 
 	def parse_edge(edge)
 		constraint = Hash.new
+		constraint['type'] = "COREQUISITE" #default value
 		p "Parsing Edge ... "
 		edge.children.each do |c|
 			if c.values.size > 0
@@ -162,8 +163,6 @@ class Catalog < ActiveRecord::Base
 							if ch.values[0].eql? 'targetArrow' and ch.values[1].eql? 'String'
 								p "Prerequisite found."
 								constraint['type'] = "PREREQUISITE"
-							else
-								constraint['type'] = "COREQUISITE"
 							end
 						end
 					end
@@ -237,13 +236,28 @@ class Catalog < ActiveRecord::Base
 		p "Inserting courses into database ..."
 		@courses.each do |key, value|
 			c = Course.new
-			c.p_module_id = @modules[value['gid']]['id']
+			pmodule = @modules[value['gid']]
+			c.p_module_id = pmodule['id'] unless pmodule.nil? #have to handle xorg & or boxes
+			c.sigle = value['name']
+			c.name = "NONE"
 			c.save
+			value['id'] = c.id
 		end
 	end
 
 	def insert_constraints
 		p "Inserting constraints into database ..."
+		@constraints.each do |value|
+			if ! value.nil?
+				c = CourseConstraint.new
+				source = Course.find(@courses[value['source']]['id']) 
+				target = Course.find(@courses[value['target']]['id']) 
+				c.course_id = target.id
+				c.second_course_id = source.id
+				c.constraint_type = value['type']
+				c.save
+			end
+		end
 	end
 end
 
