@@ -4,7 +4,7 @@ class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 
 	def create_courses
-		f = File.open("private/seeds/"+self.filename)
+		f = File.open("seeds/"+self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
 		puts "Creating Catalog Courses ..."
@@ -45,17 +45,23 @@ class Catalog < ActiveRecord::Base
 
 	def parse
 		@objects = Hash.new
-		f = File.open("private/seeds/"+self.filename)
+		@objects_type = Hash.new
+		f = File.open("seeds/"+self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
 		puts "Parsing gxml file ..."
-		doc.root.children.children.each do |node|
-			parse_node(node)
+		doc.root.children.children.each do |c|
+			if c.values[0].eql? 'node'
+				parse_node(c)
+			elsif c.values[0].eql? 'edge'
+				parse_edge(c)
+			end
+				
 		end
 	end
 
 	def parse_node(node)
-		
+
 		name = "NIL"
 		is_group = "false"
 		gid = "none"
@@ -82,11 +88,13 @@ class Catalog < ActiveRecord::Base
 		if not name.eql? "NIL"
 			p "Object parsed: " + name + " - " + id  + " - " + is_group + " - " + gid
 			create_object(name, is_group, gid, id)
+		else
+			p "caca: "+ node.values[0].to_s 
 		end
 	end
 
 	def create_object(name, is_group, gid, id)
-		p "Creating object: "+name+ " - group : ? " +is_group
+		p "Creating object: "+name+ " - group ? " +is_group
 
 		if is_group.eql? "true"
 
@@ -98,14 +106,15 @@ class Catalog < ActiveRecord::Base
 				@program.catalog_id = self.id
 				@program.save
 				@objects[id] = @program.id
+				@objects_type[id] = "program"
 			else
 				p "Creating module ..."
 				@module = PModule.new
 				@module.name = name
 				@module.program_id = @objects[gid]
 				@module.save
-				p "Object id:" +@objects[gid].to_s
 				@objects[id] = @module.id
+				@objects_type[id] = "module"
 			end
 		
 		else
@@ -114,7 +123,74 @@ class Catalog < ActiveRecord::Base
 			@course.sigle = name
 			@course.p_module_id = @objects[gid]
 			@course.save
+			@objects[id] = @course.id
+			@objects_type[id] = "course"
 		end
+	end
+
+	def parse_edge(edge)
+		@source
+		@target
+		@constraint = "NONE"
+		p "Parsing Edge ... "
+		edge.children.each do |c|
+			if c.values.size > 0
+
+				
+				if c.values[0].eql? 'source' and c.values[1].eql? 'int'
+					@source = c
+
+				elsif c.values[0].eql? 'target' and c.values[1].eql? 'int'
+					@target = c
+				
+				elsif c.values[0].eql? 'graphics'
+					p "Entering graphic section"
+					c.children.each do |ch|
+						if ch.values.size > 0
+							if ch.values[0].eql? 'targetArrow' and ch.values[1].eql? 'String'
+								p "Prerequisite found."
+								@constraint = "PREREQUISITE"
+							end
+						end
+					end
+
+				end
+
+				
+			end
+		end
+		parse_edge_vertices
+		
+	end
+
+	def parse_edge_vertices
+		@source_id = @objects[@source.content]
+		@target_id = @objects[@target.content]
+		@source_type = @objects_type[@source.content]
+		@target_type = @objects_type[@target.content]
+		
+		if @source_type.eql? "course" and @target_type.eql? "course"
+			@course_source = Course.find(@source_id)
+			@course_target = Course.find(@target_id)
+			p "Constraint between " + @course_source.sigle + " and " + @course_target.sigle
+			create_course_constraint(@course_source, @course_target, @constraint)
+
+
+
+		end
+	end
+
+	def create_course_constraint(source, target, constraint_type)
+
+		#none is the default arrow in yED.
+		if constraint_type.eql? "NONE"
+			constraint_type = "COREQUISITE"
+		end
+		@cc = CourseConstraint.new
+		@cc.course_id = source.id
+		@cc.second_course_id = target.id
+		@cc.constraint_type = constraint_type
+		@cc.save
 	end
 end
 
