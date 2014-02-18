@@ -88,8 +88,6 @@ class Catalog < ActiveRecord::Base
 		if not name.eql? "NIL"
 			p "Object parsed: " + name + " - " + id  + " - " + is_group + " - " + gid
 			create_object(name, is_group, gid, id)
-		else
-			p "caca: "+ node.values[0].to_s 
 		end
 	end
 
