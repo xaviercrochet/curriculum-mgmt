@@ -224,7 +224,8 @@ class Catalog < ActiveRecord::Base
 		p "Inserting modules into database ..."
 		@modules.each do |key, value|
 			m = PModule.new
-			m.program_id = @programs[value['gid']]['id'] unless program.nil? #Have to implement support for nested modules!!
+			program = @programs[value['gid']]
+			m.program_id = program['id'] unless program.nil? #Have to implement support for nested modules!!
 			m.name = value['name']
 			m.module_type = "NONE"
 			m.save
@@ -234,6 +235,11 @@ class Catalog < ActiveRecord::Base
 
 	def insert_courses
 		p "Inserting courses into database ..."
+		@courses.each do |key, value|
+			c = Course.new
+			c.p_module_id = @modules[value['gid']]['id']
+			c.save
+		end
 	end
 
 	def insert_constraints
