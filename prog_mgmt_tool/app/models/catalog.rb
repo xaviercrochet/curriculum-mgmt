@@ -210,7 +210,6 @@ class Catalog < ActiveRecord::Base
 	def insert_programs
 		p "Inserting programs into database ..."
 		@programs.each do |key, value|
-			p key.to_s
 			program = Program.new
 			program.catalog_id = self.id
 			program.cycle = "NONE"
@@ -223,23 +222,22 @@ class Catalog < ActiveRecord::Base
 
 	def insert_modules
 		p "Inserting modules into database ..."
-		@modules.each do |m|
-			p m.to_s
+		@modules.each do |key, value|
+			m = PModule.new
+			m.program_id = @programs[value['gid']]['id'] unless program.nil? #Have to implement support for nested modules!!
+			m.name = value['name']
+			m.module_type = "NONE"
+			m.save
+			value['id'] = m.id
 		end
 	end
 
 	def insert_courses
 		p "Inserting courses into database ..."
-		@courses.each do |c|
-			p c.to_s
-		end
 	end
 
 	def insert_constraints
 		p "Inserting constraints into database ..."
-		@constraints.each do |c|
-			p c.to_s
-		end
 	end
 end
 
