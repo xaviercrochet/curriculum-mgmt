@@ -187,8 +187,8 @@ class Catalog < ActiveRecord::Base
 			constraint_type = "COREQUISITE"
 		end
 		@cc = CourseConstraint.new
-		@cc.course_id = source.id
-		@cc.second_course_id = target.id
+		@cc.course_id = target.id
+		@cc.second_course_id = source.id
 		@cc.constraint_type = constraint_type
 		@cc.save
 	end
