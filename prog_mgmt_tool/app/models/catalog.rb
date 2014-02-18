@@ -105,7 +105,6 @@ class Catalog < ActiveRecord::Base
 			if gid.eql? ""
 				p "Creating program ..."
 				program = Hash.new
-				program['id'] = id
 				program['name'] = name
 				@programs[id] = program
 				/@program = Program.new
@@ -118,7 +117,6 @@ class Catalog < ActiveRecord::Base
 			else
 				p "Creating module ..."
 				pmodule = Hash.new
-				pmodule['id'] = id
 				pmodule['gid'] = gid
 				pmodule['name'] = name
 				@modules[id] = pmodule
@@ -133,7 +131,6 @@ class Catalog < ActiveRecord::Base
 		else
 			p "Creating course ..."
 			course = Hash.new
-			course['id'] = id
 			course['gid'] = gid
 			course['name'] = name
 			@courses[id] = course
@@ -212,8 +209,15 @@ class Catalog < ActiveRecord::Base
 
 	def insert_programs
 		p "Inserting programs into database ..."
-		@programs.each do |pr|
-			p pr.to_s
+		@programs.each do |key, value|
+			p key.to_s
+			program = Program.new
+			program.catalog_id = self.id
+			program.cycle = "NONE"
+			program.program_type = value['name']
+			program.save
+			value['id'] = program.id
+
 		end
 	end
 
