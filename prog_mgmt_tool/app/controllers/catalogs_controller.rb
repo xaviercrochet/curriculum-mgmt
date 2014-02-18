@@ -15,7 +15,7 @@ class CatalogsController < ApplicationController
 		@catalog.filename = @catalog.faculty+'-'+@catalog.department+'-'+Time.now.to_formatted_s(:number)+'-catalog_seed.xgml'
 		@catalog.save
 		uploaded_io = params[:catalog][:data]
-		File.open(Rails.root.join('private', 'seeds',
+		File.open(Rails.root.join('', 'seeds',
 			@catalog.filename), 'wb') do |file|
 			file.write(uploaded_io.read)
 		end

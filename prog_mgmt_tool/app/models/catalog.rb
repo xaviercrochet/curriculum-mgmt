@@ -4,7 +4,7 @@ class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 
 	def create_courses
-		f = File.open("private/seeds/"+self.filename)
+		f = File.open("seeds/"+self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
 		puts "Creating Catalog Courses ..."
@@ -45,7 +45,7 @@ class Catalog < ActiveRecord::Base
 
 	def parse
 		@objects = Hash.new
-		f = File.open("private/seeds/"+self.filename)
+		f = File.open("seeds/"+self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
 		puts "Parsing gxml file ..."
