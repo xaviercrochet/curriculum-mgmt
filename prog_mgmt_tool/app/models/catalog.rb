@@ -3,49 +3,12 @@ require 'nokogiri'
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 
-	def create_courses
-		f = File.open("seeds/"+self.filename)
-		doc = Nokogiri::XML(f)
-		f.close
-		puts "Creating Catalog Courses ..."
-		#root.elements.children = nodes
-		doc.root.elements.children.each do |node|
-			
-			node.values.each do |v|
-				
-				if v.eql? 'node'
-					node.children.each do |n|
-						if n.values[0].eql? 'isGroup' and n.values[1].eql? 'boolean'
-							p "Box detected"+n.content
-						elsif n.values[0].eql? 'label' and n.values[1].eql? 'String'
-							
-							if /[a-zA-Z]{4,5}\d\d\d\d/.match(n.content) #MATCHES LINGI4242, SINF4242, etc
-								/p "Creating course ..."
-								@course = Course.new
-								@course.program_id = '1'
-								@course.sigle = n.content
-								@course.save/
-								p "Course : "+n.content
-
-
-							else
-								p "Program or Moudle: "+n.content
-								/@pmodule = PModule.new
-								@pmodule.program_id = '1'
-								@pmodule.name = n.content
-								@pmodule.save/
-							end
-						end
-					end
-				end
-			end
-		end
-
-	end
-
 	def parse
+		@or = Hash.new
+		@xor = Hash.new
 		@programs = Hash.new
 		@modules = Hash.new
+		@sub_modules = Hash.new
 		@courses = Hash.new
 		@constraints = Array.new
 		f = File.open("seeds/"+self.filename)
@@ -60,8 +23,14 @@ class Catalog < ActiveRecord::Base
 			end
 				
 		end
+		populate_database
+	end
+
+	#Order of operations is important !!!
+	def populate_database
 		insert_programs
 		insert_modules
+		insert_sub_modules
 		insert_courses
 		insert_constraints
 	end
@@ -98,59 +67,40 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def create_object(name, is_group, gid, id)
-		p "Creating object: "+name+ " - group ? " +is_group.to_s
-
+		if gid.eql? '7'
+			p "FOUND"
+		end
 		if is_group
 
 			if gid.eql? ""
-				p "Creating program ..."
 				program = Hash.new
 				program['name'] = name
 				@programs[id] = program
-				/@program = Program.new
-				@program.cycle = name
-				@program.program_type = "NONE"
-				@program.catalog_id = self.id
-				@program.save
-				@objects[id] = @program.id
-				@objects_type[id] = "program"/
 			else
-				p "Creating module ..."
+				if id.eql? '7'
+					p "Found : "+name+ " - "+is_group.to_s+ " - " + gid + " - " +id
+				end
 				pmodule = Hash.new
 				pmodule['gid'] = gid
 				pmodule['name'] = name
 				@modules[id] = pmodule
-				/@module = PModule.new
-				@module.name = name
-				@module.program_id = @objects[gid]
-				@module.save
-				@objects[id] = @module.id
-				@objects_type[id] = "module"/
 			end
 		
 		else
-			p "Creating course ..."
 			course = Hash.new
 			course['gid'] = gid
 			course['name'] = name
 			@courses[id] = course
-			/@course = Course.new
-			@course.sigle = name
-			@course.p_module_id = @objects[gid]
-			@course.save
-			@objects[id] = @course.id
-			@objects_type[id] = "course"/
 		end
 	end
 
 	def parse_edge(edge)
 		constraint = Hash.new
 		constraint['type'] = "COREQUISITE" #default value
-		p "Parsing Edge ... "
 		edge.children.each do |c|
+			
 			if c.values.size > 0
 
-				
 				if c.values[0].eql? 'source' and c.values[1].eql? 'int'
 					constraint['source'] = c.content
 
@@ -159,9 +109,10 @@ class Catalog < ActiveRecord::Base
 				
 				elsif c.values[0].eql? 'graphics'
 					c.children.each do |ch|
+						
 						if ch.values.size > 0
+							
 							if ch.values[0].eql? 'targetArrow' and ch.values[1].eql? 'String'
-								p "Prerequisite found."
 								constraint['type'] = "PREREQUISITE"
 							end
 						end
@@ -221,34 +172,74 @@ class Catalog < ActiveRecord::Base
 
 	def insert_modules
 		p "Inserting modules into database ..."
+		
 		@modules.each do |key, value|
-			m = PModule.new
 			program = @programs[value['gid']]
-			m.program_id = program['id'] unless program.nil? #Have to implement support for nested modules!!
-			m.name = value['name']
-			m.module_type = "NONE"
-			m.save
-			value['id'] = m.id
+			
+			if program.nil? #Submodule
+				sub_module = Hash.new
+				sub_module['name'] = value['name']
+				sub_module['gid'] = value['gid']
+				@sub_modules[key] = sub_module
+				@modules.delete(key)
+
+			else #Module
+				m = PModule.new
+				m.program_id = program['id'] 
+				m.name = value['name']
+				m.module_type = "NONE"
+				m.save
+				value['id'] = m.id
+			end
 		end
 	end
+	
+	def insert_sub_modules
+		p "Inserting sub modules into database ..."
+		
+		@sub_modules.each do |key, value|
+			pmodule = @modules[value['gid']]
+			m = PModule.find(pmodule['id'])
+			sub_module = m.sub_modules.new
+			sub_module.name = value['name']
+			sub_module.save
+			value['id'] = sub_module.id
+		end
 
+	end
+	
 	def insert_courses
 		p "Inserting courses into database ..."
 		@courses.each do |key, value|
-			c = Course.new
 			pmodule = @modules[value['gid']]
-			c.p_module_id = pmodule['id'] unless pmodule.nil? #have to handle xorg & or boxes
-			c.sigle = value['name']
-			c.name = "NONE"
-			c.save
-			value['id'] = c.id
+			
+			if pmodule.nil?
+				sub_module = @sub_modules[value['gid']]
+				if sub_module.nil?
+					p "No such sub_module : "+ value['gid'].to_s
+				end
+
+				m = SubModule.find(sub_module['id']) unless sub_module.nil?
+			
+			else
+				m = PModule.find(pmodule['id']) 
+			end
+
+			if ! m.nil? #TODO => Handle Xor & Ors
+				c = m.courses.new
+				#c.block_id = pmodule['id'] unless pmodule.nil? #have to handle xorg & or boxes
+				c.sigle = value['name']
+				c.name = "NONE"
+				c.save
+				value['id'] = c.id
+			end
 		end
 	end
 
 	def insert_constraints
 		p "Inserting constraints into database ..."
 		@constraints.each do |value|
-			if ! value.nil?
+			if ! value.nil? and !@courses[value['source']]['id'].nil? and !@courses[value['target']]['id'].nil?
 				c = CourseConstraint.new
 				source = Course.find(@courses[value['source']]['id']) 
 				target = Course.find(@courses[value['target']]['id']) 
