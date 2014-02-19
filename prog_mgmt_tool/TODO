@@ -1,7 +1,6 @@
-refactor course_constraint => link to course in stead of program.
-refactor course_constraints model (more generic with multiple course)
-refactor course_constraints/_form.html.haml (read collection_select doc)
-ADDING program tag to courses
-aependencie
-Yeml Parser
-handling gmail account to login (only)
+Milestone 1 : Graph Parser
+ - Parsing Xor & Or elements
+ - Refactoring view of models with polymorphics associations (PModule, Submodule & Course)
+ - Adding association Program => Courses?
+Milestone 2 : CONSTRAINTS
+Milestone 3 : User Interface
