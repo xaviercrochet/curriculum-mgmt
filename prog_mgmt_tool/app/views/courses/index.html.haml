@@ -1,5 +1,5 @@
 %h1 Listing courses
-= link_to 'New Course', new_catalog_program_p_module_course_path(@catalog, @program, @p_module, @course)
+= link_to 'New Course', @url
 %table
 	%tr
 		%th Course Name
@@ -14,7 +14,12 @@
 			%td= c.name
 			%td= c.sigle
 			%td= link_to 'Show', catalog_program_p_module_course_path(@catalog, @program, @p_module, c)
-			%td= link_to 'Edit', edit_catalog_program_p_module_course_path(@catalog, @program, @p_module, c)
+			%td
+				- if @state.eql? 'SubModule'
+					= link_to 'Edit', edit_catalog_program_p_module_sub_module_course_path(@catalog, @program, @p_module, @context, c)
+				- else
+					= link_to 'Edit', edit_catalog_program_p_module_course_path(@catalog, @program, @context, c)
+
 			%td= link_to 'Entities', catalog_program_p_module_course_course_entities_path(@catalog, @program, @p_module, c)
 			%td= link_to 'Constraints', catalog_program_p_module_course_course_constraints_path(@catalog, @program, @p_module, c)
 			%td= link_to 'Delete', catalog_program_p_module_course_path(@catalog, @program, @p_module, c), method: :delete, data: { confirm: 'Are you sure?'}

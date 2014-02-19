@@ -2,27 +2,34 @@ class CoursesController < ApplicationController
   before_filter :program, :p_module, :catalog
 
   def new
-  	@course = Course.new
+    @context = context
+    @url = index_url(context)
+  	@course = @context.courses.new
   end
 
   
   def create
-    @course = @p_module.courses.create(course_params)
-    redirect_to catalog_program_p_module_courses_path(@catalog, @program, @p_module)
+    @context = context
+    @course = @context.courses.create(course_params)
+    redirect_to index_url(context)
   end
 
   def destroy
-    @course = @p_module.courses.find(params[:id])
+    @context = context
+    @course = @context.courses.find(params[:id])
     @course.destroy
     redirect_to catalog_program_p_module_courses_path(@catalog, @program, @p_module)
   end
 
   def edit
-    @course = Course.find(params[:id])
+    state
+    @context = context
+    @course = @context.courses.find(params[:id])
   end
 
   def update
-    @course = @p_module.courses.find(params[:id])
+    @context = context
+    @course = @context.courses.find(params[:id])
     if params.has_key?(:course)
       @course.update(params[:course].permit(:name, :sigle))
       redirect_to catalog_program_p_module_courses_path(@catalog, @program, @p_module)
@@ -32,11 +39,16 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = @p_module.courses.find(params[:id])
+    @context = context
+    @course = @context.courses.find(params[:id])
   end
 
   def index
-    @courses = @p_module.courses
+    @url = new_url(context)
+    
+    state
+    @context = context
+    @courses = @context.courses
   end
 
   private
@@ -54,6 +66,61 @@ class CoursesController < ApplicationController
 
     def catalog
       @catalog = Catalog.find(params[:catalog_id])
+    end
+
+    def block
+      params.each do |name, value|
+        if name =~ /(.+)_id$/
+          return $1.classify.constantize.find(value)
+        end
+      end
+      nil
+    end
+    
+    def new_url(context)
+      if SubModule === context
+        new_catalog_program_p_module_sub_module_course_path(@catalog, @program, @p_module, context)
+      else
+        new_catalog_program_p_module_course_path(@catalog, @program, context)
+      end
+    end
+
+    def index_url(context)
+      if SubModule === context
+        catalog_program_p_module_sub_module_course_path(@catalog, @program, @p_module, context)
+      else
+        catalog_program_p_module_courses_path(@catalog, @program, context)
+      end
+    end
+    def state
+      if SubModule === context
+        @state = "SubModule"
+      else
+        @state = "PModule"
+      end
+    end
+
+    def show_url(context)
+
+      if SubModule === context
+        catalog_program_p_module_sub_module_course_path(@catalog, @program, @p_module, context, context.courses)
+      else
+        catalog_program_p_module_course_path(@catalog, @program, context)
+      end
+    end
+    
+    def context
+      if params[:p_module_id] and params[:sub_module_id]
+        p "SUB MODULE"
+        id = params[:sub_module]
+        block_type = "SubModule"
+        SubModule.find(params[:sub_module_id])
+      else
+        p "MODULE"
+        id = params[:p_module]
+        block_type = "PModule"
+        PModule.find(params[:p_module_id])
+      end
     end
 
 
