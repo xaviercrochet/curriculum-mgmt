@@ -11,6 +11,7 @@ class Catalog < ActiveRecord::Base
 		@sub_modules = Hash.new
 		@courses = Hash.new
 		@constraints = Array.new
+		@nary_constraints = Hash.new
 		f = File.open("seeds/"+self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
@@ -39,6 +40,7 @@ class Catalog < ActiveRecord::Base
 
 		name = ""
 		is_group = false
+		is_constraint = false
 		gid = ""
 		id = ""
 		node.children.each do |c|
@@ -58,18 +60,23 @@ class Catalog < ActiveRecord::Base
 			elsif c.values[0].eql? 'gid' and c.values[1].eql? 'int'
 				gid = c.content
 				#p "Gid found for: " +name + " - Gid : "+gid
-			end
+
+			elsif c.values[0].eql? 'graphics'
+				c.children.each do |ch|
+					
+					if ch.values.size > 0 and ch.values[0].eql? 'customconfiguration' and (ch.content.eql? 'com.yworks.entityRelationship.attribute' or ch.content.eql? 'com.yworks.entityRelationship.relationship')
+							is_constraint = true
+					end
+				end
+			end	
 		end
 		if not name.eql? ""
-			p "Object parsed: " + name + " - " + id  + " - " + is_group.to_s + " - " + gid
-			create_object(name, is_group, gid, id)
+			p "Object parsed: " + name + " - " + id  + " - " + is_group.to_s + " - " + "N-Ary Constraint ? "+ is_constraint.to_s+ " - "+ gid
+			create_object(name, is_group,is_constraint, gid, id)
 		end
 	end
 
-	def create_object(name, is_group, gid, id)
-		if gid.eql? '7'
-			p "FOUND"
-		end
+	def create_object(name, is_group, is_constraint, gid, id)
 		if is_group
 
 			if gid.eql? ""
@@ -87,10 +94,16 @@ class Catalog < ActiveRecord::Base
 			end
 		
 		else
-			course = Hash.new
-			course['gid'] = gid
-			course['name'] = name
-			@courses[id] = course
+			if is_constraint
+				nary_constraint = Hash.new
+				nary_constraint['name'] = name
+				@nary_constraints[id] = nary_constraint
+			else
+				course = Hash.new
+				course['gid'] = gid
+				course['name'] = name
+				@courses[id] = course
+			end
 		end
 	end
 
@@ -227,19 +240,37 @@ class Catalog < ActiveRecord::Base
 
 			if ! m.nil? #TODO => Handle Xor & Ors
 				c = m.courses.new
-				#c.block_id = pmodule['id'] unless pmodule.nil? #have to handle xorg & or boxes
-				c.sigle = value['name']
-				c.name = "NONE"
-				c.save
-				value['id'] = c.id
+			else
+				c = Course.new
 			end
+			#c.block_id = pmodule['id'] unless pmodule.nil? #have to handle xorg & or boxes
+			c.sigle = value['name']
+			c.name = "NONE"
+			c.save
+			value['id'] = c.id
 		end
 	end
 
 	def insert_constraints
 		p "Inserting constraints into database ..."
+		p "Begining with n-ary constraints ..."
+		@nary_constraints.each do |c|
+			p c.to_s
+		end
 		@constraints.each do |value|
-			if ! value.nil? and !@courses[value['source']]['id'].nil? and !@courses[value['target']]['id'].nil?
+			p "Working on constraint : "+ value.to_s
+			
+			if ! @nary_constraints[value['source']].nil? or ! @nary_constraints[value['target']].nil?
+				p "Group Constraint element for : "+ value.to_s
+				#TODO : handle n-ary constraint
+			
+			elsif @courses[value['source']].nil?
+				p "Course not found : " + value.to_s
+			
+			elsif @courses[value['target']].nil?
+				p "Course not found : " + value.to_s
+			
+			else
 				c = CourseConstraint.new
 				source = Course.find(@courses[value['source']]['id']) 
 				target = Course.find(@courses[value['target']]['id']) 
