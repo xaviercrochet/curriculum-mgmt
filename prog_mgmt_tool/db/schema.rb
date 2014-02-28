@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140218170021) do
+ActiveRecord::Schema.define(version: 20140228132219) do
 
   create_table "catalogs", force: true do |t|
     t.string   "faculty"
@@ -20,6 +20,20 @@ ActiveRecord::Schema.define(version: 20140218170021) do
     t.datetime "updated_at"
     t.string   "filename"
   end
+
+  create_table "constraints", force: true do |t|
+    t.integer  "catalog_id"
+    t.integer  "course_id"
+    t.integer  "set_id"
+    t.string   "set_type"
+    t.string   "role"
+    t.string   "constraint_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "constraints", ["catalog_id"], name: "index_constraints_on_catalog_id"
+  add_index "constraints", ["course_id"], name: "index_constraints_on_course_id"
 
   create_table "course_constraints", force: true do |t|
     t.string   "constraint_type"

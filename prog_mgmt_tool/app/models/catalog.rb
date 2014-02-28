@@ -2,6 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
+	has_many :constraints, dependent: :destroy
 
 	def parse
 		@or = Hash.new
