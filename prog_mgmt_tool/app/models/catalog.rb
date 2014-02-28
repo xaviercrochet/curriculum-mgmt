@@ -13,6 +13,7 @@ class Catalog < ActiveRecord::Base
 		@courses = Hash.new
 		@constraints = Array.new
 		@nary_constraints = Hash.new
+		@set_id = 0
 		f = File.open("seeds/"+self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
@@ -98,7 +99,7 @@ class Catalog < ActiveRecord::Base
 			if is_constraint
 				nary_constraint = Hash.new
 				nary_constraint['name'] = name
-				@nary_constraints[id] = nary_constraint
+ 				@nary_constraints[id] = nary_constraint
 			else
 				course = Hash.new
 				course['gid'] = gid
@@ -239,12 +240,11 @@ class Catalog < ActiveRecord::Base
 				m = PModule.find(pmodule['id']) 
 			end
 
-			if ! m.nil? #TODO => Handle Xor & Ors
+			if ! m.nil? 
 				c = m.courses.new
 			else
 				c = Course.new
 			end
-			#c.block_id = pmodule['id'] unless pmodule.nil? #have to handle xorg & or boxes
 			c.sigle = value['name']
 			c.name = "NONE"
 			c.save
@@ -255,16 +255,39 @@ class Catalog < ActiveRecord::Base
 	def insert_constraints
 		p "Inserting constraints into database ..."
 		p "Begining with n-ary constraints ..."
-		@nary_constraints.each do |c|
-			p c.to_s
+		@nary_constraints.each do |key, value|
+			value['set_id'] = @set_id
+			p key.to_s + " - " + value.to_s
+			@set_id = @set_id+ 1
 		end
 		@constraints.each do |value|
 			p "Working on constraint : "+ value.to_s
 			
-			if ! @nary_constraints[value['source']].nil? or ! @nary_constraints[value['target']].nil?
-				p "Group Constraint element for : "+ value.to_s
-				#TODO : handle n-ary constraint
+			if ! @nary_constraints[value['source']].nil? 
+				p "Group Constraint element source for : "+ value.to_s
+				source =  @nary_constraints[value['source']]
+				target = Course.find(@courses[value['target']]['id'])
+				constraint = self.constraints.new
+				constraint.course_id = target.id
+				constraint.set_id = source['set_id']
+				constraint.role = "out"
+				constraint.constraint_type = value['type']
+				constraint.set_type = @nary_constraints[value['source']]['name']
+				constraint.save
+
 			
+			elsif ! @nary_constraints[value['target']].nil?
+				p "Group Constraint element target for: "+ value.to_s
+				target = @nary_constraints[value['target']]
+				source = Course.find(@courses[value['source']]['id'])
+				constraint = self.constraints.new
+				constraint.course_id = source.id
+				constraint.set_id = target['set_id']
+				constraint.role = "in"
+				constraint.constraint_type = value['type']
+				constraint.set_type = @nary_constraints[value['target']]['name']
+				constraint.save
+
 			elsif @courses[value['source']].nil?
 				p "Course not found : " + value.to_s
 			
@@ -272,13 +295,25 @@ class Catalog < ActiveRecord::Base
 				p "Course not found : " + value.to_s
 			
 			else
-				c = CourseConstraint.new
-				source = Course.find(@courses[value['source']]['id']) 
-				target = Course.find(@courses[value['target']]['id']) 
-				c.course_id = target.id
-				c.second_course_id = source.id
-				c.constraint_type = value['type']
-				c.save
+				value['set_id'] = @set_id
+				c_in = self.constraints.new
+				c_out = self.constraints.new
+				target = Course.find(@courses[value['target']]['id'])
+				source = Course.find(@courses[value['source']]['id'])
+				c_in.constraint_type = value['type']
+				c_in.course_id = source.id
+				c_out.course_id = target.id
+				c_in.role = "in"
+				c_out.role = "out"
+				c_in.constraint_type = value['type']
+				c_out.constraint_type = value['type']
+				c_in.set_id = @set_id
+				c_out.set_id = @set_id
+				c_in.set_type = "binary"
+				c_out.set_type = "binary"
+				c_in.save
+				c_out.save
+				@set_id = @set_id + 1
 			end
 		end
 	end
