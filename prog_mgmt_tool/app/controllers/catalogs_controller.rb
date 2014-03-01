@@ -12,14 +12,16 @@ class CatalogsController < ApplicationController
 
 		@catalog = Catalog.new(catalog_params)
 		
-		@catalog.filename = @catalog.faculty+'-'+@catalog.department+'-'+Time.now.to_formatted_s(:number)+'-catalog_seed.xgml'
+		@catalog.filename = @catalog.faculty+'-'+@catalog.department+'-'+Time.now.to_formatted_s(:number)+'-catalog_seed.xgml' unless ! params[:catalog][:data]
 		@catalog.save
-		uploaded_io = params[:catalog][:data]
-		File.open(Rails.root.join('', 'seeds',
-			@catalog.filename), 'wb') do |file|
-			file.write(uploaded_io.read)
+		if params[:catalog][:data]
+			uploaded_io = params[:catalog][:data]
+			File.open(Rails.root.join('', 'seeds',
+				@catalog.filename), 'wb') do |file|
+				file.write(uploaded_io.read)
+			end
+			@catalog.parse
 		end
-		@catalog.parse
 		redirect_to @catalog
 
 	end
