@@ -252,6 +252,16 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
+	def create_constraint(course_id, set_id, role, constraint_type, set_type)
+		constraint = self.constraints.new
+		constraint.course_id = course_id
+		constraint.set_id = set_id
+		constraint.constraint_type = constraint_type
+		constraint.set_type = set_type
+		constraint.role = role
+		constraint.save
+	end
+
 	def insert_constraints
 		p "Inserting constraints into database ..."
 		p "Begining with n-ary constraints ..."
@@ -267,26 +277,14 @@ class Catalog < ActiveRecord::Base
 				p "Group Constraint element source for : "+ value.to_s
 				source =  @nary_constraints[value['source']]
 				target = Course.find(@courses[value['target']]['id'])
-				constraint = self.constraints.new
-				constraint.course_id = target.id
-				constraint.set_id = source['set_id']
-				constraint.role = "out"
-				constraint.constraint_type = value['type']
-				constraint.set_type = @nary_constraints[value['source']]['name']
-				constraint.save
+				create_constraint(target.id, source['set_id'], "out", value['type'], @nary_constraints[value['source']]['name'])
 
 			
 			elsif ! @nary_constraints[value['target']].nil?
 				p "Group Constraint element target for: "+ value.to_s
 				target = @nary_constraints[value['target']]
 				source = Course.find(@courses[value['source']]['id'])
-				constraint = self.constraints.new
-				constraint.course_id = source.id
-				constraint.set_id = target['set_id']
-				constraint.role = "in"
-				constraint.constraint_type = value['type']
-				constraint.set_type = @nary_constraints[value['target']]['name']
-				constraint.save
+				create_constraint(source.id, target['set_id'], "in", value['type'], @nary_constraints[value['target']]['name'])
 
 			elsif @courses[value['source']].nil?
 				p "Course not found : " + value.to_s
@@ -296,23 +294,10 @@ class Catalog < ActiveRecord::Base
 			
 			else
 				value['set_id'] = @set_id
-				c_in = self.constraints.new
-				c_out = self.constraints.new
 				target = Course.find(@courses[value['target']]['id'])
 				source = Course.find(@courses[value['source']]['id'])
-				c_in.constraint_type = value['type']
-				c_in.course_id = source.id
-				c_out.course_id = target.id
-				c_in.role = "in"
-				c_out.role = "out"
-				c_in.constraint_type = value['type']
-				c_out.constraint_type = value['type']
-				c_in.set_id = @set_id
-				c_out.set_id = @set_id
-				c_in.set_type = "binary"
-				c_out.set_type = "binary"
-				c_in.save
-				c_out.save
+				create_constraint(source.id, @set_id, "in", value['type'], "binary")
+				create_constraint(target.id, @set_id, "out", value['type'], "binary")
 				@set_id = @set_id + 1
 			end
 		end
