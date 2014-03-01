@@ -175,10 +175,11 @@ class Catalog < ActiveRecord::Base
 	def insert_programs
 		p "Inserting programs into database ..."
 		@programs.each do |key, value|
-			program = Program.new
-			program.catalog_id = self.id
-			program.cycle = "NONE"
-			program.program_type = value['name']
+			program = self.programs.new
+			property = program.properties.new
+			property.p_type = "TYPE"
+			property.value = value['name']
+			property.save
 			program.save
 			value['id'] = program.id
 
@@ -199,10 +200,12 @@ class Catalog < ActiveRecord::Base
 				@modules.delete(key)
 
 			else #Module
-				m = PModule.new
-				m.program_id = program['id'] 
-				m.name = value['name']
-				m.module_type = "NONE"
+				program = self.programs.find(program['id'])
+				m = program.p_modules.new
+				p = m.properties.new
+				p.p_type = "NAME"
+				p.value = value['name']
+				p.save
 				m.save
 				value['id'] = m.id
 			end
@@ -216,7 +219,10 @@ class Catalog < ActiveRecord::Base
 			pmodule = @modules[value['gid']]
 			m = PModule.find(pmodule['id'])
 			sub_module = m.sub_modules.new
-			sub_module.name = value['name']
+			p = m.properties.new
+			p.p_type = "NAME"
+			p.value = value['name']
+			p.save
 			sub_module.save
 			value['id'] = sub_module.id
 		end
@@ -245,8 +251,10 @@ class Catalog < ActiveRecord::Base
 			else
 				c = Course.new
 			end
-			c.sigle = value['name']
-			c.name = "NONE"
+			p = c.properties.new
+			p.p_type = "SIGLE"
+			p.value = value['name']
+			p.save
 			c.save
 			value['id'] = c.id
 		end
