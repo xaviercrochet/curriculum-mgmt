@@ -2,18 +2,14 @@
 = link_to 'New Program', new_catalog_program_path
 %table
 	%tr
-		%th Program Type
-		%th Cycle
-		%th Credits
+		%th 
 		%th
 		%th
 		%th
 		%th
 	- @programs.each do |p|
 		%tr
-			%td= p.program_type
-			%td= p.cycle
-			%td= p.credits
+			%td= p.properties.first.value
 			%td= link_to 'Show', catalog_program_path(@catalog, p)
 			%td= link_to 'Edit', edit_catalog_program_path(@catalog, p)
 			%td= link_to 'Modules', catalog_program_p_modules_path(@catalog, p)
