@@ -1,41 +1,23 @@
 Thesis::Application.routes.draw do
-  get "course_entities/index"
-  get "course_entities/show"
-  get "course_entities/new"
-  get "course_entities/edit"
-  get "courses/new"
-  get "courses/update"
-  get "courses/show"
-  get "courses/index"
-  get "users/new"
-  get "users/update"
-  get "users/show"
-  get "users/index"
-  get "programs/index"
   get "landing_page/index"
-  get "modules/index"
   root "landing_page#index"
   resources :sessions, only: [:new, :create, :destroy]
   match '/signup', to: 'users#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
  
-  resources :catalogs do
-    resources :programs do
-      resources :p_modules do
-        resources :sub_modules do
-          resources :courses do
-            resources :course_entities
-            resources :course_constraints
-          end
+  resources :catalogs, shallow: true do
+    resources :programs, shallow: true do
+      resources :courses
+      resources :p_modules, shallow: true do
+        resources :courses
+        resources :sub_modules, shallow: true do
+          resources :courses
         end
-        resources :courses do
-            resources :course_entities
-            resources :course_constraints
-        end 
       end
     end
   end
+
 
   resources :users
   end

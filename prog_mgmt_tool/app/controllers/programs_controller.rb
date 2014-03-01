@@ -18,7 +18,7 @@ class ProgramsController < ApplicationController
   end
 
   def edit
-    @program = Program.find(params[:id])
+    @program = catalog.programs.find(params[:id])
   end
 
   def update
