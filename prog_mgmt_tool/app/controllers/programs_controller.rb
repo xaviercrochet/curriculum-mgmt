@@ -2,7 +2,6 @@ class ProgramsController < ApplicationController
   before_filter :catalog
   
   def index
-  	#@programs = Program.where(catalog_id: @catalog.id)
     @programs = @catalog.programs
   end
 

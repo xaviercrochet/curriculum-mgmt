@@ -4,6 +4,16 @@ class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 	has_many :constraints, dependent: :destroy
 
+	def upload(data)
+		if data[:data]
+			uploaded_io = data[:data]
+			File.open(Rails.root.join('', 'seeds', self.filename), 'wb') do |file|
+				file.write(uploaded_io.read)
+			end
+			parse
+		end
+	end
+
 	def parse
 		@or = Hash.new
 		@xor = Hash.new
