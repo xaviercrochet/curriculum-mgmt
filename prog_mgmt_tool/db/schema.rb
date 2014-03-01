@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140228132219) do
+ActiveRecord::Schema.define(version: 20140301162736) do
 
   create_table "catalogs", force: true do |t|
     t.string   "faculty"
@@ -61,8 +61,6 @@ ActiveRecord::Schema.define(version: 20140228132219) do
   add_index "course_entities", ["semester_id"], name: "index_course_entities_on_semester_id"
 
   create_table "courses", force: true do |t|
-    t.string   "name"
-    t.string   "sigle"
     t.integer  "block_id"
     t.string   "block_type"
     t.datetime "created_at"
@@ -72,9 +70,6 @@ ActiveRecord::Schema.define(version: 20140228132219) do
   add_index "courses", ["block_id", "block_type"], name: "index_courses_on_block_id_and_block_type"
 
   create_table "p_modules", force: true do |t|
-    t.string   "name"
-    t.string   "module_type"
-    t.integer  "credits"
     t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -91,6 +86,15 @@ ActiveRecord::Schema.define(version: 20140228132219) do
     t.integer  "catalog_id"
   end
 
+  create_table "properties", force: true do |t|
+    t.string   "type"
+    t.string   "value"
+    t.integer  "entity_id"
+    t.string   "entity_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "semesters", force: true do |t|
     t.date     "date"
     t.datetime "created_at"
@@ -98,7 +102,6 @@ ActiveRecord::Schema.define(version: 20140228132219) do
   end
 
   create_table "sub_modules", force: true do |t|
-    t.string   "name"
     t.integer  "p_module_id"
     t.datetime "created_at"
     t.datetime "updated_at"
