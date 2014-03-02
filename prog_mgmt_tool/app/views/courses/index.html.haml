@@ -1,5 +1,5 @@
 %h1 Listing courses
-= link_to 'New Course', polymorphic_url([@context, @course])
+= link_to 'New Course', new_polymorphic_url([@context, :course])
 %table
 	%tr
 		%th 

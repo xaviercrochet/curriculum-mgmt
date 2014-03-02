@@ -4,4 +4,14 @@ class Course < ActiveRecord::Base
   has_many :course_entities, dependent: :destroy
   has_many :course_constraints, dependent: :destroy
   has_many :constraints, dependent: :destroy
+
+  def build(properties)
+  	p "Building course properties ..."
+  	properties.each do |key, value|
+  		@p = self.properties.new
+  		@p.p_type = key.to_s
+  		@p.value = value.to_s
+  		@p.save
+  	end
+  end 
 end

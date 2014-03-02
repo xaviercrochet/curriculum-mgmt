@@ -2,14 +2,15 @@ class CoursesController < ApplicationController
 
   def new
     @context = context
-    @url = index_url(context)
-  	@course = @context.courses.new
+    @course = @context.courses.new
   end
 
   
   def create
     @context = context
-    @course = @context.courses.create(course_params)
+    @course = @context.courses.new
+    @course.build(params[:course])
+    @course.save
     redirect_to index_url(context)
   end
 

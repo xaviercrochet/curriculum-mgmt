@@ -1,5 +1,4 @@
--#= form_for ([@catalog, @program, @p_module,  @p_module.courses.build]) do |f|
-=form_for @course, url: @url do |f|
+= form_for ([@context, @context.courses.build]) do |f|
 	%p
 		= f.label :name
 		= f.text_field :name, value: 'Introduction à la programmation'
