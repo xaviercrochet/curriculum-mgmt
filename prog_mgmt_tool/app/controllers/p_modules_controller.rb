@@ -1,5 +1,5 @@
 class PModulesController < ApplicationController
-  before_filter :program, :catalog
+  before_filter :program
 
   def index
   	@p_modules = @program.p_modules
@@ -41,10 +41,6 @@ class PModulesController < ApplicationController
   private
 		def program
 	  	@program = Program.find(params[:program_id])
-	  end
-
-	  def catalog
-	  	@catalog = Catalog.find(params[:catalog_id])
 	  end
 
 	  def p_module_params

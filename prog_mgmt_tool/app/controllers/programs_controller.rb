@@ -11,18 +11,18 @@ class ProgramsController < ApplicationController
   end
 
   def destroy
-  	@program = @catalog.programs.find(params[:id])
+  	@program = @catalog.programs.find(params[:format])
   	@program.destroy
 
   	redirect_to catalog_programs_path(@catalog)
   end
 
   def edit
-    @program = catalog.programs.find(params[:id])
+    @program = catalog.programs.find(params[:format])
   end
 
   def update
-  	@program = @catalog.programs.find(params[:id])
+  	@program = @catalog.programs.find(params[:format])
 
   	if @program.update(params[:program].permit(:cycle, :program_type, :credits))
   		redirect_to catalog_program_path(@catalog, @program)
@@ -37,7 +37,7 @@ class ProgramsController < ApplicationController
   end
 
   def show
-  	@program = Program.find(params[:id])
+  	@program = Program.find(params[:format])
   end
 
  	private

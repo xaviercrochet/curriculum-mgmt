@@ -229,7 +229,7 @@ class Catalog < ActiveRecord::Base
 			pmodule = @modules[value['gid']]
 			m = PModule.find(pmodule['id'])
 			sub_module = m.sub_modules.new
-			p = m.properties.new
+			p = sub_module.properties.new
 			p.p_type = "NAME"
 			p.value = value['name']
 			p.save

@@ -10,9 +10,10 @@
 	- @programs.each do |p|
 		%tr
 			%td= p.properties.first.value
-			%td= link_to 'Show', catalog_program_path(@catalog, p)
-			%td= link_to 'Edit', edit_catalog_program_path(@catalog, p)
-			%td= link_to 'Modules', catalog_program_p_modules_path(@catalog, p)
-			%td= link_to 'Delete', catalog_program_path(@catalog, p), method: :delete, data: { confirm: 'Are you sure?'}
+			%td= link_to 'Show', program_path(@catalog, p)
+			%td= link_to 'Edit', edit_program_path(@catalog, p)
+			%td= link_to 'Modules', program_p_modules_path(p)
+			%td= link_to 'Delete', program_path(@catalog, p), method: :delete, data: { confirm: 'Are you sure?'}
+			%td= link_to 'Courses', program_courses_path(@catalog, p)
 
  

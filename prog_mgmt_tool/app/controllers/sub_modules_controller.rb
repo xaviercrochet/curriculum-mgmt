@@ -1,5 +1,5 @@
 class SubModulesController < ApplicationController
-	before_filter :p_module, :catalog, :program
+	before_filter :p_module
 	
 	def index
 		@sub_modules = @p_module.sub_modules
