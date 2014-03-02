@@ -13,5 +13,5 @@
 			%td= p.properties.first.value
 			%td= link_to 'Show', sub_module_path(@p_module, p)
 			%td= link_to 'Edit', edit_sub_module_path(@p_module, p)
-			%td= link_to 'Courses', sub_module_courses_path(@p_module, p)
-			%td= link_to 'Delete',  sub_module_path(@p_module), method: :delete, data:{confirm: 'Are you sure?'} 
+			%td= link_to 'Courses', sub_module_courses_path(p)
+			%td= link_to 'Delete',  sub_module_path(@p_module, p), method: :delete, data:{confirm: 'Are you sure?'} 

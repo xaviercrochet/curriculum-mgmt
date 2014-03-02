@@ -1,5 +1,4 @@
 class CoursesController < ApplicationController
-  before_filter :program, :p_module, :catalog
 
   def new
     @context = context
@@ -44,9 +43,6 @@ class CoursesController < ApplicationController
   end
 
   def index
-    @url = new_url(context)
-    
-    state
     @context = context
     @courses = @context.courses
   end
@@ -55,18 +51,6 @@ class CoursesController < ApplicationController
   	def course_params
   		params.require(:course).permit(:name, :sigle)
   	end
-
-    def program
-      @program  = Program.find(params[:program_id])
-    end
-
-    def p_module
-      @p_module = PModule.find(params[:p_module_id])
-    end
-
-    def catalog
-      @catalog = Catalog.find(params[:catalog_id])
-    end
 
     def block
       params.each do |name, value|
@@ -110,16 +94,21 @@ class CoursesController < ApplicationController
     end
     
     def context
-      if params[:p_module_id] and params[:sub_module_id]
+      if params[:sub_module_id]
         p "SUB MODULE"
         id = params[:sub_module]
         block_type = "SubModule"
         SubModule.find(params[:sub_module_id])
-      else
+      elsif params[:p_module_id]
         p "MODULE"
         id = params[:p_module]
         block_type = "PModule"
         PModule.find(params[:p_module_id])
+      elsif params[:program_id]
+        p "Program"
+        id = params[:program_id]
+        block_tpe = "Program"
+        Program.find(params[:program_id])
       end
     end
 

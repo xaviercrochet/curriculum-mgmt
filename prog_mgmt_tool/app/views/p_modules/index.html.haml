@@ -14,7 +14,7 @@
 			%td= p.properties.first.value
 			%td= link_to 'Show', p_module_path(@program, p)
 			%td= link_to 'Edit', edit_p_module_path(@program, p)
-			%td= link_to 'Courses', p_module_courses_path(@program, p)
+			%td= link_to 'Courses', p_module_courses_path(p)
 			%td= link_to 'Sub-Modules', p_module_sub_modules_path(p)
 			%td= link_to 'Delete', p_module_path(@program, p), method: :delete, data:{confirm: 'Are you sure?'}
 
