@@ -11,6 +11,6 @@
 	- @courses.each do |c|
 		%tr
 			%td= c.properties.first.value
-			%td= link_to 'Show', polymorphic_url(c)
+			%td= link_to 'Show', c
 			%td= link_to 'Delete', course_path(c), method: :delete, data: { confirm: 'Are you sure?'}
 

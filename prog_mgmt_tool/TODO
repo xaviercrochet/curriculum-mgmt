@@ -1,6 +1,5 @@
-Milestone 1 : Graph Parser
- - Parsing Xor & Or elements
- - Refactoring view of models with polymorphics associations (PModule, Submodule & Course)
- - Adding association Program => Courses?
+Milestone 1 : Graph Parser 
+- Refactoring view of models with polymorphics associations (PModule, Submodule & Course)
+- Adding xls parser to add new informations to courses, modules, etc (via property abstraction)
 Milestone 2 : CONSTRAINTS
 Milestone 3 : User Interface

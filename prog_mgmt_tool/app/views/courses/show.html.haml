@@ -1,9 +1,8 @@
-%p
-	%strong Course Name:
-	= @course.name
-%p
-	%strong Course Sigle:
-	= @course.sigle
+- @course.properties.each do |p|
+	%p
+		%strong
+			= p.p_type + ":"
+		= p.value
 
-= link_to 'Edit', edit_catalog_program_p_module_course_path(@catalog, @program, @p_module, @course)
-= link_to 'Back', catalog_program_p_module_courses_path(@catalog, @program, @p_module)
+= link_to 'Back', polymorphic_url([@context, @course])
+= link_to 'Delete', @course, method: :delete, data: { confirm: 'Are you sure?'}

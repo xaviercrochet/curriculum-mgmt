@@ -14,10 +14,10 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    @context = context
-    @course = @context.courses.find(params[:id])
+    @course = Course.find(params[:id])
+    @context = @course.block
     @course.destroy
-    redirect_to catalog_program_p_module_courses_path(@catalog, @program, @p_module)
+    redirect_to index_url(@context)
   end
 
   def edit
@@ -38,8 +38,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @context = context
-    @course = @context.courses.find(params[:id])
+    @course = Course.find(params[:id])
   end
 
   def index
@@ -70,10 +69,16 @@ class CoursesController < ApplicationController
     end
 
     def index_url(context)
+      
       if SubModule === context
-        catalog_program_p_module_sub_module_course_path(@catalog, @program, @p_module, context)
-      else
-        catalog_program_p_module_courses_path(@catalog, @program, context)
+        sub_module_courses_path(context)
+      
+      elsif PModule === context
+        p_module_courses_path(context)
+
+      elsif Program === context
+        program_courses_path(context)
+      
       end
     end
     def state
@@ -107,7 +112,7 @@ class CoursesController < ApplicationController
       elsif params[:program_id]
         p "Program"
         id = params[:program_id]
-        block_tpe = "Program"
+        block_type = "Program"
         Program.find(params[:program_id])
       end
     end

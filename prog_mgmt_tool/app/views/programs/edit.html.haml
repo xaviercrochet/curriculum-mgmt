@@ -1,14 +1,3 @@
 %h1 Editing program
-= form_for([@catalog, @program]) do |f|
-	%p
-		= f.label :program_type
-		= f.text_field :program_type
-	%p
-		= f.label :cycle
-		= f.text_field :cycle
-	%p
-		= f.label :credits
-		= f.text_field :credits
-	%p
-		= f.submit
+%h1 TODO
 = link_to 'Back', catalog_programs_path(@catalog)

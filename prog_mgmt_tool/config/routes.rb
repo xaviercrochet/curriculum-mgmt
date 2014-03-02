@@ -8,6 +8,7 @@ Thesis::Application.routes.draw do
  
   resources :catalogs, shallow: true do
     resources :programs, shallow: true do
+      resources :properties
       resources :courses
       resources :p_modules, shallow: true do
         resources :courses

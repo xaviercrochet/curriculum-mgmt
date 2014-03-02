@@ -1,14 +1,8 @@
-%p
-	%strong Program Type:
-	= @program.program_type
+- @program.properties.each do |p|
+	%p
+		%strong
+			= p.p_type
+		= p.value
 
-%p
-	%strong Cycle:
-	= @program.cycle
-
-%p 
-	%strong Credits:
-	= @program.credits
-
-= link_to 'Modules', catalog_program_p_modules_path(@catalog, @program)
+= link_to 'Modules', program_p_modules_path(@catalog, @program)
 = link_to 'Back', catalog_programs_path(@catalog)

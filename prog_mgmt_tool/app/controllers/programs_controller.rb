@@ -46,6 +46,11 @@ class ProgramsController < ApplicationController
  		end
 
     def catalog
-      @catalog = Catalog.find(params[:catalog_id])
+      if params[:catalog_id]
+        @catalog = Catalog.find(params[:catalog_id])
+      
+      else
+        @catalog = Catalog.find(params[:id])
+      end
     end
 end
