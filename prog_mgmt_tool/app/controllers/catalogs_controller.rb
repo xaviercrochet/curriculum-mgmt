@@ -8,6 +8,12 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.new
 	end
 
+	def download
+		@catalog = Catalog.find(params[:catalog_id])
+		@catalog.create_spreadsheet
+		redirect_to @catalog
+	end
+
 	def create
 
 		@catalog = Catalog.new(catalog_params)

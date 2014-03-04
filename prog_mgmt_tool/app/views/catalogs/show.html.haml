@@ -7,6 +7,6 @@
 	%strong
 		Department:
 		= @catalog.department
-
+= link_to 'Download Infos', catalog_catalog_download_path(@catalog)
 = link_to 'Programs', catalog_programs_path(@catalog)
 = link_to 'Back', catalogs_path

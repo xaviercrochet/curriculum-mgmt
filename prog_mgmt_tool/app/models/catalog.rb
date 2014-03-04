@@ -1,5 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
+require 'writeexcel'
+
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 	has_many :constraints, dependent: :destroy
@@ -14,6 +16,13 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
+	def create_spreadsheet
+		@data = WriteExcel.new('spreadsheets/data.xls')
+
+	end
+
+	def create_course_spreadsheet
+	end
 	def parse
 		@or = Hash.new
 		@xor = Hash.new

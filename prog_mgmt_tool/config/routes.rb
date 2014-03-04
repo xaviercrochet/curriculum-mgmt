@@ -7,6 +7,7 @@ Thesis::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: 'delete'
  
   resources :catalogs, shallow: true do
+    get :download
     resources :programs, shallow: true do
       resources :properties
       resources :courses
