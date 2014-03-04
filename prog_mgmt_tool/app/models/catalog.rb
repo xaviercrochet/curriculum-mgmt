@@ -17,11 +17,17 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def create_spreadsheet
-		@data = WriteExcel.new('spreadsheets/data.xls')
+		filename = 'spreadsheets/data-'+Time.now.to_formatted_s(:number)+'.xls'
+		@workbook = WriteExcel.new(filename)
+		create_course_spreadsheet
+		@workbook.close
 
 	end
 
 	def create_course_spreadsheet
+		course_sheet = @workbook.add_worksheet('courses')
+		courses = Catalog.joins(:modules).joins(:sub_modules).joins(:courses).all
+		course_sheet.write(0,0, "TEST2")
 	end
 	def parse
 		@or = Hash.new
