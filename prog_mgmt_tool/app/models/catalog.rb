@@ -1,6 +1,6 @@
 require 'open-uri'
 require 'nokogiri'
-require 'writeexcel'
+require 'spreadsheet'
 
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
@@ -18,17 +18,28 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def create_spreadsheet
+		Spreadsheet.client_encoding = 'UTF-8'
 		filename = 'spreadsheets/data-'+Time.now.to_formatted_s(:number)+'.xls'
-		@workbook = WriteExcel.new(filename)
+		@book = Spreadsheet::Workbook.new
 		create_course_spreadsheet
-		@workbook.close
+		@book.write(filename)
 
 	end
 
 	def create_course_spreadsheet
-		course_sheet = @workbook.add_worksheet('courses')
-		courses = Catalog.joins(:modules).joins(:sub_modules).joins(:courses).all
-		course_sheet.write(0,0, "TEST2")
+		sheet = @book.create_worksheet :name => 'Courses'
+		courses = self.courses
+		courses.each do |c|
+		end
+		sheet[0,0] = "TEST"
+	end
+
+	def write_properties(entity, sheet, line)
+		properties = entity.properties
+		i = 0
+		properties.each do |p|
+			i  = i + 1
+		end
 	end
 	def parse
 		@or = Hash.new
