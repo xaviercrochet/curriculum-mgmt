@@ -3,6 +3,7 @@ class CreateCatalogs < ActiveRecord::Migration
     create_table :catalogs do |t|
       t.string :faculty
       t.string :department
+      t.string :ss_filename
 
       t.timestamps
     end

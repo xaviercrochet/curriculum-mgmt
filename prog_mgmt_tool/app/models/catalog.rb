@@ -17,7 +17,9 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
-	def parse_spreadsheet(data)
+	def upload_spreadsheet(data)
+	end
+	def parse_spreadsheet()
 	end
 
 
