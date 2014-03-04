@@ -4,6 +4,7 @@ require 'writeexcel'
 
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
+	has_many :courses, dependent: :destroy
 	has_many :constraints, dependent: :destroy
 
 	def upload(data)
@@ -280,6 +281,7 @@ class Catalog < ActiveRecord::Base
 			p.p_type = "SIGLE"
 			p.value = value['name']
 			p.save
+			c.catalog_id = self.id
 			c.save
 			value['id'] = c.id
 		end

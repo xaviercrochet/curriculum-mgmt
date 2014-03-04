@@ -1,5 +1,6 @@
 class Course < ActiveRecord::Base
   belongs_to :block, polymorphic: true
+  belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :course_entities, dependent: :destroy
   has_many :course_constraints, dependent: :destroy

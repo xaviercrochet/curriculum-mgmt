@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20140301170053) do
   add_index "course_entities", ["semester_id"], name: "index_course_entities_on_semester_id"
 
   create_table "courses", force: true do |t|
+    t.integer  "catalog_id"
     t.integer  "block_id"
     t.string   "block_type"
     t.datetime "created_at"
@@ -68,13 +69,16 @@ ActiveRecord::Schema.define(version: 20140301170053) do
   end
 
   add_index "courses", ["block_id", "block_type"], name: "index_courses_on_block_id_and_block_type"
+  add_index "courses", ["catalog_id"], name: "index_courses_on_catalog_id"
 
   create_table "p_modules", force: true do |t|
+    t.integer  "catalog_id"
     t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "p_modules", ["catalog_id"], name: "index_p_modules_on_catalog_id"
   add_index "p_modules", ["program_id"], name: "index_p_modules_on_program_id"
 
   create_table "programs", force: true do |t|
@@ -100,10 +104,12 @@ ActiveRecord::Schema.define(version: 20140301170053) do
 
   create_table "sub_modules", force: true do |t|
     t.integer  "p_module_id"
+    t.integer  "catalog_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "sub_modules", ["catalog_id"], name: "index_sub_modules_on_catalog_id"
   add_index "sub_modules", ["p_module_id"], name: "index_sub_modules_on_p_module_id"
 
   create_table "users", force: true do |t|
