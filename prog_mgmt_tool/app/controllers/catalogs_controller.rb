@@ -17,7 +17,7 @@ class CatalogsController < ApplicationController
 	def create
 
 		@catalog = Catalog.new(catalog_params)
-		@catalog.filename = params[:catalog][:faculty]+'-'+params[:catalog][:department]+'-'+Time.now.to_formatted_s(:number)+'-catalog_seed.xgml' unless params[:catalog][:data].nil?
+		@catalog.filename = "seeds/"+params[:catalog][:faculty]+'-'+params[:catalog][:department]+'-'+Time.now.to_formatted_s(:number)+'-catalog_seed.xgml' unless params[:catalog][:data].nil?
 		@catalog.save
 		@catalog.upload(params[:catalog])
 		redirect_to @catalog
@@ -30,6 +30,8 @@ class CatalogsController < ApplicationController
 
 	def upload
 		@catalog = Catalog.find(params[:catalog_id])
+		@catalog.ss_filename = "spreadsheets/"+@catalog.faculty+"-"+@catalog.department+"-"+Time.now.to_formatted_s(:number)+"data.xls"
+		@catalog.save
 		@catalog.parse_spreadsheet(params[:data])
 		redirect_to @catalog
 	end

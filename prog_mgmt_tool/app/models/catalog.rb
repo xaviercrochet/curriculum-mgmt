@@ -10,7 +10,7 @@ class Catalog < ActiveRecord::Base
 	def upload(data)
 		if data[:data]
 			uploaded_io = data[:data]
-			File.open(Rails.root.join('', 'seeds', self.filename), 'wb') do |file|
+			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
 				file.write(uploaded_io.read)
 			end
 			parse
@@ -18,6 +18,14 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def upload_spreadsheet(data)
+		if data[:data]
+			uploaded_io = data[:data]
+			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
+				file.write(uploaded_io.read)
+			end
+			p "Parsing xls file ..."
+		end
+
 	end
 	def parse_spreadsheet()
 	end
@@ -86,7 +94,7 @@ class Catalog < ActiveRecord::Base
 		@constraints = Array.new
 		@nary_constraints = Hash.new
 		@set_id = 0
-		f = File.open("seeds/"+self.filename)
+		f = File.open(self.filename)
 		doc = Nokogiri::XML(f)
 		f.close
 		puts "Parsing gxml file ..."
