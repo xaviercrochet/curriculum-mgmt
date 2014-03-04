@@ -30,8 +30,6 @@ class CatalogsController < ApplicationController
 
 	def upload
 		@catalog = Catalog.find(params[:catalog_id])
-		@catalog.ss_filename = "spreadsheets/"+@catalog.faculty+"-"+@catalog.department+"-"+Time.now.to_formatted_s(:number)+"data.xls"
-		@catalog.save
 		@catalog.upload_spreadsheet(params[:catalog])
 		redirect_to @catalog
 	end

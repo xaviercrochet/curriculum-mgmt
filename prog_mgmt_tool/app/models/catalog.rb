@@ -18,6 +18,11 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def upload_spreadsheet(data)
+		if !self.filename.nil?
+			File.delete(self.filename)
+		end
+		self.filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"data.xls"
+		self.save 
 		if data[:data]
 			uploaded_io = data[:data]
 			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
@@ -36,7 +41,9 @@ class Catalog < ActiveRecord::Base
 
 	def create_spreadsheet
 		Spreadsheet.client_encoding = 'UTF-8'
-		filename = 'spreadsheets/data-'+Time.now.to_formatted_s(:number)+'.xls'
+		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"data.xls"
+		self.ss_filename = filename
+		self.save
 		@book = Spreadsheet::Workbook.new
 		create_course_spreadsheet
 		@book.write(filename)
