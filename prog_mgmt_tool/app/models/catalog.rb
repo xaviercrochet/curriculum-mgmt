@@ -29,16 +29,18 @@ class Catalog < ActiveRecord::Base
 	def create_course_spreadsheet
 		sheet = @book.create_worksheet :name => 'Courses'
 		courses = self.courses
+		i = 0
 		courses.each do |c|
+			row = sheet.row(i)
+			write_properties(c, row)
+			i = i + 1
 		end
-		sheet[0,0] = "TEST"
 	end
 
-	def write_properties(entity, sheet, line)
+	def write_properties(entity, row)
 		properties = entity.properties
-		i = 0
 		properties.each do |p|
-			i  = i + 1
+			row.push(p.value)
 		end
 	end
 	def parse
