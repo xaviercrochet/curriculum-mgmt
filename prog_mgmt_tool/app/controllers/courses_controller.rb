@@ -1,4 +1,5 @@
 class CoursesController < ApplicationController
+  before_filter :catalog
 
   def new
     @context = context
@@ -10,6 +11,7 @@ class CoursesController < ApplicationController
     @context = context
     @course = @context.courses.new
     @course.build(params[:course])
+    @course.catalog_id = @catalog.id
     @course.save
     redirect_to index_url(context)
   end
@@ -115,6 +117,20 @@ class CoursesController < ApplicationController
         id = params[:program_id]
         block_type = "Program"
         Program.find(params[:program_id])
+      end
+    end
+
+    def catalog
+      
+      if params[:sub_module_id]
+        @catalog = SubModule.find(params[:sub_module_id]).p_module.program.catalog
+
+      elsif params[:p_module_id]
+        @catalog = PModule.find(params[:p_module_id]).program.catalog
+
+      elsif params[:program_id]
+        @catalog = Program.find(params[:program_id]).catalog
+      
       end
     end
 
