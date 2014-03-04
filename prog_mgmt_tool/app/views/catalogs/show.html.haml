@@ -9,7 +9,7 @@
 		= @catalog.department
 
 %h3 Upload Infos
-= form_for @catalog, action: "upload" do |f|
+= form_for @catalog, :url => catalog_catalog_upload_path(@catalog) do |f|
 	%p
 		= f.file_field :data
 	%p

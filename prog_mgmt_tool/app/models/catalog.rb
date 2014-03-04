@@ -27,7 +27,7 @@ class Catalog < ActiveRecord::Base
 		end
 
 	end
-	def parse_spreadsheet()
+	def parse_spreadsheet
 	end
 
 
