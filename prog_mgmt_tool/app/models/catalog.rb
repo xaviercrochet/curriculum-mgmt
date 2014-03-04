@@ -17,6 +17,13 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
+	def parse_spreadsheet(data)
+	end
+
+
+	def parse_sheet
+	end
+
 	def create_spreadsheet
 		Spreadsheet.client_encoding = 'UTF-8'
 		filename = 'spreadsheets/data-'+Time.now.to_formatted_s(:number)+'.xls'

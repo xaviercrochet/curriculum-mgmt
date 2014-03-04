@@ -28,6 +28,12 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.find(params[:id])
 	end
 
+	def upload
+		@catalog = Catalog.find(params[:catalog_id])
+		@catalog.parse_spreadsheet(params[:data])
+		redirect_to @catalog
+	end
+
 	def destroy
 		@catalog = Catalog.find(params[:id])
 		@catalog.destroy

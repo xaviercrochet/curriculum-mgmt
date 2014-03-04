@@ -8,6 +8,7 @@ Thesis::Application.routes.draw do
  
   resources :catalogs, shallow: true do
     get :download
+    post :upload
     resources :programs, shallow: true do
       resources :properties
       resources :courses
