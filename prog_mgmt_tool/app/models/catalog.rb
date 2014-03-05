@@ -18,40 +18,92 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def upload_spreadsheet(data)
-		if !self.filename.nil?
-			File.delete(self.filename)
+		if !self.ss_filename.nil?
+			File.delete(self.ss_filename)
 		end
-		self.filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"data.xls"
+		self.ss_filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.save 
 		if data[:data]
 			uploaded_io = data[:data]
-			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
+			File.open(Rails.root.join('', '', self.ss_filename), 'wb') do |file|
 				file.write(uploaded_io.read)
 			end
-			p "Parsing xls file ..."
+			parse_spreadsheet
 		end
 
 	end
 	def parse_spreadsheet
+		book = Spreadsheet.open self.ss_filename
+		book.worksheets.each do |sheet|
+			parse_sheet(sheet)
+		end
+
 	end
 
 
-	def parse_sheet
+	def parse_sheet(sheet)
+		header = sheet.row(0)
+		
+		if sheet.name.upcase.eql? "COURSES"
+			col_index = find_element(header, "SIGLE")
+		end
+
+		p sheet.count
+		for i in 1..sheet.count - 1
+			p "coucou : " + col_index.to_s + " - " +i.to_s
+			p sheet.row(i).to_s
+			sigle = sheet.row(i)[col_index].upcase
+			property = Property.where(value: sigle).first
+			
+			if property.nil?
+				p "COURSE NOT FOUND : "+sheet.row(i)[col_index].upcase
+			
+			else
+				course = property.entity
+				course.properties.each do |p|
+					p.destroy
+				end
+				index = 0
+				header.each do |p|
+					if ! sheet.row(i)[index].nil?
+						prop = course.properties.new
+						prop.p_type = p
+						prop.value = sheet.row(i)[index]
+						prop.save
+					end
+					index = index + 1
+				end
+			end
+
+
+		end
 	end
+	def find_element(row, element)
+		i = 0
+		row.each do |c|
+			if c.eql? element
+				return i
+			else
+				i = i +1
+			end
+		end
+		return -1
+	end
+
 
 	def create_spreadsheet
 		Spreadsheet.client_encoding = 'UTF-8'
 		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"data.xls"
 		self.ss_filename = filename
 		self.save
-		@book = Spreadsheet::Workbook.new
-		create_course_spreadsheet
-		@book.write(filename)
+		book = Spreadsheet::Workbook.new
+		create_course_spreadsheet(book)
+		book.write(filename)
 
 	end
 
-	def create_course_spreadsheet
-		sheet = @book.create_worksheet :name => 'Courses'
+	def create_course_spreadsheet(book)
+		sheet = book.create_worksheet :name => 'Courses'
 		courses = self.courses
 		i = 1
 		header = sheet.row(0)
@@ -66,13 +118,13 @@ class Catalog < ActiveRecord::Base
 	def write_properties(entity, row, header)
 		properties = entity.properties
 		properties.each do |p|
-			row[find_col(p.p_type, header)] = p.value
+			row[build_header(p.p_type, header)] = p.value
 		end
 	end
 
 	#Find Coresponding Column to insert propertie Value
 	#If Property Type doesn't exist, insert it.
-	def find_col(property_type, header)
+	def build_header(property_type, header)
 		i = 0
 		p "Handling " + property_type
 		header.each do |element|
