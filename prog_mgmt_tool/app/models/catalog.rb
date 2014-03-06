@@ -103,16 +103,6 @@ class Catalog < ActiveRecord::Base
 
 	end
 
-
-	def create_module_spreadsheet(book)
-	end
-
-	def create_sub_module_spreadsheet(book)
-	end
-
-	def create_program_spreadsheet(book)
-	end
-
 	def create_spreadsheets(book)
 		create_spreadshit(book, self.courses, 'Courses')
 		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
