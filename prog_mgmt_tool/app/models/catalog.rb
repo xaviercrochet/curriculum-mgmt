@@ -97,10 +97,12 @@ class Catalog < ActiveRecord::Base
 		self.ss_filename = filename
 		self.save
 		book = Spreadsheet::Workbook.new
-		create_course_spreadsheet(book)
+		create_spreadsheets(book)
+
 		book.write(filename)
 
 	end
+
 
 	def create_module_spreadsheet(book)
 	end
@@ -111,13 +113,20 @@ class Catalog < ActiveRecord::Base
 	def create_program_spreadsheet(book)
 	end
 
-	def create_course_spreadsheet(book)
-		sheet = book.create_worksheet :name => 'Courses'
-		courses = self.courses
+	def create_spreadsheets(book)
+		create_spreadshit(book, self.courses, 'Courses')
+		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
+		create_spreadshit(book, p_modules, 'Modules')
+		sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
+		create_spreadshit(book, sub_modules, 'Sub Modules')
+	end
+
+	def create_spreadshit(book, collection, sheet_name)
+		sheet = book.create_worksheet :name => sheet_name.to_s
 		i = 1
 		header = sheet.row(0)
 		header.default_format = Spreadsheet::Format.new :weight => :bold
-		courses.each do |c|
+		collection.each do |c|
 			row = sheet.row(i)
 			write_properties(c, row, header)
 			i = i + 1
