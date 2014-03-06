@@ -67,8 +67,8 @@ class Catalog < ActiveRecord::Base
 				header.each do |p|
 					if ! sheet.row(i)[index].nil?
 						prop = course.properties.new
-						prop.p_type = p
-						prop.value = sheet.row(i)[index]
+						prop.p_type = p.to_s
+						prop.value = sheet.row(i)[index].to_s
 						prop.save
 					end
 					index = index + 1
@@ -100,6 +100,15 @@ class Catalog < ActiveRecord::Base
 		create_course_spreadsheet(book)
 		book.write(filename)
 
+	end
+
+	def create_module_spreadsheet(book)
+	end
+
+	def create_sub_module_spreadsheet(book)
+	end
+
+	def create_program_spreadsheet(book)
 	end
 
 	def create_course_spreadsheet(book)
