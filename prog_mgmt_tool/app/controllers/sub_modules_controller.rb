@@ -15,15 +15,15 @@ class SubModulesController < ApplicationController
 	end
 
 	def show
-		@sub_module = @p_module.sub_modules.find(params[:id])
+		@sub_module = @p_module.sub_modules.find(params[:format])
 	end
 
 	def edit
-		@sub_module = @p_module.sub_modules.find(params[:id])
+		@sub_module = @p_module.sub_modules.find(params[:format])
 	end
 
 	def update
-		@sub_module = @p_module.sub_modules.find(params[:id])
+		@sub_module = @p_module.sub_modules.find(params[:format])
 
 		if @sub_module.update(params[:sub_module].permit(:name))
 			redirect_to catalog_program_p_module_sub_module_path(@catalog, @program, @p_module, @sub_module)
@@ -33,7 +33,7 @@ class SubModulesController < ApplicationController
 	end
 
 	def destroy
-		@sub_module = @p_module.sub_modules.find(params[:id])
+		@sub_module = @p_module.sub_modules.find(params[:format])
 		@sub_module.destroy
 		redirect_to catalog_program_p_module_sub_modules_path
 	end
@@ -45,14 +45,10 @@ class SubModulesController < ApplicationController
 		end
 
 		def p_module
-			@p_module = PModule.find(params[:p_module_id])
-		end
-
-		def catalog
-			@catalog = Catalog.find(params[:catalog_id])
-		end
-
-		def program
-			@program = Program.find(params[:program_id])
+			if params[:p_module_id]
+				@p_module = PModule.find(params[:p_module_id])
+			else
+				@p_module = PModule.find(params[:id])
+			end
 		end
 end
