@@ -1,5 +1,5 @@
 Milestone 1 : Graph Parser 
-- Refactoring view of models with polymorphics associations (PModule, Submodule & Course)
-- Adding xls parser to add new informations to courses, modules, etc (via property abstraction)
+Prevent application to crash when user remove the *.xls file manually
+Refactor Constraint Model to remove redundancy (ConstraintType)
 Milestone 2 : CONSTRAINTS
 Milestone 3 : User Interface
