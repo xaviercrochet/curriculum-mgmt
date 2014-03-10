@@ -10,7 +10,7 @@ class CatalogsController < ApplicationController
 
 	def download
 		@catalog = Catalog.find(params[:catalog_id])
-		@catalog.create_spreadsheet
+		@catalog.create_doc
 		redirect_to @catalog
 	end
 

@@ -46,27 +46,33 @@ class Catalog < ActiveRecord::Base
 		
 		if sheet.name.upcase.eql? "COURSES"
 			col_index = find_element(header, "SIGLE")
-		end
 
+		elsif sheet.name.upcase.eql? "MODULES"
+			col_index = find_element(header, "NAME")
+
+		elsif sheet.name.upcase.eql? "SUB MODULES"
+			col_index = find_element(header, "NAME")
+		end
+		
 		p sheet.count
+		
 		for i in 1..sheet.count - 1
-			p "coucou : " + col_index.to_s + " - " +i.to_s
 			p sheet.row(i).to_s
 			sigle = sheet.row(i)[col_index].upcase
 			property = Property.where(value: sigle).first
 			
 			if property.nil?
-				p "COURSE NOT FOUND : "+sheet.row(i)[col_index].upcase
+				p "ENTITY NOT FOUND : "+sheet.row(i)[col_index].upcase
 			
 			else
-				course = property.entity
-				course.properties.each do |p|
+				entity = property.entity
+				entity.properties.each do |p|
 					p.destroy
 				end
 				index = 0
 				header.each do |p|
 					if ! sheet.row(i)[index].nil?
-						prop = course.properties.new
+						prop = entity.properties.new
 						prop.p_type = p.to_s
 						prop.value = sheet.row(i)[index].to_s
 						prop.save
@@ -91,9 +97,9 @@ class Catalog < ActiveRecord::Base
 	end
 
 
-	def create_spreadsheet
+	def create_doc
 		Spreadsheet.client_encoding = 'UTF-8'
-		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"data.xls"
+		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.ss_filename = filename
 		self.save
 		book = Spreadsheet::Workbook.new
