@@ -1,5 +1,6 @@
 Milestone 1 : Graph Parser 
 Prevent application to crash when user remove the *.xls file manually
+FIX bug (ex: params_id or id)
 Refactor Constraint Model to remove redundancy (ConstraintType)
 Milestone 2 : CONSTRAINTS
 Milestone 3 : User Interface

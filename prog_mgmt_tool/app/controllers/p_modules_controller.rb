@@ -39,8 +39,15 @@ class PModulesController < ApplicationController
   end
 
   private
-		def program
-	  	@program = Program.find(params[:id])
+		
+    def program
+      
+      if params[:program_id]
+        @program = Program.find(params[:program_id])
+      
+      else
+	  	  @program = Program.find(params[:id])
+      end
 	  end
 
 	  def p_module_params
