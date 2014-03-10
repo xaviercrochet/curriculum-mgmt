@@ -110,14 +110,14 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def create_spreadsheets(book)
-		create_spreadshit(book, self.courses, 'Courses')
+		create_spreadsheet(book, self.courses, 'Courses')
 		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
-		create_spreadshit(book, p_modules, 'Modules')
+		create_spreadsheet(book, p_modules, 'Modules')
 		sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
-		create_spreadshit(book, sub_modules, 'Sub Modules')
+		create_spreadsheet(book, sub_modules, 'Sub Modules')
 	end
 
-	def create_spreadshit(book, collection, sheet_name)
+	def create_spreadsheet(book, collection, sheet_name)
 		sheet = book.create_worksheet :name => sheet_name.to_s
 		i = 1
 		header = sheet.row(0)

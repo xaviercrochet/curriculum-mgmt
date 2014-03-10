@@ -4,7 +4,6 @@ class CreateCatalogs < ActiveRecord::Migration
       t.string :faculty
       t.string :department
       t.string :ss_filename
-
       t.timestamps
     end
   end

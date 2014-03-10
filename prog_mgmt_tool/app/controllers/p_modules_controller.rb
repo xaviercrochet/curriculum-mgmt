@@ -6,11 +6,11 @@ class PModulesController < ApplicationController
 	end
 
   def show
-  	@p_module = @program.p_modules.find(params[:id])
+  	@p_module = @program.p_modules.find(params[:format])
   end
 
   def update
-  	@p_module = @program.p_modules.find(params[:id])
+  	@p_module = @program.p_modules.find(params[:format])
 
   	if @p_module.update(params[:p_module].permit(:name, :module_type, :credits))
   		redirect_to catalog_program_p_module_path(@catalog, @program, @p_module)
@@ -20,7 +20,7 @@ class PModulesController < ApplicationController
   end
 
   def destroy
-  	@p_module = @program.p_modules.find(params[:id])
+  	@p_module = @program.p_modules.find(params[:format])
   	@p_module.destroy
   	redirect_to catalog_program_p_modules_path
   end
@@ -35,12 +35,12 @@ class PModulesController < ApplicationController
   end
 
   def edit
-  	@p_module = @program.p_modules.find(params[:id])
+  	@p_module = @program.p_modules.find(params[:format])
   end
 
   private
 		def program
-	  	@program = Program.find(params[:program_id])
+	  	@program = Program.find(params[:id])
 	  end
 
 	  def p_module_params
