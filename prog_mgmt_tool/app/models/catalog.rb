@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
 require 'spreadsheet'
+require 'xgml_parser.rb'
 
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
@@ -13,7 +14,10 @@ class Catalog < ActiveRecord::Base
 			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
 				file.write(uploaded_io.read)
 			end
-			parse
+			parser = XgmlParser.new(self.filename)
+			parser.parse
+			nodes = parser.get_nodes
+			print_collection(nodes)
 		end
 	end
 
@@ -464,5 +468,15 @@ class Catalog < ActiveRecord::Base
 			end
 		end
 	end
+
+	private
+
+	def print_collection(collection)
+		p "Printing collection ..."
+		collection.each do |element|
+			p element.to_string
+		end
+	end
+
 end
 
