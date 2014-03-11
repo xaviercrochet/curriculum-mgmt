@@ -1,0 +1,2 @@
+class XlsWriter
+end

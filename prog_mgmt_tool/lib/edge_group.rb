@@ -1,0 +1,2 @@
+class EdgeGroup
+end
