@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140301170053) do
+ActiveRecord::Schema.define(version: 20140311124117) do
 
   create_table "catalogs", force: true do |t|
     t.string   "faculty"
@@ -22,18 +22,37 @@ ActiveRecord::Schema.define(version: 20140301170053) do
     t.string   "filename"
   end
 
-  create_table "constraints", force: true do |t|
-    t.integer  "catalog_id"
-    t.integer  "course_id"
-    t.integer  "set_id"
-    t.string   "set_type"
-    t.string   "role"
-    t.string   "constraint_type"
+  create_table "constraint_sets", force: true do |t|
+    t.string   "name"
+    t.integer  "constraint_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "constraint_sets", ["constraint_id"], name: "index_constraint_sets_on_constraint_id"
+
+  create_table "constraint_types", force: true do |t|
+    t.string   "name"
+    t.integer  "constraint_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "constraint_types", ["constraint_id"], name: "index_constraint_types_on_constraint_id"
+
+  create_table "constraints", force: true do |t|
+    t.integer  "catalog_id"
+    t.integer  "course_id"
+    t.string   "role"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "constraint_set_id"
+    t.integer  "constraint_type_id"
+  end
+
   add_index "constraints", ["catalog_id"], name: "index_constraints_on_catalog_id"
+  add_index "constraints", ["constraint_set_id"], name: "index_constraints_on_constraint_set_id"
+  add_index "constraints", ["constraint_type_id"], name: "index_constraints_on_constraint_type_id"
   add_index "constraints", ["course_id"], name: "index_constraints_on_course_id"
 
   create_table "course_constraints", force: true do |t|
