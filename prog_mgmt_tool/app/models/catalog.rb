@@ -17,7 +17,9 @@ class Catalog < ActiveRecord::Base
 			parser = XgmlParser.new(self.filename)
 			parser.parse
 			nodes = parser.get_nodes
+			edges = parser.get_edges
 			print_collection(nodes)
+			print_collection(edges)
 		end
 	end
 

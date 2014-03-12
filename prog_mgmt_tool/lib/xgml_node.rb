@@ -4,6 +4,7 @@ class XgmlNode
 	@gid
 	@is_constraint
 	@is_group
+	@parent
 
 	def initialize(attributes)
 
@@ -12,12 +13,18 @@ class XgmlNode
 		set_name(attributes['name'])
 		set_is_constraint(attributes['is_constraint'])
 		set_is_group(attributes['is_group'])
+		set_parent('NONE')
 
 	end
 	
 	def get_id
 		@id
 	end
+
+	def set_parent(node)
+		@parent = node
+	end
+
 
 	def get_is_constraint
 		@is_constraint
@@ -42,7 +49,7 @@ class XgmlNode
 	private
 
 		def set_id(id)
-			@id = id
+			@id = id.to_i
 		end
 
 		def set_name(name)
@@ -50,7 +57,7 @@ class XgmlNode
 		end
 
 		def set_gid(gid)
-			@gid = gid
+			@gid = gid.to_i
 		end
 
 		def set_is_constraint(is_constraint)

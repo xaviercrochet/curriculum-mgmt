@@ -13,6 +13,7 @@ class XgmlParser
 		DEFAULT_NAME = "NONE"
 		DEFAULT_IS_GROUP = false
 		DEFAULT_IS_CONSTRAINT = false
+		DEFAULT_TYPE = "COREQUISITE"
 
 	def initialize(filename)
 		if File.exist?(filename)
@@ -33,8 +34,13 @@ class XgmlParser
 		@nodes
 	end
 
+	def get_node(id)
+		node = get_nodes
+		node[id.to_i]
+	end
+
 	def get_edges
-		@nodes
+		@edges
 	end
 
 	def read_xgml_file(file)
@@ -49,8 +55,26 @@ class XgmlParser
 	end
 
 	private
+		def set_node_parents()
+			nodes = get_nodes
+			nodes.each do |node|
+				if node.get_gid != -1
+					node.set_parent(nodes[node.get_gid.to_i])
+				end
+			end
+		end
+
 		def add_node(node)
-			@nodes[node.get_id.to_i] = node 
+			if node.get_id >= 0
+				nodes = get_nodes
+				nodes[node.get_id] = node
+			else
+				p "Trying to insert node with negative id"
+			end 
+		end
+
+		def add_edge(edge)
+			@edges.push(edge)
 		end
 
 		def check_attribute(attribute, index, field)
@@ -88,6 +112,26 @@ class XgmlParser
 		def is_graphics?(attribute)
 			check_attribute(attribute, 0, 'graphics')
 		end
+
+		def is_source?(attribute)
+			check_attributes(attribute, 'source', 'int' )
+		end
+
+		def is_target?(attribute)
+			check_attributes(attribute, 'target', 'int')
+		end
+
+		def is_prerequisite?(attribute)
+			if is_graphics?(attribute)
+				attribute.children.each do |ch|
+					if ch.values[0].eql? 'targetArrow' and ch.values[1].eql? 'String'
+						return true
+					end
+				end
+			end
+			return false
+		end
+
 
 		def is_shape?(attribute)
 			check_attributes(attribute, 'curstomconfiguration', 'com.yworks.entityRelationship.attribute') or check_attributes(attribute, 'curstomconfiguration', 'com.yworks.entityRelationship.relationship')
@@ -132,18 +176,40 @@ class XgmlParser
 			attributes
 		end
 
+		def parse_edge_attributes(graph_edge)
+			attributes = Hash.new
+			attributes['type'] = DEFAULT_TYPE
+
+			graph_edge.children.each do |a|
+				
+				if is_prerequisite?(a)
+					attributes['type'] = "PREREQUISITE"
+
+				elsif is_source?(a)
+					attributes['source'] = get_node(attribute_content(a))
+
+				elsif is_target?(a)
+					attributes['destination'] = get_node(attribute_content(a))
+				end
+			end
+
+			attributes
+					
+ 		end
+
 		def parse_node(graph_node)
 			attributes = Hash.new
 
 			attributes = parse_node_attributes(graph_node)
-			if attributes['is_group']
-			else
-				node = XgmlNode.new(attributes)
-				add_node(node)
-			end
+			node = XgmlNode.new(attributes)
+			add_node(node)
 		end
 
-		def parse_edge(edge)
+		def parse_edge(graph_edge)
+			attributes = Hash.new
+			attributes = parse_edge_attributes(graph_edge)
+			edge = XgmlEdge.new(attributes)
+			add_edge(edge)
 		end
 
 		def parse_graph
@@ -153,6 +219,7 @@ class XgmlParser
 				elsif c.values[0].eql? 'edge'
 					parse_edge(c)
 				end
+			end
+			set_node_parents
 		end
-	end
 end
