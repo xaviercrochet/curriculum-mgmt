@@ -473,6 +473,16 @@ class Catalog < ActiveRecord::Base
 
 	private
 
+	def create_programs(parser)
+		nodes = parser.get_nodes
+		nodes.each do |node|
+			if node.is_group?
+				p = self.programs.new
+				p.properties.create(:p_type => 'name', :value => node.get_name)
+				p.save
+			end
+	end
+
 	def print_collection(collection)
 		p "Printing collection ..."
 		collection.each do |element|
