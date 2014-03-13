@@ -13,7 +13,6 @@ class XgmlNode
 		set_name(attributes['name'])
 		set_is_constraint(attributes['is_constraint'])
 		set_is_group(attributes['is_group'])
-		set_parent('NONE')
 
 	end
 	
@@ -23,6 +22,10 @@ class XgmlNode
 
 	def set_parent(node)
 		@parent = node
+	end
+
+	def has_parent?
+		! get_parent.nil?
 	end
 
 
@@ -43,7 +46,11 @@ class XgmlNode
 	end
 
 	def to_string
-		"[id: " + get_id.to_s + ", gid: " + get_gid.to_s + ", name: " + get_name + ", constraint? " + get_is_constraint.to_s + ", group? " + get_is_group.to_s + "]"
+		"[id: " + get_id.to_s + ", gid: " + get_gid.to_s + ", name: " + get_name + ", constraint? " + get_is_constraint.to_s + ", group? " + get_is_group.to_s + ", has parent? "+ has_parent?.to_s + "]"
+	end
+
+	def get_parent
+		@parent
 	end 
 
 	private

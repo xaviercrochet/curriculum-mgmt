@@ -17,9 +17,8 @@ class Catalog < ActiveRecord::Base
 			parser = XgmlParser.new(self.filename)
 			parser.parse
 			nodes = parser.get_nodes
-			edges = parser.get_edges
 			print_collection(nodes)
-			print_collection(edges)
+			create_objects(parser)
 		end
 	end
 
@@ -237,7 +236,7 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
-	def create_object(name, is_group, is_constraint, gid, id)
+	def create_object_old(name, is_group, is_constraint, gid, id)
 		if is_group
 
 			if gid.eql? ""
@@ -473,14 +472,118 @@ class Catalog < ActiveRecord::Base
 
 	private
 
-	def create_programs(parser)
-		nodes = parser.get_nodes
+	def create_programs(nodes)
+		programs = Hash.new
 		nodes.each do |node|
-			if node.is_group?
-				p = self.programs.new
+			if node.get_is_group and ! node.has_parent? and ! node.get_is_constraint
+				p = self.programs.create
 				p.properties.create(:p_type => 'name', :value => node.get_name)
-				p.save
+				programs[node.get_id] = {"real_id" => p.id}
 			end
+		end
+		programs
+	end
+
+	def create_modules(programs, nodes)
+		modules = Hash.new
+		nodes.each do |node|
+			if node.get_is_group and ! node.get_is_constraint and node.has_parent?
+				program = programs[node.get_gid]
+				if ! program.nil?
+					p = self.programs.find(program['real_id'].to_i)
+					m = p.p_modules.create
+					m.properties.create(:p_type => 'name', :value => node.get_name)
+					modules[node.get_id] = {"real_id" => m.id}
+				end
+			end
+		end
+		modules
+	end
+
+	def create_sub_modules(modules, nodes)
+		sub_modules = Hash.new
+		nodes.each do |node|
+			if node.get_is_group and ! node.get_is_constraint and node.has_parent? and node.get_parent.has_parent?
+				m = modules[node.get_gid]
+				p "MODULE : " + m.to_s
+				if ! m.nil?
+					pm = PModule.find(m['real_id'].to_i)
+					sub_module = pm.sub_modules.create
+					sub_module.properties.create(:p_type => 'name', :value => node.get_name)
+					sub_modules[node.get_id] = {"real_id" => sub_module.id}
+				end
+			end
+		end
+		sub_modules
+	end
+
+	def get_course_block(node, programs, modules, sub_modules)
+		
+		p "Looking block for: " + node.get_name
+
+		if ! programs[node.get_gid].nil?
+			block = self.programs.find(programs[node.get_gid]['real_id'].to_i)
+		
+		elsif ! modules[node.get_gid].nil?
+			block = PModule.find(modules[node.get_gid]['real_id'].to_i)
+		
+		elsif ! sub_modules[node.get_gid].nil?
+			p sub_modules[node.get_gid].to_s
+			block = SubModule.find(sub_modules[node.get_gid]['real_id'].to_i)
+		
+		else
+			block = self
+		end
+		block
+	end
+
+	def create_courses(programs, modules, sub_modules, nodes)
+		courses = Hash.new
+		nodes.each do |node|
+			
+			if ! node.get_is_group and ! node.get_is_constraint
+				p node.get_name + " - " + node.get_gid.to_s
+				block = get_course_block(node, programs, modules, sub_modules)
+				course = block.courses.create
+				course.properties.create(:p_type => 'sigle', :value => node.get_name)
+				courses[node.get_id] = {"real_id" => course.id}
+			end
+		end
+		courses
+	end
+
+
+
+
+	def create_group_constraints(parser)
+	end
+
+	def create_constraints(parser)
+	end
+
+	
+
+	def create_objects(parser)
+		nodes = parser.get_nodes
+		programs = create_programs(nodes)
+		p "printing programs ..."
+		p programs.size.to_s
+		programs.each do |element|
+			p element.to_s
+		end
+		modules = create_modules(programs, nodes)
+		sub_modules = create_sub_modules(modules, nodes)
+
+		p "printing modules ..."
+		modules.each do |element|
+			p element.to_s
+		end
+		p "printing sub modules ..."
+		sub_modules.each do |element|
+			p element.to_s
+		end
+		courses = create_courses(programs, modules, sub_modules, nodes)
+
 	end
 
 	def print_collection(collection)

@@ -134,7 +134,7 @@ class XgmlParser
 
 
 		def is_shape?(attribute)
-			check_attributes(attribute, 'curstomconfiguration', 'com.yworks.entityRelationship.attribute') or check_attributes(attribute, 'curstomconfiguration', 'com.yworks.entityRelationship.relationship')
+			check_attribute(attribute, 0, 'customconfiguration')
 		end
 
 		def is_constraints_set?(attribute)
