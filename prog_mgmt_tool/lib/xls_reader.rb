@@ -1,2 +1,0 @@
-class XlsReader
-end

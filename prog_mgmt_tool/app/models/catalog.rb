@@ -1,7 +1,8 @@
 require 'open-uri'
 require 'nokogiri'
 require 'spreadsheet'
-require 'xgml_parser.rb'
+require 'xgml_parser/xgml_parser.rb'
+require 'xls_parser/xls_writer.rb'
 
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
@@ -103,23 +104,20 @@ class Catalog < ActiveRecord::Base
 
 
 	def create_doc
-		Spreadsheet.client_encoding = 'UTF-8'
 		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.ss_filename = filename
 		self.save
-		book = Spreadsheet::Workbook.new
-		create_spreadsheets(book)
-
-		book.write(filename)
+		parser = XlsWriter.new(filename)
+		create_spreadsheets(parser)
 
 	end
 
-	def create_spreadsheets(book)
-		create_spreadsheet(book, self.courses, 'Courses')
+	def create_spreadsheets(parser)
+		parser.create_spreadsheet(self.courses, 'Courses')
 		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
-		create_spreadsheet(book, p_modules, 'Modules')
+		parser.create_spreadsheet(p_modules, 'Modules')
 		sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
-		create_spreadsheet(book, sub_modules, 'Sub Modules')
+		parser.create_spreadsheet(sub_modules, 'Sub Modules')
 	end
 
 	def create_spreadsheet(book, collection, sheet_name)
