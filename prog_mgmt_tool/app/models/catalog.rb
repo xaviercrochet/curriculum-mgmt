@@ -556,23 +556,13 @@ class Catalog < ActiveRecord::Base
 		set
 	end
 	
-
-	def create_constraint(course, set, edge, role)
-		type = ConstraintType.create_constraint_type(edge.get_type)
-		constraint = course.constraints.create(:role => role.to_s)
-		constraint.constraint_type = type
-		constraint.constraint_set = set 
-		constraint.save
-		constraint
-	end
-
-	def create_binary_constraint(edge, courses)
+def create_binary_constraint(edge, courses)
 		source = Course.where(:catalog_id => self.id, :id => courses[edge.get_source.get_id]["real_id"].to_i).first
 		destination = Course.where(:catalog_id => self.id, :id => courses[edge.get_destination.get_id]["real_id"].to_i).first
 		set_type = ConstraintSetType.create_constraint_set_type("BINARY")
 		set = set_type.constraint_sets.create
-		create_constraint(source, set, edge, "IN")
-		create_constraint(destination, set, edge, "OUT")
+		Constraint.create_constraint(source, set, edge, "IN")
+		Constraint.create_constraint(destination, set, edge, "OUT")
 end
 	def get_edges_for_source(node, edges)
 		result = Array.new
@@ -598,7 +588,7 @@ end
 		nary_constraints = Hash.new
 		nodes.each do |node|
 			if node.is_constraint?
-				set_type = create_constraint_set_type(node.get_name.to_s)
+				set_type = ConstraintSetType.create_type(node.get_name.to_s)
 				set = set_type.constraint_sets.create
 
 			end
