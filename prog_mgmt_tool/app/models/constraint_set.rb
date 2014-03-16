@@ -1,5 +1,4 @@
 class ConstraintSet < ActiveRecord::Base
-	before_save {
-		self.name = name.upcase
-	}
+	has_many :constraints, dependent: :destroy
+	belongs_to :constraint_set_type
 end

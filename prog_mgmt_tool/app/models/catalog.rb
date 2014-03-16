@@ -6,7 +6,6 @@ require 'xgml_parser.rb'
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 	has_many :courses, dependent: :destroy
-	has_many :constraints, dependent: :destroy
 
 	def upload(data)
 		if data[:data]
@@ -16,8 +15,6 @@ class Catalog < ActiveRecord::Base
 			end
 			parser = XgmlParser.new(self.filename)
 			parser.parse
-			nodes = parser.get_nodes
-			print_collection(nodes)
 			create_objects(parser)
 		end
 	end
@@ -544,7 +541,9 @@ class Catalog < ActiveRecord::Base
 			if ! node.get_is_group and ! node.get_is_constraint
 				p node.get_name + " - " + node.get_gid.to_s
 				block = get_course_block(node, programs, modules, sub_modules)
-				course = block.courses.create
+				course = block.courses.new
+				course.catalog_id = self.id
+				course.save
 				course.properties.create(:p_type => 'sigle', :value => node.get_name)
 				courses[node.get_id] = {"real_id" => course.id}
 			end
@@ -557,32 +556,71 @@ class Catalog < ActiveRecord::Base
 
 	def create_group_constraints(parser)
 	end
+	# Creates constraint set if not exists, then returns it.
+	def create_constraint_set(name)
+		set = ConstraintSet.where(:name => name).first
+		if set.nil?
+			set = ConstraintSet.create(:name => name)
+		end
+		set
+	end
+	#Creates constraint type if not exists. Then returns it.
+	def create_constraint_type(type)
+		c_type = ConstraintType.where(:name => type).first
+		if c_type.nil?
+			c_type = ConstraintType.create(:name => type)
+		end
+		c_type
+	end
 
-	def create_constraints(parser)
+	def create_constraint_set_type(type)
+		c_set_type = ConstraintSetType.where(:name => type).first
+		if c_set_type.nil?
+			c_set_type = ConstraintSetType.create(:name => type)
+		end
+		c_set_type
+	end
+
+	def create_binary_constraint(edge, courses)
+		source = Course.where(:catalog_id => self.id, :id => courses[edge.get_source.get_id]["real_id"].to_i).first
+		destination = Course.where(:catalog_id => self.id, :id => courses[edge.get_destination.get_id]["real_id"].to_i).first
+		set_type = create_constraint_set_type("BINARY")
+		set = set_type.constraint_sets.create
+		c_type = create_constraint_type(edge.get_type)
+		source_constraint = source.constraints.create(:role => "IN")
+		source_constraint.constraint_type = c_type
+		destination_constraint = destination.constraints.create(:role => "OUT")
+		destination_constraint.constraint_type = c_type
+
+	end
+
+
+	def create_constraints(edges, nodes, courses)
+		edges.each do |edge|
+			if ! edge.get_source.get_is_constraint and ! edge.get_destination.get_is_constraint
+				p edge.get_source.to_s
+				p edge.get_destination.to_s
+				create_binary_constraint(edge, courses)
+			elsif edge.get_source.get_is_constraint
+			elsif edge.get_destination.get_is_constraint
+			end
+		end
 	end
 
 	
 
 	def create_objects(parser)
 		nodes = parser.get_nodes
+		edges = parser.get_edges
+		print_collection(edges)
 		programs = create_programs(nodes)
 		p "printing programs ..."
 		p programs.size.to_s
-		programs.each do |element|
-			p element.to_s
-		end
 		modules = create_modules(programs, nodes)
 		sub_modules = create_sub_modules(modules, nodes)
-
-		p "printing modules ..."
-		modules.each do |element|
-			p element.to_s
-		end
-		p "printing sub modules ..."
-		sub_modules.each do |element|
-			p element.to_s
-		end
 		courses = create_courses(programs, modules, sub_modules, nodes)
+		p "Course length : "+courses.size.to_s
+		create_constraints(edges, nodes, courses)
 
 	end
 
