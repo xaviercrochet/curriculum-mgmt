@@ -6,6 +6,9 @@ require 'xgml_parser.rb'
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 	has_many :courses, dependent: :destroy
+	has_many :constraint_set_types, dependent: :destroy
+	has_many :constraint_types, dependent: :destroy
+	
 
 	def upload(data)
 		if data[:data]
@@ -243,22 +246,10 @@ class Catalog < ActiveRecord::Base
 		courses
 	end
 
-	
-	def create_binary_constraint(edge, courses)
-		source = Course.where(:catalog_id => self.id, :id => courses[edge.get_source.get_id]["real_id"].to_i).first
-		destination = Course.where(:catalog_id => self.id, :id => courses[edge.get_destination.get_id]["real_id"].to_i).first
-		set_type = ConstraintSetType.create_type("BINARY")
-		set = set_type.constraint_sets.create
-		Constraint.create_constraint(source, set, edge, "IN")
-		Constraint.create_constraint(destination, set, edge, "OUT")
-	end
-
 	def create_constraints(edges, nodes, courses)
 		edges.each do |edge|
 			if ! edge.get_source.get_is_constraint? and ! edge.get_destination.get_is_constraint?
-				p edge.get_source.to_s
-				p edge.get_destination.to_s
-				create_binary_constraint(edge, courses)
+				ConstraintSet.create_binary_constraint(edge, courses, self)
 			end
 		end
 	end
@@ -275,7 +266,7 @@ class Catalog < ActiveRecord::Base
 		sub_modules = create_sub_modules(modules, nodes)
 		courses = create_courses(programs, modules, sub_modules, nodes)
 		create_constraints(edges, nodes, courses)
-		ConstraintSet.create_sets(edges, courses, nodes)
+		ConstraintSet.create_sets(edges, courses, nodes, self)
 
 	end
 

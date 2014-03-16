@@ -7,8 +7,8 @@ class Constraint < ActiveRecord::Base
   	self.role = role.upcase
   }
 
-  def self.create_constraint(course, set, edge, role)
-		type = ConstraintType.create_type(edge.get_type)
+  def self.create_constraint(course, set, edge, role, catalog)
+		type = ConstraintType.create_type(edge.get_type, catalog)
 		constraint = course.constraints.create(:role => role.to_s)
 		constraint.constraint_type = type
 		constraint.constraint_set = set 

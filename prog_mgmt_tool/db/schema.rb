@@ -24,9 +24,12 @@ ActiveRecord::Schema.define(version: 20140315112449) do
 
   create_table "constraint_set_types", force: true do |t|
     t.string   "name"
+    t.integer  "catalog_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "constraint_set_types", ["catalog_id"], name: "index_constraint_set_types_on_catalog_id"
 
   create_table "constraint_sets", force: true do |t|
     t.datetime "created_at"
@@ -38,9 +41,12 @@ ActiveRecord::Schema.define(version: 20140315112449) do
 
   create_table "constraint_types", force: true do |t|
     t.string   "name"
+    t.integer  "catalog_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "constraint_types", ["catalog_id"], name: "index_constraint_types_on_catalog_id"
 
   create_table "constraints", force: true do |t|
     t.integer  "course_id"
