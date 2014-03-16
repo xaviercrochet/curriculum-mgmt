@@ -416,15 +416,6 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
-	def create_constraint(course_id, set_id, role, constraint_type, set_type)
-		constraint = self.constraints.new
-		constraint.course_id = course_id
-		constraint.set_id = set_id
-		constraint.constraint_type = constraint_type
-		constraint.set_type = set_type
-		constraint.role = role
-		constraint.save
-	end
 
 	def insert_constraints
 		p "Inserting constraints into database ..."
@@ -581,17 +572,52 @@ class Catalog < ActiveRecord::Base
 		c_set_type
 	end
 
+	def create_constraint(course, set, edge, role)
+		type = create_constraint_type(edge.get_type)
+		constraint = course.constraints.create(:role => role.to_s)
+		constraint.constraint_type = type
+		constraint.constraint_set = set 
+		constraint.save
+		constraint
+	end
+
 	def create_binary_constraint(edge, courses)
 		source = Course.where(:catalog_id => self.id, :id => courses[edge.get_source.get_id]["real_id"].to_i).first
 		destination = Course.where(:catalog_id => self.id, :id => courses[edge.get_destination.get_id]["real_id"].to_i).first
 		set_type = create_constraint_set_type("BINARY")
 		set = set_type.constraint_sets.create
-		c_type = create_constraint_type(edge.get_type)
-		source_constraint = source.constraints.create(:role => "IN")
-		source_constraint.constraint_type = c_type
-		destination_constraint = destination.constraints.create(:role => "OUT")
-		destination_constraint.constraint_type = c_type
+		create_constraint(source, set, edge, "IN")
+		create_constraint(destination, set, edge, "OUT")
+end
+	def get_edges_for_source(node, edges)
+		result = Array.new
+		edges.each do |edge|
+			if node.get_id.eql? edge.get_source.get_id
+				result.push(edge)
+			end
+		end
+		result
+	end
 
+	def get_edges_for_destination(node, edges)
+		result = Array.new
+		edges.each do |edge|
+			if node.get_id.eql? edge.get_destination.get_id
+				result.push(edge)
+			end
+		end
+		result
+	end
+
+	def create_nary_constraint(edges, nodes)
+		nary_constraints = Hash.new
+		nodes.each do |node|
+			if node.is_constraint?
+
+			end
+		end
+
+		nary_constraints
 	end
 
 
