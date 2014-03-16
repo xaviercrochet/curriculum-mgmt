@@ -20,6 +20,26 @@ class XgmlNode
 		@id
 	end
 
+	def get_incoming_edges(edges)
+		result = Array.new
+		edges.each do |edge|
+			if self.get_id == edge.get_destination.get_id
+				result.push(edge)
+			end
+		end
+		result
+	end
+	
+	def get_outcoming_edges(edges)
+		result = Array.new
+		edges.each do |edge|
+			if self.get_id == edge.get_source.get_id
+				result.push(edge)
+			end
+		end
+		result
+	end
+
 	def set_parent(node)
 		@parent = node
 	end
@@ -29,11 +49,11 @@ class XgmlNode
 	end
 
 
-	def get_is_constraint
+	def get_is_constraint?
 		@is_constraint
 	end
 
-	def get_is_group
+	def get_is_group?
 		@is_group
 	end
 
