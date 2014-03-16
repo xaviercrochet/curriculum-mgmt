@@ -555,25 +555,10 @@ class Catalog < ActiveRecord::Base
 		end
 		set
 	end
-	#Creates constraint type if not exists. Then returns it.
-	def create_constraint_type(type)
-		c_type = ConstraintType.where(:name => type).first
-		if c_type.nil?
-			c_type = ConstraintType.create(:name => type)
-		end
-		c_type
-	end
-
-	def create_constraint_set_type(type)
-		c_set_type = ConstraintSetType.where(:name => type).first
-		if c_set_type.nil?
-			c_set_type = ConstraintSetType.create(:name => type)
-		end
-		c_set_type
-	end
+	
 
 	def create_constraint(course, set, edge, role)
-		type = create_constraint_type(edge.get_type)
+		type = ConstraintType.create_constraint_type(edge.get_type)
 		constraint = course.constraints.create(:role => role.to_s)
 		constraint.constraint_type = type
 		constraint.constraint_set = set 
@@ -584,7 +569,7 @@ class Catalog < ActiveRecord::Base
 	def create_binary_constraint(edge, courses)
 		source = Course.where(:catalog_id => self.id, :id => courses[edge.get_source.get_id]["real_id"].to_i).first
 		destination = Course.where(:catalog_id => self.id, :id => courses[edge.get_destination.get_id]["real_id"].to_i).first
-		set_type = create_constraint_set_type("BINARY")
+		set_type = ConstraintSetType.create_constraint_set_type("BINARY")
 		set = set_type.constraint_sets.create
 		create_constraint(source, set, edge, "IN")
 		create_constraint(destination, set, edge, "OUT")
@@ -613,6 +598,8 @@ end
 		nary_constraints = Hash.new
 		nodes.each do |node|
 			if node.is_constraint?
+				set_type = create_constraint_set_type(node.get_name.to_s)
+				set = set_type.constraint_sets.create
 
 			end
 		end
