@@ -13,7 +13,7 @@ class XlsWriter
 	end
 
 	def create_spreadsheet(collection, sheet_name)
-		sheet = @book.create_worksheet :name => sheet_name.to_s
+		sheet = @book.create_worksheet :name => sheet_name.to_s.upcase
 		i = 1
 		header = sheet.row(0)
 		header.default_format = Spreadsheet::Format.new :weight => :bold

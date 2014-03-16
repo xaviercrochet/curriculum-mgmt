@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'spreadsheet'
 require 'xgml_parser/xgml_parser.rb'
 require 'xls_parser/xls_writer.rb'
+require 'xls_parser/xls_reader.rb'
 
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
@@ -39,10 +40,8 @@ class Catalog < ActiveRecord::Base
 
 	end
 	def parse_spreadsheet
-		book = Spreadsheet.open self.ss_filename
-		book.worksheets.each do |sheet|
-			parse_sheet(sheet)
-		end
+		parser = XlsReader.new(self.ss_filename)
+		courses = parser.parse_sheet("COURSES", "SIGLE")
 
 	end
 

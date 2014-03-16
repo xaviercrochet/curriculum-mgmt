@@ -13,5 +13,8 @@ class Course < ActiveRecord::Base
   		@p.value = value.to_s
   		@p.save
   	end
+  end
+
+  def self.find_by_property(property_type, property_value)
   end 
 end
