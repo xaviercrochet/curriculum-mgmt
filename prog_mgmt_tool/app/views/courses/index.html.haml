@@ -1,5 +1,4 @@
 %h1 Listing courses
-= link_to 'New Course', new_polymorphic_url([@context, :course])
 %table
 	%tr
 		%th 
@@ -13,4 +12,6 @@
 			%td= c.properties.first.value
 			%td= link_to 'Show', c
 			%td= link_to 'Delete', course_path(c), method: :delete, data: { confirm: 'Are you sure?'}
+
+= link_to 'Back', polymorphic_url([@context, @course])
 

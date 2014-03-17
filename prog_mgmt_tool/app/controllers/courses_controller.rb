@@ -42,6 +42,7 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
+    @block = @course.block
   end
 
   def index

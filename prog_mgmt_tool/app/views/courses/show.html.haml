@@ -4,5 +4,5 @@
 			= p.p_type + ":"
 		= p.value
 
-= link_to 'Back', polymorphic_url([@context, @course])
+= link_to 'Back', polymorphic_url([@block, Course])
 = link_to 'Delete', @course, method: :delete, data: { confirm: 'Are you sure?'}
