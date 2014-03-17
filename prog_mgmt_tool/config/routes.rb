@@ -11,11 +11,17 @@ Thesis::Application.routes.draw do
     patch :upload
     resources :programs, shallow: true do
       resources :properties
-      resources :courses
+      resources :courses , shallow: true do
+        resources :constraints
+      end
       resources :p_modules, shallow: true do
-        resources :courses
+        resources :courses, shallow: true do
+          resources :constraints
+        end
         resources :sub_modules, shallow: true do
-          resources :courses
+          resources :courses, shallow: true do
+            resources :constraints
+          end
         end
       end
     end

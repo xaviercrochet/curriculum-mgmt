@@ -15,6 +15,16 @@ class Course < ActiveRecord::Base
   	end
   end
 
+
+  def binary_corequisites
+    constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'COREQUISITE'}, :constraint_set_types => {:name => 'BINARY'})
+
+  end
+
+  def binary_prerequisites
+    constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'PREREQUISITE'}, :constraint_set_types => {:name => 'BINARY'})
+  end
+
   def self.find_by_property(property_type, property_value, catalog)
     catalog.courses.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value.to_s).first
   end
