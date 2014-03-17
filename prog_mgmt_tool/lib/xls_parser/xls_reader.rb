@@ -17,10 +17,11 @@ class XlsReader
 
 	def parse_sheet(name, resource_indentifier)
 		sheet = find_sheet(name)
-		if sheet
+		if ! sheet.nil?
 			extract_data_from_sheet(sheet, resource_indentifier)
 		else
 			p "Sheet " + name.to_s + " not found!"
+			nil
 		end
 	end
 
@@ -79,9 +80,12 @@ class XlsReader
 	def find_sheet(name)
 		@book.worksheets.each do |sheet|
 			if sheet.name.upcase.eql? name.to_s
+				p "Sheet found!"
 				return sheet
 			end
 		end
+		p "Sheet not found!"
+		return nil
 	end
 
 end

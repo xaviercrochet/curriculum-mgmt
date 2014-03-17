@@ -64,9 +64,12 @@ class Catalog < ActiveRecord::Base
 	private
 
 	def parse_spreadsheet_for_model(entity_model, entity_identificator, parser)
-		p entity_model.to_s.upcase
 		entities = parser.parse_sheet(entity_model.to_s.pluralize.upcase, entity_identificator.upcase)
-		update_entities_properties(entity_model, entities, entity_identificator)
+		if ! entities.nil?
+			update_entities_properties(entity_model, entities, entity_identificator)
+		else
+			p "Sheet for model - " + entity_model.to_s.pluralize + " not found in spreadsheet!"
+		end 
 	end
 
 	def update_entities_properties(entity_model, entities_properties, entity_identificator)
