@@ -1,5 +1,4 @@
 %h1 Listing Sub-modules
-= link_to 'New Sub-Module', new_p_module_sub_module_path(@p_module, @sub_module)
 
 %table
 	%tr
@@ -11,7 +10,8 @@
 	- @sub_modules.each do |p|
 		%tr
 			%td= p.properties.first.value
-			%td= link_to 'Show', sub_module_path(@p_module, p)
-			%td= link_to 'Edit', edit_sub_module_path(@p_module, p)
-			%td= link_to 'Courses', sub_module_courses_path(p)
+			%td= link_to 'Show', p
 			%td= link_to 'Delete',  sub_module_path(@p_module, p), method: :delete, data:{confirm: 'Are you sure?'} 
+
+
+= link_to 'Back', @p_module

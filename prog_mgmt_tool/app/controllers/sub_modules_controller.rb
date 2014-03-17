@@ -1,7 +1,7 @@
 class SubModulesController < ApplicationController
-	before_filter :p_module
 	
 	def index
+		@p_module = PModule.find(params[:p_module_id])
 		@sub_modules = @p_module.sub_modules
 	end
 
@@ -15,7 +15,8 @@ class SubModulesController < ApplicationController
 	end
 
 	def show
-		@sub_module = @p_module.sub_modules.find(params[:format])
+		@sub_module = SubModule.find(params[:id])
+		@p_module = @sub_module.p_module
 	end
 
 	def edit
