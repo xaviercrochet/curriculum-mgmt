@@ -11,6 +11,7 @@ class ProgramsController < ApplicationController
   end
 
   def destroy
+    @catalog = Catalog.find(params[:id])
   	@program = @catalog.programs.find(params[:format])
   	@program.destroy
 

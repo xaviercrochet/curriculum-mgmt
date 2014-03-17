@@ -21,9 +21,10 @@ class PModulesController < ApplicationController
   end
 
   def destroy
+    @program = Program.find(params[:id])
   	@p_module = @program.p_modules.find(params[:format])
   	@p_module.destroy
-  	redirect_to catalog_program_p_modules_path
+  	redirect_to program_p_modules_path(@program)
   end
   
   def new

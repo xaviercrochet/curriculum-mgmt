@@ -34,9 +34,10 @@ class SubModulesController < ApplicationController
 	end
 
 	def destroy
+		@p_module = PModule.find(params[:id])
 		@sub_module = @p_module.sub_modules.find(params[:format])
 		@sub_module.destroy
-		redirect_to catalog_program_p_module_sub_modules_path
+		redirect_to p_module_sub_modules_path(@p_module)
 	end
 
 	private
