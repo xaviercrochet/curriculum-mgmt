@@ -16,5 +16,15 @@ class Course < ActiveRecord::Base
   end
 
   def self.find_by_property(property_type, property_value)
+    Course.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value.to_s).first
+  end
+
+  def update_properties(properties)
+    self.properties.each do |p|
+      p.destroy
+    end
+    properties.each do |key, value|
+      self.properties.create(:p_type => key.to_s, :value => value.to_s)
+    end
   end 
 end

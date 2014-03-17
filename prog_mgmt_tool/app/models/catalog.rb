@@ -39,67 +39,13 @@ class Catalog < ActiveRecord::Base
 		end
 
 	end
+	
 	def parse_spreadsheet
 		parser = XlsReader.new(self.ss_filename)
-		courses = parser.parse_sheet("COURSES", "SIGLE")
+		parse_spreadsheet_for_model(Course, "SIGLE", parser)
 
 	end
 
-
-	def parse_sheet(sheet)
-		header = sheet.row(0)
-		
-		if sheet.name.upcase.eql? "COURSES"
-			col_index = find_element(header, "SIGLE")
-
-		elsif sheet.name.upcase.eql? "MODULES"
-			col_index = find_element(header, "NAME")
-
-		elsif sheet.name.upcase.eql? "SUB MODULES"
-			col_index = find_element(header, "NAME")
-		end
-		
-		p sheet.count
-		
-		for i in 1..sheet.count - 1
-			p sheet.row(i).to_s
-			sigle = sheet.row(i)[col_index].upcase
-			property = Property.where(value: sigle).first
-			
-			if property.nil?
-				p "ENTITY NOT FOUND : "+sheet.row(i)[col_index].upcase
-			
-			else
-				entity = property.entity
-				entity.properties.each do |p|
-					p.destroy
-				end
-				index = 0
-				header.each do |p|
-					if ! sheet.row(i)[index].nil?
-						prop = entity.properties.new
-						prop.p_type = p.to_s
-						prop.value = sheet.row(i)[index].to_s
-						prop.save
-					end
-					index = index + 1
-				end
-			end
-
-
-		end
-	end
-	def find_element(row, element)
-		i = 0
-		row.each do |c|
-			if c.eql? element
-				return i
-			else
-				i = i +1
-			end
-		end
-		return -1
-	end
 
 
 	def create_doc
@@ -116,6 +62,24 @@ class Catalog < ActiveRecord::Base
 	
 
 	private
+
+	def parse_spreadsheet_for_model(entity_model, entity_identificator, parser)
+		p entity_model.to_s.upcase
+		entities = parser.parse_sheet(entity_model.to_s.pluralize.upcase, entity_identificator.upcase)
+		update_entities_properties(entity_model, entities, entity_identificator)
+	end
+
+	def update_entities_properties(entity_model, entities_properties, entity_identificator)
+		entities_properties.each do |key, value|
+			entity = entity_model.find_by_property(entity_identificator, key.to_s)
+			value[entity_identificator] = key
+			if ! entity.nil?
+				entity.update_properties(value)
+			else
+				p "Course - " + entity_identificator + ": " + key + "not found!"
+			end 
+		end
+	end
 
 	def create_spreadsheets(parser)
 		parser.create_spreadsheet(self.courses, 'Courses')
