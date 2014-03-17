@@ -8,6 +8,8 @@ require 'xls_parser/xls_reader.rb'
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 	has_many :courses, dependent: :destroy
+	has_many :p_modules, dependent: :destroy
+	has_many :sub_modules, dependent: :destroy
 	has_many :constraint_set_types, dependent: :destroy
 	has_many :constraint_types, dependent: :destroy
 	
@@ -74,7 +76,7 @@ class Catalog < ActiveRecord::Base
 
 	def update_entities_properties(entity_model, entities_properties, entity_identificator)
 		entities_properties.each do |key, value|
-			entity = entity_model.find_by_property(entity_identificator, key.to_s)
+			entity = entity_model.find_by_property(entity_identificator, key.to_s, self)
 			value[entity_identificator] = key
 			if ! entity.nil?
 				entity.update_properties(value)
@@ -111,7 +113,7 @@ class Catalog < ActiveRecord::Base
 				program = programs[node.get_gid]
 				if ! program.nil?
 					p = self.programs.find(program['real_id'].to_i)
-					m = p.p_modules.create
+					m = p.p_modules.create(:catalog_id => self.id)
 					m.properties.create(:p_type => 'name', :value => node.get_name)
 					modules[node.get_id] = {"real_id" => m.id}
 				end
@@ -128,7 +130,7 @@ class Catalog < ActiveRecord::Base
 				p "MODULE : " + m.to_s
 				if ! m.nil?
 					pm = PModule.find(m['real_id'].to_i)
-					sub_module = pm.sub_modules.create
+					sub_module = pm.sub_modules.create(:catalog_id => self.id)
 					sub_module.properties.create(:p_type => 'name', :value => node.get_name)
 					sub_modules[node.get_id] = {"real_id" => sub_module.id}
 				end

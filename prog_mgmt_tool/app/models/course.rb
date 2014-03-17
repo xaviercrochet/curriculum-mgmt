@@ -15,8 +15,8 @@ class Course < ActiveRecord::Base
   	end
   end
 
-  def self.find_by_property(property_type, property_value)
-    Course.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value.to_s).first
+  def self.find_by_property(property_type, property_value, catalog)
+    catalog.courses.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value.to_s).first
   end
 
   def update_properties(properties)

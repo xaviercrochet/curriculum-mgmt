@@ -130,10 +130,12 @@ ActiveRecord::Schema.define(version: 20140315112449) do
 
   create_table "sub_modules", force: true do |t|
     t.integer  "p_module_id"
+    t.integer  "catalog_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "sub_modules", ["catalog_id"], name: "index_sub_modules_on_catalog_id"
   add_index "sub_modules", ["p_module_id"], name: "index_sub_modules_on_p_module_id"
 
   create_table "users", force: true do |t|
