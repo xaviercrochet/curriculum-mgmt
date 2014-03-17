@@ -1,8 +1,0 @@
-%h1 Editing Sub-Module
-= form_for([@catalog, @program, @p_module, @sub_module]) do |f|
-	%p
-		= f.label :name
-		= f.text_field :name
-	%p
-		= f.submit
-= link_to 'Back', catalog_program_p_module_sub_modules_path(@catalog, @program, @p_module, @sub_modules)

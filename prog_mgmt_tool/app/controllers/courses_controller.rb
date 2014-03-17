@@ -1,43 +1,12 @@
 class CoursesController < ApplicationController
   before_filter :catalog
 
-  def new
-    @context = context
-    @course = @context.courses.new
-  end
 
-  
-  def create
-    @context = context
-    @course = @context.courses.new
-    @course.build(params[:course])
-    @course.catalog_id = @catalog.id
-    @course.save
-    redirect_to index_url(context)
-  end
-
-  def destroy
+ def destroy
     @course = Course.find(params[:id])
     @context = @course.block
     @course.destroy
     redirect_to index_url(@context)
-  end
-
-  def edit
-    state
-    @context = context
-    @course = @context.courses.find(params[:id])
-  end
-
-  def update
-    @context = context
-    @course = @context.courses.find(params[:id])
-    if params.has_key?(:course)
-      @course.update(params[:course].permit(:name, :sigle))
-      redirect_to catalog_program_p_module_courses_path(@catalog, @program, @p_module)
-    else
-      render 'edit'
-    end
   end
 
   def show

@@ -1,9 +1,0 @@
-= form_for ([@context, @context.courses.build]) do |f|
-	%p
-		= f.label :name
-		= f.text_field :name, value: 'Introduction à la programmation'
-	%p
-		= f.label :sigle
-		= f.text_field :sigle, value: 'LSINF1101'
-	%p
-		= f.submit
