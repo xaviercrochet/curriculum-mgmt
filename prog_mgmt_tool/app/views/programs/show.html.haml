@@ -4,5 +4,6 @@
 			= p.p_type
 		= p.value
 
+= link_to 'Courses', program_courses_path(@program)
 = link_to 'Modules', program_p_modules_path(@catalog, @program)
 = link_to 'Back', catalog_programs_path(@catalog)
