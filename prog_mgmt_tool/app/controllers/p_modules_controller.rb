@@ -1,12 +1,13 @@
 class PModulesController < ApplicationController
-  before_filter :program
 
   def index
+    @program = Program.find(params[:program_id])
   	@p_modules = @program.p_modules
 	end
 
   def show
-  	@p_module = @program.p_modules.find(params[:format])
+  	@p_module = PModule.find(params[:id])
+    @program = @p_module.program
   end
 
   def update

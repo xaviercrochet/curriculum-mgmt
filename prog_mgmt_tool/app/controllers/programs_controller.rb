@@ -1,7 +1,7 @@
 class ProgramsController < ApplicationController
-  before_filter :catalog
   
   def index
+    @catalog = Catalog.find(params[:catalog_id])
     @programs = @catalog.programs
   end
 
@@ -37,7 +37,8 @@ class ProgramsController < ApplicationController
   end
 
   def show
-  	@program = Program.find(params[:format])
+    @program = Program.find(params[:id])
+    @catalog = @program.catalog
   end
 
  	private
