@@ -20,11 +20,32 @@ class PModule < ActiveRecord::Base
 		end
 	end
 
+	def has_sub_modules?
+		self.sub_modules.count > 0
+	end
+
+	def has_courses?
+		self.courses.count > 0
+	end
+
 	def as_json(option={})
-		{
-			:name => self.properties.main.value,
-			:sub_modules => self.sub_modules.as_json,
-			:courses => self.courses.as_json
-		}
+		if self.has_sub_modules? and self.has_courses?
+			{
+				:name => self.properties.main.value,
+				:sub_modules => self.sub_modules.as_json,
+				:courses => self.courses.as_json
+			}
+		elsif self.has_sub_modules? and ! self.has_courses?
+			{
+				:name => self.properties.main.value,
+				:sub_modules => self.sub_modules.as_json
+			}
+		elsif ! self.has_sub_modules? and self.has_courses?
+			{
+				:name => self.properties.main.value,
+				:courses => self.courses.as_json
+			}
+		end
+
 	end
 end

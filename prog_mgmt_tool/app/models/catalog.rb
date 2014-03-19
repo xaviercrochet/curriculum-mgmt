@@ -15,12 +15,18 @@ class Catalog < ActiveRecord::Base
 	
 
 	def as_json(option={})
-		{
-			:catalog_name => "Catalog " + self.id.to_s,
-			:programs => self.programs.as_json
-		}
-
+		if self.has_programs?
+			{
+				:name => "Catalog " + self.id.to_s,
+				:programs => self.programs.as_json
+			}
+		else
+			{
+				:name => "Catalog " +self.id.to_s,
+ 			}
+ 		end
 	end
+
 	def upload(data)
 		if data[:data]
 			uploaded_io = data[:data]
@@ -56,6 +62,9 @@ class Catalog < ActiveRecord::Base
 	end
 
 
+	def has_programs?
+		self.programs.count > 0
+	end
 
 	def create_doc
 		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"

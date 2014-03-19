@@ -18,12 +18,33 @@ class Program < ActiveRecord::Base
 		end
 	end
 
+	def has_modules?
+		self.p_modules.count > 0
+	end
+
+	def has_courses?
+		self.courses.count > 0
+	end
+
 	def as_json(option={})
-		{
-			:name => self.properties.main.value,
-			:modules => self.p_modules.as_json,
-			:courses => self.courses.as_json
-		}
+		if self.has_modules? and self.has_courses?
+			{
+				:name => self.properties.main.value,
+				:modules => self.p_modules.as_json,
+				:courses => self.courses.as_json			
+			}
+		elsif self.has_modules? and ! self.has_courses?
+			{
+				:name => self.properties.main.value,
+				:modules => self.p_modules.as_json
+			}
+		elsif !self.has_modules? and self.has_courses?
+			{
+				:name => self.properties.main.value,
+				:courses => self.courses.as_json
+			}
+		end
+			
 	end
 
 

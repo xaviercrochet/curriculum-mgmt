@@ -18,11 +18,21 @@ class SubModule < ActiveRecord::Base
 		end
 	end
 
+	def has_courses?
+		self.courses.count > 0
+	end
+
 	def as_json(option={})
-		{
-			:name => self.properties.main.value,
-			:courses => self.courses.as_json
-		}
+		if self.has_courses?
+			{
+				:name => self.properties.main.value,
+				:courses => self.courses.as_json
+			}
+		else
+			{
+				:name => self.properties.main.value
+			}
+		end
 	end
 
 
