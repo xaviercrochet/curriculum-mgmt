@@ -42,7 +42,7 @@ gem 'bcrypt-ruby'
 gem 'nokogiri'
 gem 'paperclip'
 gem 'spreadsheet'
-
+gem "d3js-rails", "~> 3.1.6"
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 

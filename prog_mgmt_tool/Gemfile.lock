@@ -41,6 +41,8 @@ GEM
       execjs
     coffee-script-source (1.7.0)
     commonjs (0.2.7)
+    d3js-rails (3.1.6)
+      railties (>= 3.0, < 5.0)
     erubis (2.7.0)
     execjs (2.0.2)
     haml (4.0.5)
@@ -149,6 +151,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt-ruby
   coffee-rails (~> 4.0.0)
+  d3js-rails (~> 3.1.6)
   haml
   haml-rails (>= 0.3.4)
   jbuilder (~> 1.2)
