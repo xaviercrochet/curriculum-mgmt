@@ -28,10 +28,10 @@ class CatalogsController < ApplicationController
 
 	def show
 		@catalog = Catalog.find(params[:id])
-		respond_to do |format|
-			format.html
-			format.json {render json: @catalog}
+		File.open("coucou.json",  "w+") do |f|
+			f.write(@catalog.as_json)
 		end
+
 	end
 
 	def upload

@@ -45,6 +45,9 @@ GEM
       railties (>= 3.1)
     erubis (2.7.0)
     execjs (2.0.2)
+    gon (5.0.4)
+      actionpack (>= 2.3.0)
+      json
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -152,6 +155,7 @@ DEPENDENCIES
   bcrypt-ruby
   coffee-rails (~> 4.0.0)
   d3-rails
+  gon
   haml
   haml-rails (>= 0.3.4)
   jbuilder (~> 1.2)

@@ -30,18 +30,18 @@ class Program < ActiveRecord::Base
 		if self.has_modules? and self.has_courses?
 			{
 				:name => self.properties.main.value,
-				:modules => self.p_modules.as_json,
-				:courses => self.courses.as_json			
+				:children => self.p_modules.as_json,
+				:children => self.courses.as_json			
 			}
 		elsif self.has_modules? and ! self.has_courses?
 			{
 				:name => self.properties.main.value,
-				:modules => self.p_modules.as_json
+				:children => self.p_modules.as_json
 			}
 		elsif !self.has_modules? and self.has_courses?
 			{
 				:name => self.properties.main.value,
-				:courses => self.courses.as_json
+				:children => self.courses.as_json
 			}
 		end
 			

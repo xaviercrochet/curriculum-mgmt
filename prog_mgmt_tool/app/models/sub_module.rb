@@ -26,7 +26,7 @@ class SubModule < ActiveRecord::Base
 		if self.has_courses?
 			{
 				:name => self.properties.main.value,
-				:courses => self.courses.as_json
+				:children => self.courses.as_json
 			}
 		else
 			{

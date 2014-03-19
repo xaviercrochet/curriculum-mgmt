@@ -1,3 +1,5 @@
+
+
 margin =
   top: 30
   right: 20
@@ -20,8 +22,8 @@ diagonal = d3.svg.diagonal().projection((d) ->
     d.x
   ]
 )
-d3.select("body").select("container").append("<h1>TEST</H1>")
-svg = d3.select("body").append("svg").attr("width", width + margin.left + margin.right).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+svg = d3.select("div.span9").append("svg").attr("width", width + margin.left + margin.right).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 d3.json "/assets/flare.json", (error, flare) ->
   flare.x0 = 0
   flare.y0 = 0
@@ -29,7 +31,7 @@ d3.json "/assets/flare.json", (error, flare) ->
   return
 
 update = (source) ->
-  
+
   # Compute the flattened node list. TODO use d3.layout.hierarchy.
   nodes = tree.nodes(root)
   height = Math.max(500, nodes.length * barHeight + margin.top + margin.bottom)

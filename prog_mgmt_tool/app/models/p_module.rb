@@ -32,18 +32,18 @@ class PModule < ActiveRecord::Base
 		if self.has_sub_modules? and self.has_courses?
 			{
 				:name => self.properties.main.value,
-				:sub_modules => self.sub_modules.as_json,
-				:courses => self.courses.as_json
+				:children => self.sub_modules.as_json,
+				:children => self.courses.as_json
 			}
 		elsif self.has_sub_modules? and ! self.has_courses?
 			{
 				:name => self.properties.main.value,
-				:sub_modules => self.sub_modules.as_json
+				:children => self.sub_modules.as_json
 			}
 		elsif ! self.has_sub_modules? and self.has_courses?
 			{
 				:name => self.properties.main.value,
-				:courses => self.courses.as_json
+				:children => self.courses.as_json
 			}
 		end
 

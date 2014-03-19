@@ -18,7 +18,7 @@ class Catalog < ActiveRecord::Base
 		if self.has_programs?
 			{
 				:name => "Catalog " + self.id.to_s,
-				:programs => self.programs.as_json
+				:children => self.programs.as_json
 			}
 		else
 			{

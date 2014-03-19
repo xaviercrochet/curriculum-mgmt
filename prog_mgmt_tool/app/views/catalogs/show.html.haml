@@ -1,20 +1,25 @@
-%script{:src => '/assets/test.js.coffee'}
-%h1 Catalog
-%p
-	%strong
-		Faculty:
-		= @catalog.faculty
-%p
-	%strong
-		Department:
-		= @catalog.department
+.row
+	.span9
+		%h1 Catalog
+		%p
+			%strong
+				Faculty:
+				= @catalog.faculty
+		%p
+			%strong
+				Department:
+				= @catalog.department
 
-%h3 Upload Infos
-= form_for @catalog, :url => catalog_catalog_upload_path(@catalog) do |f|
-	%p
-		= f.file_field :data
-	%p
-		= f.submit
+		%h3 Upload Infos
+		= form_for @catalog, :url => catalog_catalog_upload_path(@catalog) do |f|
+			%p
+				= f.file_field :data
+			%p
+				= f.submit
+		= link_to 'Programs', catalog_programs_path(@catalog)
+	.span9
+		%h3 Catalog Overview
+		%script{:src => '/assets/test.js.coffee'}
 
 
 	
