@@ -27,6 +27,8 @@ class Catalog < ActiveRecord::Base
  		end
 	end
 
+
+
 	def upload(data)
 		if data[:data]
 			uploaded_io = data[:data]

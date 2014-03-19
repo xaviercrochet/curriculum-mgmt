@@ -24,7 +24,7 @@ diagonal = d3.svg.diagonal().projection((d) ->
 )
 
 svg = d3.select("div.span9").append("svg").attr("width", width + margin.left + margin.right).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-d3.json "/assets/flare.json", (error, flare) ->
+d3.json "/assets/coucou.json", (error, flare) ->
   flare.x0 = 0
   flare.y0 = 0
   update root = flare
