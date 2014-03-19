@@ -18,5 +18,13 @@ class Program < ActiveRecord::Base
 		end
 	end
 
+	def as_json(option={})
+		{
+			:name => self.properties.main.value,
+			:modules => self.p_modules.as_json,
+			:courses => self.courses.as_json
+		}
+	end
+
 
 end

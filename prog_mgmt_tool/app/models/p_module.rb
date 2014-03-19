@@ -19,4 +19,12 @@ class PModule < ActiveRecord::Base
 			self.properties.create(:p_type => key.to_s, :value => value.to_s)
 		end
 	end
+
+	def as_json(option={})
+		{
+			:name => self.properties.main.value,
+			:sub_modules => self.sub_modules.as_json,
+			:courses => self.courses.as_json
+		}
+	end
 end

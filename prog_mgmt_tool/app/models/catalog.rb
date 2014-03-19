@@ -14,6 +14,13 @@ class Catalog < ActiveRecord::Base
 	has_many :constraint_types, dependent: :destroy
 	
 
+	def as_json(option={})
+		{
+			:catalog_name => "Catalog " + self.id.to_s,
+			:programs => self.programs.as_json
+		}
+
+	end
 	def upload(data)
 		if data[:data]
 			uploaded_io = data[:data]
@@ -206,6 +213,8 @@ class Catalog < ActiveRecord::Base
 			p element.to_string
 		end
 	end
+
+
 
 end
 

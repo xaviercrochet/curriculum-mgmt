@@ -18,4 +18,12 @@ class SubModule < ActiveRecord::Base
 		end
 	end
 
+	def as_json(option={})
+		{
+			:name => self.properties.main.value,
+			:courses => self.courses.as_json
+		}
+	end
+
+
 end

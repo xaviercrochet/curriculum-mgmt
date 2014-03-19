@@ -28,10 +28,9 @@ class CatalogsController < ApplicationController
 
 	def show
 		@catalog = Catalog.find(params[:id])
-		data = @catalog.programs
 		respond_to do |format|
 			format.html
-			format.json {render json: programs.to_json}
+			format.json {render json: @catalog}
 		end
 	end
 

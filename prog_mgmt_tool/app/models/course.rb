@@ -53,5 +53,11 @@ class Course < ActiveRecord::Base
     properties.each do |key, value|
       self.properties.create(:p_type => key.to_s, :value => value.to_s)
     end
+  end
+
+  def as_json(option={})
+    {
+      :name => self.properties.main.value
+    }
   end 
 end
