@@ -4,4 +4,5 @@ class Property < ActiveRecord::Base
 		self.p_type = p_type.upcase
 		self.value = value.upcase
 	}
+	scope :main, -> {where(:primary => true)}
 end

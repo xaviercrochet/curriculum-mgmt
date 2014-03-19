@@ -8,6 +8,8 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.new
 	end
 
+
+
 	def download
 		@catalog = Catalog.find(params[:catalog_id])
 		@catalog.create_doc
@@ -26,6 +28,11 @@ class CatalogsController < ApplicationController
 
 	def show
 		@catalog = Catalog.find(params[:id])
+		data = @catalog.programs
+		respond_to do |format|
+			format.html
+			format.json {render json: programs.to_json}
+		end
 	end
 
 	def upload

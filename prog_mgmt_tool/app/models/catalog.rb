@@ -99,7 +99,7 @@ class Catalog < ActiveRecord::Base
 		nodes.each do |node|
 			if node.get_is_group? and ! node.has_parent? and ! node.get_is_constraint?
 				p = self.programs.create
-				p.properties.create(:p_type => 'name', :value => node.get_name)
+				p.properties.create(:p_type => 'name', :value => node.get_name, :primary => true)
 				programs[node.get_id] = {"real_id" => p.id}
 			end
 		end
@@ -114,7 +114,7 @@ class Catalog < ActiveRecord::Base
 				if ! program.nil?
 					p = self.programs.find(program['real_id'].to_i)
 					m = p.p_modules.create(:catalog_id => self.id)
-					m.properties.create(:p_type => 'name', :value => node.get_name)
+					m.properties.create(:p_type => 'name', :value => node.get_name, :primary => true)
 					modules[node.get_id] = {"real_id" => m.id}
 				end
 			end
@@ -131,7 +131,7 @@ class Catalog < ActiveRecord::Base
 				if ! m.nil?
 					pm = PModule.find(m['real_id'].to_i)
 					sub_module = pm.sub_modules.create(:catalog_id => self.id)
-					sub_module.properties.create(:p_type => 'name', :value => node.get_name)
+					sub_module.properties.create(:p_type => 'name', :value => node.get_name, :primary => true)
 					sub_modules[node.get_id] = {"real_id" => sub_module.id}
 				end
 			end
@@ -169,7 +169,7 @@ class Catalog < ActiveRecord::Base
 				course = block.courses.new
 				course.catalog_id = self.id
 				course.save
-				course.properties.create(:p_type => 'sigle', :value => node.get_name)
+				course.properties.create(:p_type => 'sigle', :value => node.get_name, :primary => true)
 				courses[node.get_id] = {"real_id" => course.id}
 			end
 		end

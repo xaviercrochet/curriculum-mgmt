@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315112449) do
+ActiveRecord::Schema.define(version: 20140319155049) do
 
   create_table "catalogs", force: true do |t|
     t.string   "faculty"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20140315112449) do
     t.string   "entity_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "primary",     default: false
   end
 
   create_table "semesters", force: true do |t|
