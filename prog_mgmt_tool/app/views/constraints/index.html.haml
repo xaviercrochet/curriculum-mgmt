@@ -3,37 +3,47 @@
 %h4 Prerequisites
 - @binary_prerequisites.each do |c|
 	- pairs = c.pairs
-		- pairs.each do |p|
+	- pairs.each do |p|
 		- course = p.course
 		%p= course.properties.first.value
 
 %h4 Corequisites
 - @binary_corequisites.each do |c|
 	- pairs = c.pairs
-		- pairs.each do |p|
+	- pairs.each do |p|
 		- course = p.course
 		%p= course.properties.first.value
 
-%h4 One of the following courses has to be followed before (Prerequisite - OR)
-- @or_corequisites.each do |c|
-	- pairs = c.pairs
-	- course = p.course
-	%p= course.properties.first.value
-
-%h4 One and only One of the following courses has to be followed (Prerequisite - X-OR)
-- @xor_prerequisites.each do |c|
-	- pairs = c.pairs
-	- course = p.course
-	%p = course.properties.first.value
-
-%h4 One of the following courses has to be followed together (Corequisites - OR)
-- @or_corequisites.each do |c|
-	- pairs = c.pairs
-	- course = p.course
-	%p = course.properties.first.value
-
-%h4 One and only One of the following courses has to be followed together(Corequisites - X-OR)
+%h4 Xor-Corequisites
 - @xor_corequisites.each do |c|
 	- pairs = c.pairs
-	- course = p.course
-	%p = course.properties.first.value
+	- if ! pairs.nil?
+		- pairs.each do |p|
+			- course = p.course
+			%p= course.properties.first.value
+
+%h4 Or-Corequisites
+- @or_corequisites.each do |c|
+	- pairs = c.pairs
+	- if ! pairs.nil?
+		- pairs.each do |p|
+			- course = p.course
+			%p= course.properties.first.value
+
+%h4 Or-Prerequisites
+- @or_prerequisites.each do |c|
+	- pairs = c.pairs
+	- if ! pairs.nil?
+		- pairs.each do |p|
+			- course = p.course
+			%p= course.properties.first.value
+
+%h4 Xor-Prerequisites
+- @xor_prerequisites.each do |c|
+	- pairs = c.pairs
+	- if ! pairs.nil?
+		- pairs.each do |p|
+			- course = p.course
+			%p= course.properties.first.value
+
+
