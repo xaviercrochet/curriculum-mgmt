@@ -18,4 +18,10 @@ class Constraint < ActiveRecord::Base
 		constraint
 	end
 
+	def pairs
+		if self.role.eql? 'OUT'
+			self.constraint_set.constraints.in
+		end
+	end
+
 end
