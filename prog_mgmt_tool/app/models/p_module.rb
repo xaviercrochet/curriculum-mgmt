@@ -30,10 +30,11 @@ class PModule < ActiveRecord::Base
 
 	def as_json(option={})
 		if self.has_sub_modules? and self.has_courses?
+			childrens = self.courses.as_json + self.sub_modules.as_json
 			{
 				:name => self.properties.main.value,
-				:children => self.sub_modules.as_json,
-				:children => self.courses.as_json
+				:children => childrens 
+				
 			}
 		elsif self.has_sub_modules? and ! self.has_courses?
 			{
