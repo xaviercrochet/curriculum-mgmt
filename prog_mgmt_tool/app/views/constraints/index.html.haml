@@ -1,0 +1,20 @@
+%h1 Listing course constraints
+
+%h4 Prerequisites
+- @binary_prerequisites.each do |c|
+	- pairs = c.pairs
+		- pairs.each do |p|
+		- course = p.course
+		%p= course.properties.first.value
+
+%h4 Corequisites
+- @binary_corequisites.each do |c|
+	- paris = c.pairs
+		- pairs.each do |p|
+		- course = p.course
+		%p= course.properties.first.value
+
+%h4 One of the following courses has to be followed before (Prerequisite - OR)
+%h4 One and only One of the following courses has to be followed (Prerequisite - X-OR)
+%h4 One of the following courses has to be followed together (Prerequisite - OR)
+%h4 One and only One of the following courses has to be followed together(Prerequisite - X-OR)
