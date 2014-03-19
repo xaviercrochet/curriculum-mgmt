@@ -16,7 +16,8 @@
 				= f.file_field :data
 			%p
 				= f.submit
-		= link_to 'Programs', catalog_programs_path(@catalog)
+		- if @catalog.has_programs?
+			= link_to 'Programs', catalog_programs_path(@catalog)
 	.span9
 		%h3 Catalog Overview
 		%script{:src => '/assets/test.js.coffee'}

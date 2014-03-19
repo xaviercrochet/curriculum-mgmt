@@ -4,5 +4,6 @@
 			= p.p_type + ":"
 		= p.value
 
-= link_to 'Courses', sub_module_courses_path(@sub_module)
+- if @sub_module.has_courses?
+	= link_to 'Courses', sub_module_courses_path(@sub_module)
 = link_to 'Back', p_module_sub_modules_path(@p_module)
