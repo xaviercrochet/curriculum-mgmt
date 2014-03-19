@@ -18,7 +18,24 @@ class Course < ActiveRecord::Base
 
   def binary_corequisites
        constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'COREQUISITE'}, :constraint_set_types => {:name => 'BINARY'})
+  end
 
+  def xor_prerequisites
+      constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'PREREQUISITE'}, :constraint_set_types => {:name => 'X'})
+
+  end
+
+  def xor_corequisites
+    constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'COREQUISITE'}, :constraint_set_types => {:name => 'X'})
+
+  end
+
+  def or_prerequisites
+    constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'PREREQUISITE'}, :constraint_set_types => {:name => 'OR'})
+  end
+
+  def or_corequisites
+    constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'COREQUISITE'}, :constraint_set_types => {:name => 'X'})
   end
 
   def binary_prerequisites

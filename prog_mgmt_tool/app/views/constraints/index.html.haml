@@ -9,12 +9,31 @@
 
 %h4 Corequisites
 - @binary_corequisites.each do |c|
-	- paris = c.pairs
+	- pairs = c.pairs
 		- pairs.each do |p|
 		- course = p.course
 		%p= course.properties.first.value
 
 %h4 One of the following courses has to be followed before (Prerequisite - OR)
+- @or_corequisites.each do |c|
+	- pairs = c.pairs
+	- course = p.course
+	%p= course.properties.first.value
+
 %h4 One and only One of the following courses has to be followed (Prerequisite - X-OR)
-%h4 One of the following courses has to be followed together (Prerequisite - OR)
-%h4 One and only One of the following courses has to be followed together(Prerequisite - X-OR)
+- @xor_prerequisites.each do |c|
+	- pairs = c.pairs
+	- course = p.course
+	%p = course.properties.first.value
+
+%h4 One of the following courses has to be followed together (Corequisites - OR)
+- @or_corequisites.each do |c|
+	- pairs = c.pairs
+	- course = p.course
+	%p = course.properties.first.value
+
+%h4 One and only One of the following courses has to be followed together(Corequisites - X-OR)
+- @xor_corequisites.each do |c|
+	- pairs = c.pairs
+	- course = p.course
+	%p = course.properties.first.value
