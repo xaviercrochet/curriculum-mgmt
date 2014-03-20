@@ -72,7 +72,7 @@ update = (source) ->
   ).style("opacity", 1e-6).remove()
   
   # Update the links…
-  link = svg.selectAll("path.link").data(tree.links(nodes), (d) ->
+  ###link = svg.selectAll("path.link").data(tree.links(nodes), (d) ->
     d.target.id
   )
   
@@ -101,7 +101,7 @@ update = (source) ->
       source: o
       target: o
 
-  ).remove()
+  ).remove()###
   
   # Stash the old positions for transition.
   nodes.forEach (d) ->
@@ -122,4 +122,4 @@ click = (d) ->
   update d
   return
 color = (d) ->
-  (if d._children then "#3182bd" else (if d.children then "#c6dbef" else "#fd8d3c"))
+  (if d._children then "#428bca" else (if d.children then "#333" else "#5cb85c"))

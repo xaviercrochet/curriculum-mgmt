@@ -13,6 +13,10 @@ class XlsReader
 		sheet.row(0)
 	end
 
+	def self.meta_header(sheet)
+		sheet.row(1)
+	end
+
 	
 
 	def parse_sheet(name, resource_indentifier)
