@@ -13,7 +13,7 @@ class CatalogsController < ApplicationController
 	def download
 		@catalog = Catalog.find(params[:catalog_id])
 		@catalog.create_doc
-		redirect_to @catalog
+		send_file @catalog.ss_filename, :type => 'application/vnd.ms-excel', :filename => @catalog.ss_filename
 	end
 
 	def create

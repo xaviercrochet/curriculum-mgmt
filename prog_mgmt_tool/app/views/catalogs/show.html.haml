@@ -18,6 +18,7 @@
 				= f.submit
 		- if @catalog.has_programs?
 			= link_to 'Programs', catalog_programs_path(@catalog)
+		= link_to 'Download Catalog Infos', catalog_catalog_download_path(@catalog)
 	.span9
 		%h3 Catalog Overview
 		%script{:src => '/assets/test.js.coffee'}

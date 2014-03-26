@@ -69,6 +69,10 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def create_doc
+		if ! self.ss_filename.nil?
+			File.delete(self.ss_filename)
+		end
+		
 		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.ss_filename = filename
 		self.save
