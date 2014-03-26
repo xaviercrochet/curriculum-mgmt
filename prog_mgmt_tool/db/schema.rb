@@ -49,7 +49,8 @@ ActiveRecord::Schema.define(version: 20140319155049) do
   add_index "constraint_types", ["catalog_id"], name: "index_constraint_types_on_catalog_id"
 
   create_table "constraints", force: true do |t|
-    t.integer  "course_id"
+    t.integer  "entity_id"
+    t.string   "entity_type"
     t.string   "role"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -59,7 +60,6 @@ ActiveRecord::Schema.define(version: 20140319155049) do
 
   add_index "constraints", ["constraint_set_id"], name: "index_constraints_on_constraint_set_id"
   add_index "constraints", ["constraint_type_id"], name: "index_constraints_on_constraint_type_id"
-  add_index "constraints", ["course_id"], name: "index_constraints_on_course_id"
 
   create_table "course_entities", force: true do |t|
     t.string   "year"

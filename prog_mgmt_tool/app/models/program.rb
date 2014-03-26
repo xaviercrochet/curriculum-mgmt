@@ -2,6 +2,7 @@ class Program < ActiveRecord::Base
 	has_many :p_modules, dependent: :destroy
 	has_many :properties, as: :entity, dependent: :destroy
 	has_many :courses, as: :block, dependent: :destroy
+	has_many :constraints, :as => :entity, dependent: :destroy
 	belongs_to :catalog
 
 	def self.find_by_property(property_type, property_value, catalog)
@@ -57,7 +58,7 @@ class Program < ActiveRecord::Base
 	end
 
 	def self.constraints_header
-		["NAME", "MIN", "MAX", "CREDITS"]
+		["NAME", "MIN", "MAX"]
 	end
  	
  	def properties_to_hash

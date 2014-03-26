@@ -113,6 +113,10 @@ class Catalog < ActiveRecord::Base
 		sub_modules
 	end
 
+	def parse_constraints_for_model(entity_model, entity_identificator, parser)
+		
+	end
+
 	def parse_spreadsheet_for_model(entity_model, entity_identificator, parser)
 		entities = parser.parse_sheet(entity_model.to_s.pluralize.upcase, entity_identificator.upcase)
 		if ! entities.nil?

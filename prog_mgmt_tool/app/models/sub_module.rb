@@ -3,6 +3,7 @@ class SubModule < ActiveRecord::Base
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :courses, as: :block, dependent: :destroy
+  has_many :constraints, :as => :entity, dependent: :destroy
 
 	def self.find_by_property(property_type, property_value, catalog)
 		catalog.sub_modules.includes(:properties).where('property.p_type' => property_type, 'property.value' => property_value).first
@@ -44,7 +45,7 @@ class SubModule < ActiveRecord::Base
 		end
 	end
 	def self.constraints_header
-		["NAME", "MIN", "MAX", "CREDITS"]
+		["NAME", "MIN", "MAX"]
 	end
 
 	def properties_to_hash

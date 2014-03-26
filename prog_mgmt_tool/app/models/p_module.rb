@@ -4,6 +4,7 @@ class PModule < ActiveRecord::Base
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :courses, as: :block, dependent: :destroy
   has_many :sub_modules, dependent: :destroy
+  has_many :constraints, :as => :entity, dependent: :destroy
 
 
 	def self.find_by_property(property_type, property_value, catalog)
@@ -38,7 +39,7 @@ class PModule < ActiveRecord::Base
 	end
 
 	def self.constraints_header
-		["NAME", "MIN", "MAX", "CREDITS"]
+		["NAME", "MIN", "MAX"]
 	end
 
 	def as_json(option={})
