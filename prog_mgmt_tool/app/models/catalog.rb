@@ -14,6 +14,8 @@ class Catalog < ActiveRecord::Base
 	has_many :constraint_types, dependent: :destroy
 	
 
+
+
 	def as_json(option={})
 		if self.has_programs?
 			{
@@ -43,7 +45,7 @@ class Catalog < ActiveRecord::Base
 
 	def upload_spreadsheet(data)
 		if !self.ss_filename.nil?
-			File.delete(self.ss_filename)
+			File.delete(self.ss_filename) if File.exists?(self.ss_filename)
 		end
 		self.ss_filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.save 
@@ -70,8 +72,10 @@ class Catalog < ActiveRecord::Base
 
 	def create_doc
 		if ! self.ss_filename.nil?
-			File.delete(self.ss_filename)
+			File.delete(self.ss_filename) if File.exists?(self.ss_filename)
 		end
+
+
 
 		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.ss_filename = filename
@@ -86,6 +90,24 @@ class Catalog < ActiveRecord::Base
 	
 
 	private
+
+	def entities_to_hash(collection)
+		entities = Array.new
+		collection.each do |element|
+			entities.push(element.properties_to_hash)
+		end
+		entities
+	end
+
+	def build_sub_modules_catalog
+		@sub_module_header = Array.new
+		sub_modules = Array.new
+		self.sub_modules.each do |m|
+			update_header(@sub_module_header, m.properties)
+			sub_modules.push(m.properties_to_hash)
+		end
+		sub_modules
+	end
 
 	def parse_spreadsheet_for_model(entity_model, entity_identificator, parser)
 		entities = parser.parse_sheet(entity_model.to_s.pluralize.upcase, entity_identificator.upcase)
@@ -108,12 +130,13 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
+
 	def create_spreadsheets(parser)
-		parser.create_spreadsheet(self.courses, 'Courses')
+		parser.create_spreadsheet(entities_to_hash(self.courses), 'Courses')
 		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(p_modules, 'Modules')
+		parser.create_spreadsheet(entities_to_hash(p_modules), 'Modules')
 		sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(sub_modules, 'Sub Modules')
+		parser.create_spreadsheet(entities_to_hash(sub_modules), 'Sub Modules')
 	end
 
 	def create_programs(nodes)

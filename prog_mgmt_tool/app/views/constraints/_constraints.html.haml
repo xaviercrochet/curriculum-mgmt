@@ -1,0 +1,6 @@
+- constraints.each do |c|
+	- pairs = c.pairs
+	- if ! pairs.nil?
+		- pairs.each do |p|
+			- course = p.course
+			%p= course.name

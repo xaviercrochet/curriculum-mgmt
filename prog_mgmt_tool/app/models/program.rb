@@ -46,6 +46,13 @@ class Program < ActiveRecord::Base
 		end
 			
 	end
-
+ 	
+ 	def properties_to_hash
+    props = Hash.new
+    self.properties.each do |p|
+      props[p.p_type.to_s] = p.value.to_s
+    end
+    props
+  end
 
 end

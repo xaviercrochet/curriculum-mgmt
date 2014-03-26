@@ -1,49 +1,30 @@
-%h1 Listing course constraints
+%h1 
+	Listing
+	= @course.name 
+	constraints
 
-%h4 Prerequisites
-- @binary_prerequisites.each do |c|
-	- pairs = c.pairs
-	- pairs.each do |p|
-		- course = p.course
-		%p= course.properties.first.value
+- if @binary_prerequisites.count > 0
+	%h4 Prerequisites
+	= render 'constraints', constraints: @binary_prerequisites
 
-%h4 Corequisites
-- @binary_corequisites.each do |c|
-	- pairs = c.pairs
-	- pairs.each do |p|
-		- course = p.course
-		%p= course.properties.first.value
+- if @binary_corequisites.count > 0
+	%h4 Corequisites
+	= render 'constraints', constraints: @binary_corequisites
 
-%h4 Xor-Corequisites
-- @xor_corequisites.each do |c|
-	- pairs = c.pairs
-	- if ! pairs.nil?
-		- pairs.each do |p|
-			- course = p.course
-			%p= course.properties.first.value
+- if @xor_corequisites.count > 0
+	%h4 Xor Corequisites
+	= render 'constraints', constraints: @xor_corequisites
 
-%h4 Or-Corequisites
-- @or_corequisites.each do |c|
-	- pairs = c.pairs
-	- if ! pairs.nil?
-		- pairs.each do |p|
-			- course = p.course
-			%p= course.properties.first.value
+- if @or_corequisites.count > 0
+	%h4 Or Corequisites
+	= render 'constraints', constraints: @or_corequisites
 
-%h4 Or-Prerequisites
-- @or_prerequisites.each do |c|
-	- pairs = c.pairs
-	- if ! pairs.nil?
-		- pairs.each do |p|
-			- course = p.course
-			%p= course.properties.first.value
+- if @or_prerequisites.count > 0
+	%h4 Or Prerequisites
+	= render 'constraints', constraints: @or_prerequisites
 
-%h4 Xor-Prerequisites
-- @xor_prerequisites.each do |c|
-	- pairs = c.pairs
-	- if ! pairs.nil?
-		- pairs.each do |p|
-			- course = p.course
-			%p= course.properties.first.value
+- if @xor_prerequisites.count > 0
+	%h4 XOr Prerequisites
+	= render 'constraints', constraints: @xor_prerequisites
 
 

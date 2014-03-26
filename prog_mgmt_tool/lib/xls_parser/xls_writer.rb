@@ -19,7 +19,7 @@ class XlsWriter
 		header.default_format = Spreadsheet::Format.new :weight => :bold
 		collection.each do |c|
 			row = sheet.row(i)
-			write_properties(c.properties, row, header)
+			write_properties(c, row, header)
 			i = i + 1
 		end
 		@book.write(@filename)
@@ -33,8 +33,8 @@ class XlsWriter
 	private
 
 	def write_properties(properties, row, header)
-		properties.each do |p|
-			row[build_header(p.p_type, header)] = p.value
+		properties.each do |key, value|
+			row[build_header(key, header)] = value
 		end
 	end
 
