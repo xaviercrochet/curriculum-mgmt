@@ -58,7 +58,6 @@ class XlsReader
 			end
 			i = i + 1
 		end
-		p "line extracted : "+line.to_s
 		line
 
 	end

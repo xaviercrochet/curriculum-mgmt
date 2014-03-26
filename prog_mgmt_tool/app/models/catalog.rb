@@ -152,7 +152,6 @@ class Catalog < ActiveRecord::Base
 		nodes.each do |node|
 			if node.get_is_group? and ! node.has_parent? and ! node.get_is_constraint?
 				p = self.programs.create
-				p node.get_name
 				p.properties.create(:p_type => 'name', :value => node.get_name, :primary => true)
 				programs[node.get_id] = {"real_id" => p.id}
 			end
@@ -181,7 +180,6 @@ class Catalog < ActiveRecord::Base
 		nodes.each do |node|
 			if node.get_is_group? and ! node.get_is_constraint? and node.has_parent? and node.get_parent.has_parent?
 				m = modules[node.get_gid]
-				p "MODULE : " + m.to_s
 				if ! m.nil?
 					pm = PModule.find(m['real_id'].to_i)
 					sub_module = pm.sub_modules.create(:catalog_id => self.id)
@@ -195,8 +193,6 @@ class Catalog < ActiveRecord::Base
 
 	def get_course_block(node, programs, modules, sub_modules)
 		
-		p "Looking block for: " + node.get_name
-
 		if ! programs[node.get_gid].nil?
 			block = self.programs.find(programs[node.get_gid]['real_id'].to_i)
 		
@@ -218,7 +214,6 @@ class Catalog < ActiveRecord::Base
 		nodes.each do |node|
 			
 			if ! node.get_is_group? and ! node.get_is_constraint?
-				p node.get_name + " - " + node.get_gid.to_s
 				block = get_course_block(node, programs, modules, sub_modules)
 				course = block.courses.new
 				course.catalog_id = self.id
@@ -245,7 +240,6 @@ class Catalog < ActiveRecord::Base
 		edges = parser.get_edges
 		print_collection(edges)
 		programs = create_programs(nodes)
-		p programs.size.to_s
 		modules = create_modules(programs, nodes)
 		sub_modules = create_sub_modules(modules, nodes)
 		courses = create_courses(programs, modules, sub_modules, nodes)

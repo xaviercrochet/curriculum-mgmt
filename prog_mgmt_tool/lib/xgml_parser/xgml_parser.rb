@@ -17,7 +17,6 @@ class XgmlParser
 
 	def initialize(filename)
 		if File.exist?(filename)
-			p "File : "+filename.to_s+ " found!"
 			graph = File.open(filename)
 			@nodes = Array.new
 			@edges = Array.new

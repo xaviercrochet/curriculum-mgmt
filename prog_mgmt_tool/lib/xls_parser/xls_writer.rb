@@ -58,16 +58,12 @@ class XlsWriter
 	#If Property Type doesn't exist, insert it.
 	def build_header(property_type, header)
 		i = 0
-		p "Handling " + property_type
 		header.each do |element|
 			
 			if ! element.eql? property_type
-				p property_type
 				i = i +1
 
 			else
-				p "Matching element found in header : "+element
-				p "Returning position : "+i.to_s
 				return i
 			end
 		end
