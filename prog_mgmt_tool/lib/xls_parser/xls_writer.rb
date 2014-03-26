@@ -25,6 +25,23 @@ class XlsWriter
 		@book.write(@filename)
 	end
 
+	def create_empty_spreadsheet(header, names, sheet_name)
+		sheet = @book.create_worksheet :name => sheet_name.to_s.upcase
+		sheet.row(0).default_format = Spreadsheet::Format.new :weight => :bold
+		i = 0
+		header.each do |element|
+			sheet.row(0)[i] = element.to_s
+			i = i + 1
+		end
+		i = 1
+
+		names.each do |n|
+			sheet.row(i)[0] = n
+			i = i + 1
+		end
+		@book.write(@filename)
+	end
+
 
 	def get_book
 		@book

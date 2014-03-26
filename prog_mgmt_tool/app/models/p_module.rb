@@ -20,12 +20,25 @@ class PModule < ActiveRecord::Base
 		end
 	end
 
+	def name
+		p = self.properties.where(:p_type => 'NAME').first
+		if p.nil?
+			self.properties.first.value
+		else
+			p.value
+		end
+	end
+
 	def has_sub_modules?
 		self.sub_modules.count > 0
 	end
 
 	def has_courses?
 		self.courses.count > 0
+	end
+
+	def self.constraints_header
+		["NAME", "MIN", "MAX", "CREDITS"]
 	end
 
 	def as_json(option={})

@@ -91,10 +91,14 @@ class Catalog < ActiveRecord::Base
 
 	private
 
-	def entities_to_hash(collection)
+	def entities_to_hash(collection, alldata)
 		entities = Array.new
 		collection.each do |element|
-			entities.push(element.properties_to_hash)
+			if alldata
+				entities.push(element.properties_to_hash)
+			else
+				entities.push(element.name)
+			end
 		end
 		entities
 	end
@@ -131,12 +135,16 @@ class Catalog < ActiveRecord::Base
 	end
 
 
+
 	def create_spreadsheets(parser)
-		parser.create_spreadsheet(entities_to_hash(self.courses), 'Courses')
+		parser.create_spreadsheet(entities_to_hash(self.courses, true), 'Courses')
 		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(entities_to_hash(p_modules), 'Modules')
+		parser.create_spreadsheet(entities_to_hash(p_modules, true), 'Modules')
 		sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(entities_to_hash(sub_modules), 'Sub Modules')
+		parser.create_spreadsheet(entities_to_hash(sub_modules, true), 'Sub Modules')
+		parser.create_empty_spreadsheet(PModule.constraints_header, entities_to_hash(p_modules, false), 'Module Constraints')
+		parser.create_empty_spreadsheet(SubModule.constraints_header, entities_to_hash(sub_modules, false), 'Sub Module Constraints')
+		parser.create_empty_spreadsheet(Program.constraints_header, entities_to_hash(programs, false), 'Program Constraints')
 	end
 
 	def create_programs(nodes)

@@ -8,6 +8,15 @@ class SubModule < ActiveRecord::Base
 		catalog.sub_modules.includes(:properties).where('property.p_type' => property_type, 'property.value' => property_value).first
 	end
 
+	def name
+		p = self.properties.where(:p_type => 'NAME').first
+		if p.nil?
+			self.properties.first.value
+		else
+			p.value
+		end
+	end
+
 	def update_properties(properties)
 		self.properties.each do |p|
 			p.destroy
@@ -33,6 +42,9 @@ class SubModule < ActiveRecord::Base
 				:name => self.properties.main.value
 			}
 		end
+	end
+	def self.constraints_header
+		["NAME", "MIN", "MAX", "CREDITS"]
 	end
 
 	def properties_to_hash

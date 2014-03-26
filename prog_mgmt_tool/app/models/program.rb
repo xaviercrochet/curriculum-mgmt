@@ -18,6 +18,15 @@ class Program < ActiveRecord::Base
 		end
 	end
 
+	def name
+		p = self.properties.where(:p_type => 'NAME').first
+		if p.nil?
+			self.properties.first.value
+		else
+			p.value
+		end
+	end
+
 	def has_modules?
 		self.p_modules.count > 0
 	end
@@ -45,6 +54,10 @@ class Program < ActiveRecord::Base
 			}
 		end
 			
+	end
+
+	def self.constraints_header
+		["NAME", "MIN", "MAX", "CREDITS"]
 	end
  	
  	def properties_to_hash
