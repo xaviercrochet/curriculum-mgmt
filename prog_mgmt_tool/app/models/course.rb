@@ -15,6 +15,15 @@ class Course < ActiveRecord::Base
   	end
   end
 
+  def name
+    p = self.properties.where(:p_type => 'SIGLE').first
+    if p.nil?
+      self.properties.first.value
+    else
+      p.value
+    end
+  end
+
 
   def binary_corequisites
        constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'COREQUISITE'}, :constraint_set_types => {:name => 'BINARY'})
@@ -57,7 +66,7 @@ class Course < ActiveRecord::Base
 
   def as_json(option={})
     {
-      :name => self.properties.main.value
+      :name => self.name
     }
   end 
 end
