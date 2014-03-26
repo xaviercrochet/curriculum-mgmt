@@ -61,17 +61,6 @@ ActiveRecord::Schema.define(version: 20140319155049) do
   add_index "constraints", ["constraint_type_id"], name: "index_constraints_on_constraint_type_id"
   add_index "constraints", ["course_id"], name: "index_constraints_on_course_id"
 
-  create_table "course_constraints", force: true do |t|
-    t.string   "constraint_type"
-    t.integer  "course_id"
-    t.integer  "second_course_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "course_constraints", ["course_id"], name: "index_course_constraints_on_course_id"
-  add_index "course_constraints", ["second_course_id"], name: "index_course_constraints_on_second_course_id"
-
   create_table "course_entities", force: true do |t|
     t.string   "year"
     t.integer  "credits"
@@ -121,12 +110,6 @@ ActiveRecord::Schema.define(version: 20140319155049) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "primary",     default: false
-  end
-
-  create_table "semesters", force: true do |t|
-    t.date     "date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "sub_modules", force: true do |t|

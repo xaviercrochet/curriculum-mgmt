@@ -72,7 +72,7 @@ class Catalog < ActiveRecord::Base
 		if ! self.ss_filename.nil?
 			File.delete(self.ss_filename)
 		end
-		
+
 		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.ss_filename = filename
 		self.save
@@ -121,6 +121,7 @@ class Catalog < ActiveRecord::Base
 		nodes.each do |node|
 			if node.get_is_group? and ! node.has_parent? and ! node.get_is_constraint?
 				p = self.programs.create
+				p node.get_name
 				p.properties.create(:p_type => 'name', :value => node.get_name, :primary => true)
 				programs[node.get_id] = {"real_id" => p.id}
 			end
