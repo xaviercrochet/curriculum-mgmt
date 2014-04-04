@@ -36,7 +36,9 @@ class CatalogsController < ApplicationController
 
 	def upload
 		@catalog = Catalog.find(params[:catalog_id])
-		@catalog.upload_spreadsheet(params[:catalog])
+		if ! params[:catalog].nil?
+			@catalog.upload_spreadsheet(params[:catalog])
+		end
 		redirect_to @catalog
 	end
 
