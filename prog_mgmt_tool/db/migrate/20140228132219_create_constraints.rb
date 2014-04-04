@@ -5,7 +5,7 @@ class CreateConstraints < ActiveRecord::Migration
       t.references :entity, polymorphic: true
       t.integer :set_id
       t.string :set_type
-      t.string :role
+      t.string :role, :default => 'NONE'
       t.string :constraint_type
 
       t.timestamps

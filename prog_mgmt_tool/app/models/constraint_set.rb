@@ -19,6 +19,15 @@ class ConstraintSet < ActiveRecord::Base
 		Constraint.create_constraint(destination, set, edge, "OUT", catalog)
 	end 
 
+	def self.create_unary_constraint_on_properties(entity, type, value)
+		set_type = ConstraintSetType.create_type("UNARY", entity.catalog)
+		set = set_type.constraint_sets.create
+		constraint_type = ConstraintType.create_type(type, entity.catalog)
+		constraint = entity.constraints.new
+		constraint.constraint_type = constraint_type
+		constraint.constraint_set = set
+		constraint.save
+	end
 
 	
 	private

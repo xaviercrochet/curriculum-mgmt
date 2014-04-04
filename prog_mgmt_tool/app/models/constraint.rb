@@ -18,9 +18,18 @@ class Constraint < ActiveRecord::Base
 		constraint
 	end
 
+	
+
+	def is_binary_corequisite?
+		self.role.eql? 'IN' and self.constraint_type.name.eql? 'COREQUISITE' and self.constraint_set.constraint_set_type.name = 'BINARY'
+	end
+
+
 	def pairs
 		if self.role.eql? 'OUT'
 			self.constraint_set.constraints.in
+		elsif self.is_binary_corequisite?
+			self.constraint_set.constraints.out
 		end
 	end
 

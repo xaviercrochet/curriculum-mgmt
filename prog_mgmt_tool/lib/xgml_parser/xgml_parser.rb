@@ -2,58 +2,58 @@ require 'nokogiri'
 require 'open-uri'
 require 'xgml_parser/xgml_node'
 require 'xgml_parser/xgml_edge'
-class XgmlParser
+module XgmlParser
+	class Parser
+			@gxml_file
+			@nodes
+			@edges
 
-		@gxml_file
-		@nodes
-		@edges
+			DEFAULT_ID = -1
+			DEFAULT_GID = -1
+			DEFAULT_NAME = "NONE"
+			DEFAULT_IS_GROUP = false
+			DEFAULT_IS_CONSTRAINT = false
+			DEFAULT_TYPE = "COREQUISITE"
 
-		DEFAULT_ID = -1
-		DEFAULT_GID = -1
-		DEFAULT_NAME = "NONE"
-		DEFAULT_IS_GROUP = false
-		DEFAULT_IS_CONSTRAINT = false
-		DEFAULT_TYPE = "COREQUISITE"
-
-	def initialize(filename)
-		if File.exist?(filename)
-			graph = File.open(filename)
-			@nodes = Array.new
-			@edges = Array.new
-			get_nodes
-			read_xgml_file(graph)
-			graph.close
-		else
-			p "File : "+filename.to_s+ " not found!"
+		def initialize(filename)
+			if File.exist?(filename)
+				graph = File.open(filename)
+				@nodes = Array.new
+				@edges = Array.new
+				get_nodes
+				read_xgml_file(graph)
+				graph.close
+			else
+				p "File : "+filename.to_s+ " not found!"
+			end
 		end
-	end
 
-	#Return nodes of the graph. Depth is two.
-	def get_nodes
-		@nodes
-	end
-
-	def get_node(id)
-		node = get_nodes
-		node[id.to_i]
-	end
-
-	def get_edges
-		@edges
-	end
-
-	def read_xgml_file(file)
-		@gxml_file = Nokogiri::XML(file)
-		if @gxml_file.nil?
-			p "Error while opening gxml file."
+		#Return nodes of the graph. Depth is two.
+		def get_nodes
+			@nodes
 		end
-	end
 
-	def parse
-		parse_graph
-	end
+		def get_node(id)
+			node = get_nodes
+			node[id.to_i]
+		end
 
-	private
+		def get_edges
+			@edges
+		end
+
+		def read_xgml_file(file)
+			@gxml_file = Nokogiri::XML(file)
+			if @gxml_file.nil?
+				p "Error while opening gxml file."
+			end
+		end
+
+		def parse
+			parse_graph
+		end
+
+		private
 		def set_node_parents()
 			nodes = get_nodes
 			nodes.each do |node|
@@ -200,14 +200,14 @@ class XgmlParser
 			attributes = Hash.new
 
 			attributes = parse_node_attributes(graph_node)
-			node = XgmlNode.new(attributes)
+			node = XgmlParser::XgmlNode.new(attributes)
 			add_node(node)
 		end
 
 		def parse_edge(graph_edge)
 			attributes = Hash.new
 			attributes = parse_edge_attributes(graph_edge)
-			edge = XgmlEdge.new(attributes)
+			edge = XgmlParser::XgmlEdge.new(attributes)
 			add_edge(edge)
 		end
 
@@ -221,4 +221,5 @@ class XgmlParser
 			end
 			set_node_parents
 		end
+	end
 end

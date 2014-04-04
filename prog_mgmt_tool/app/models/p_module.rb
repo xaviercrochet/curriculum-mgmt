@@ -12,12 +12,16 @@ class PModule < ActiveRecord::Base
 	end
 
 	def update_properties(properties)
-		self.properties.each do |p|
-			p.destroy
-		end
-
 		properties.each do |key, value|
-			self.properties.create(:p_type => key.to_s, :value => value.to_s)
+			p = self.properties.where(:p_type => key.to_s).first
+			
+			if p.nil?
+				self.properties.create(:p_type => key.to_s, :value => value.to_s)
+			
+			else
+				p.value = value.to_s
+				p.save
+			end
 		end
 	end
 
@@ -41,6 +45,10 @@ class PModule < ActiveRecord::Base
 	def self.constraints_header
 		["NAME", "MIN", "MAX"]
 	end
+
+	def self.find_by_property(property_type, property_value, catalog)
+    catalog.p_modules.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value.to_s).first
+  end
 
 	def as_json(option={})
 		if self.has_sub_modules? and self.has_courses?

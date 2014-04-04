@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20140319155049) do
   create_table "constraints", force: true do |t|
     t.integer  "entity_id"
     t.string   "entity_type"
-    t.string   "role"
+    t.string   "role",               default: "NONE"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "constraint_set_id"

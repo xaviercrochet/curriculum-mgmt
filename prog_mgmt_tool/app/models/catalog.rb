@@ -1,9 +1,9 @@
 require 'open-uri'
 require 'nokogiri'
 require 'spreadsheet'
-require 'xgml_parser/xgml_parser.rb'
-require 'xls_parser/xls_writer.rb'
-require 'xls_parser/xls_reader.rb'
+require 'xgml_parser/xgml_parser'
+require 'xls_parser/xls_reader'
+require 'xls_parser/xls_writer'
 
 class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
@@ -37,7 +37,7 @@ class Catalog < ActiveRecord::Base
 			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
 				file.write(uploaded_io.read)
 			end
-			parser = XgmlParser.new(self.filename)
+			parser = XgmlParser::Parser.new(self.filename)
 			parser.parse
 			create_objects(parser)
 		end
@@ -54,14 +54,18 @@ class Catalog < ActiveRecord::Base
 			File.open(Rails.root.join('', '', self.ss_filename), 'wb') do |file|
 				file.write(uploaded_io.read)
 			end
-			parse_spreadsheet
+			parse_spreadsheets
 		end
 
 	end
 	
-	def parse_spreadsheet
-		parser = XlsReader.new(self.ss_filename)
-		parse_spreadsheet_for_model(Course, "SIGLE", parser)
+	def parse_spreadsheets
+		parser = XlsParser::XlsReader.new(self.ss_filename)
+		parse_spreadsheet(Course, "SIGLE", parser)
+		parse_spreadsheet(PModule, "NAME", parser)
+		parse_spreadsheet(SubModule, "Name", parser)
+		parse_spreadsheet(Program, "Name", parser)
+		parse_constraint_spreadsheet(PModule, "NAME", parser)
 
 	end
 
@@ -80,7 +84,7 @@ class Catalog < ActiveRecord::Base
 		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
 		self.ss_filename = filename
 		self.save
-		parser = XlsWriter.new(filename)
+		parser = XlsParser::XlsWriter.new(filename)
 		create_spreadsheets(parser)
 
 	end
@@ -113,11 +117,36 @@ class Catalog < ActiveRecord::Base
 		sub_modules
 	end
 
-	def parse_constraints_for_model(entity_model, entity_identificator, parser)
+	def add_constraints(entity_model, constraints, entity_identificator)
+
+		constraints.each do |key, value|
+			entity = entity_model.find_by_property(entity_identificator, key.to_s.upcase, self)
+			p "Adding constraint to " + entity.name
+			if ! entity.nil?
+				entity.update_properties(value)
+				value.each do |k, v|
+					ConstraintSet.create_unary_constraint_on_properties(entity, k, v)
+				end
+			else
+				p entity_model + " - entity_identificator "+ ": " + key + " not found!"
+			end
+		end
+	end
+
+	def parse_constraint_spreadsheet(entity_model, entity_identificator, parser)
+		p "Parsing constraint spreadsheet for model : " + entity_model.to_s 
+		constraints = parser.parse_sheet(entity_model.to_s.pluralize.upcase + " CONSTRAINTS", entity_identificator.upcase)
+		
+		if ! constraints.nil?
+			add_constraints(entity_model, constraints, entity_identificator)
+		
+		else
+			p "Constraint Sheet for model - " + entity_model.to_s.pluralize + " not found in spreadsheet!"
+		end 	
 		
 	end
 
-	def parse_spreadsheet_for_model(entity_model, entity_identificator, parser)
+	def parse_spreadsheet(entity_model, entity_identificator, parser)
 		entities = parser.parse_sheet(entity_model.to_s.pluralize.upcase, entity_identificator.upcase)
 		if ! entities.nil?
 			update_entities_properties(entity_model, entities, entity_identificator)
@@ -133,7 +162,7 @@ class Catalog < ActiveRecord::Base
 			if ! entity.nil?
 				entity.update_properties(value)
 			else
-				p "Course - " + entity_identificator + ": " + key + "not found!"
+				p "Course - " + entity_identificator + ": " + key + " not found!"
 			end 
 		end
 	end
@@ -143,12 +172,12 @@ class Catalog < ActiveRecord::Base
 	def create_spreadsheets(parser)
 		parser.create_spreadsheet(entities_to_hash(self.courses, true), 'Courses')
 		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(entities_to_hash(p_modules, true), 'Modules')
+		parser.create_spreadsheet(entities_to_hash(p_modules, true), 'PModules')
 		sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(entities_to_hash(sub_modules, true), 'Sub Modules')
-		parser.create_empty_spreadsheet(PModule.constraints_header, entities_to_hash(p_modules, false), 'Module Constraints')
-		parser.create_empty_spreadsheet(SubModule.constraints_header, entities_to_hash(sub_modules, false), 'Sub Module Constraints')
-		parser.create_empty_spreadsheet(Program.constraints_header, entities_to_hash(programs, false), 'Program Constraints')
+		parser.create_spreadsheet(entities_to_hash(sub_modules, true), 'SubModules')
+		parser.create_empty_spreadsheet(PModule.constraints_header, entities_to_hash(p_modules, false), 'PModules Constraints')
+		parser.create_empty_spreadsheet(SubModule.constraints_header, entities_to_hash(sub_modules, false), 'SubModules Constraints')
+		parser.create_empty_spreadsheet(Program.constraints_header, entities_to_hash(programs, false), 'Programs Constraints')
 	end
 
 	def create_programs(nodes)

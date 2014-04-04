@@ -56,11 +56,16 @@ class Course < ActiveRecord::Base
   end
 
   def update_properties(properties)
-    self.properties.each do |p|
-      p.destroy
-    end
     properties.each do |key, value|
-      self.properties.create(:p_type => key.to_s, :value => value.to_s)
+      p = self.properties.where(:p_type => key.to_s).first
+      
+      if p.nil?
+        self.properties.create(:p_type => key.to_s, :value => value.to_s)
+      
+      else
+        p.value = value.to_s
+        p.save
+      end
     end
   end
 
