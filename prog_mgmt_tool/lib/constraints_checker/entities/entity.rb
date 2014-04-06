@@ -22,11 +22,13 @@ module ConstraintsChecker
 		class Course < Entity
 			attr_accessor :sub_module
 			attr_accessor :p_module
+			attr_accessor :passed
 
 			def initialize(id, name, catalog, sub_module, p_module)
 				super(id, name, catalog) 
 				self.p_module = p_module
 				self.sub_module = sub_module
+				self.passed = false
 			end
 
 		end

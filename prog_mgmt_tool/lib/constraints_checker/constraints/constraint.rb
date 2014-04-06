@@ -22,7 +22,12 @@ module ConstraintsChecker
 			end
 
 			def check
-				! target.catalog.search_course(source.id).nil?
+				course = target.catalog.search_course(source.id)
+				if course.nil?
+					false
+				else
+					course.passed?
+				end
 			end
 		end
 

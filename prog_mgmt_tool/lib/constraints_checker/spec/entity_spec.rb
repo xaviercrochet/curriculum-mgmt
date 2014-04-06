@@ -9,6 +9,7 @@ describe ConstraintsChecker::Entities::Course do
 		course1 = ConstraintsChecker::Entities::Course.new(0, "test", catalog, "", "")
 		course2 = ConstraintsChecker::Entities::Course.new(1, "test2", catalog, "", "")
 		catalog.add_course(course1)
+		course1.passed = true
 		catalog.add_course(course2)
 		constraint1 = ConstraintsChecker::Constraints::Prerequisite.new(course1, course2)
 		course2.add_constraint(constraint1)
