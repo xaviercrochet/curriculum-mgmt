@@ -17,12 +17,22 @@ module ConstraintsChecker
 				self.constraints << constraint
 			end
 
+			def check
+				constraints.each do |c|
+					if ! c.check
+						return false
+					end
+				end
+				true
+			end
+
 		end
 
 		class Course < Entity
 			attr_accessor :sub_module
 			attr_accessor :p_module
 			attr_accessor :passed
+			attr_accessor :credits
 
 			def initialize(id, name, catalog, sub_module, p_module)
 				super(id, name, catalog) 
@@ -48,6 +58,8 @@ module ConstraintsChecker
 		class SubModule < Entity
 			attr_accessor :p_module
 			attr_accessor :courses
+			attr_accessor :min_credits
+			attr_accessor :max_credits
 
 			def initialize(id, name, catalog, courses, p_module)
 				super(id, name, catalog) 
@@ -74,6 +86,15 @@ module ConstraintsChecker
 
 			def search_course(id)
 				courses.at(id)
+			end
+
+			def check
+				courses.each do |course|
+					if ! course.check
+						return false
+					end
+				end
+				true
 			end
 		end
 	end

@@ -1,4 +1,8 @@
+require 'constraints_checker/constraints/constraint'
+require 'constraints_checker/entities/entity'
+
 class Course < ActiveRecord::Base
+  
   belongs_to :block, polymorphic: true
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
@@ -67,6 +71,10 @@ class Course < ActiveRecord::Base
         p.save
       end
     end
+  end
+
+  def to_object(catalog, p_module, sub_module)
+     ConstraintsChecker::Constraints::Course.new(self.id, self.constraints.where(:p_type => 'SIGLE'), catalog, p_module, sub_module)
   end
 
   def properties_to_hash

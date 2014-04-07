@@ -5,6 +5,25 @@ module ConstraintsChecker
 			end
 		end
 
+		class PropertyConstraint < Constraint
+			attr_accessor :target
+			attr_accessor :property 
+			attr_accessor :value
+
+			def initialize(target, property, value)
+				self.property = property
+				self.target = target
+				self.value = value
+			end
+
+			def check
+				if ! target.property.nil?
+					return target.property.eql? value
+				end
+				false
+			end
+		end
+
 		class BinaryConstraint < Constraint
 			attr_accessor :source
 			attr_accessor :target
@@ -26,7 +45,7 @@ module ConstraintsChecker
 				if course.nil?
 					false
 				else
-					course.passed?
+					course.passed
 				end
 			end
 		end
@@ -37,7 +56,7 @@ module ConstraintsChecker
 			end
 
 			def check
-				! target.catalog.courses[source.id].nil?
+				! target.catalog.search_course(source.id)
 			end
 		end
 	end
