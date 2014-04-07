@@ -3,6 +3,8 @@ require 'constraints_checker/entities/entity'
 
 class Course < ActiveRecord::Base
   
+  has_many :picks
+  has_many :user_catalogs, through: :picks
   belongs_to :block, polymorphic: true
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy

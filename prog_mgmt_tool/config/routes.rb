@@ -1,10 +1,7 @@
 Thesis::Application.routes.draw do
+  devise_for :users
   get "landing_page/index"
   root "landing_page#index"
-  resources :sessions, only: [:new, :create, :destroy]
-  match '/signup', to: 'users#new', via: 'get'
-  match '/signin', to: 'sessions#new', via: 'get'
-  match '/signout', to: 'sessions#destroy', via: 'delete'
  
   resources :catalogs, shallow: true do
     get :download
@@ -26,10 +23,7 @@ Thesis::Application.routes.draw do
       end
     end
   end
-
-
-  resources :users
-  end
+end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
