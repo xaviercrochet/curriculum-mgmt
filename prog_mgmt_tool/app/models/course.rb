@@ -2,9 +2,10 @@ require 'constraints_checker/constraints/constraint'
 require 'constraints_checker/entities/entity'
 
 class Course < ActiveRecord::Base
+
+  attr_accessor :course_object
   
-  has_many :picks
-  has_many :user_catalogs, through: :picks
+  has_and_belongs_to_many :user_catalogs
   belongs_to :block, polymorphic: true
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
@@ -76,7 +77,14 @@ class Course < ActiveRecord::Base
   end
 
   def to_object(catalog, p_module, sub_module)
-     ConstraintsChecker::Constraints::Course.new(self.id, self.constraints.where(:p_type => 'SIGLE'), catalog, p_module, sub_module)
+     self.course_object = ConstraintsChecker::Constraints::Course.new(self.id, self.properties.where(:p_type => 'SIGLE'), catalog, p_module, sub_module)
+     self.binary_prerequisites.each do |c|
+      pres = c.constraint_set.constraints.in
+      pres.each do |pre|
+        self.course.add_constraint(pre.pre_to_object(pre.entity.id, self.course_object))
+      end
+    end
+    self.course_object
   end
 
   def properties_to_hash

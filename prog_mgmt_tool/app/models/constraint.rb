@@ -1,3 +1,6 @@
+require 'constraints_checker/constraints/constraint'
+require 'constraints_checker/entities/entity'
+
 class Constraint < ActiveRecord::Base
   belongs_to :constraint_type
   belongs_to :constraint_set
@@ -24,6 +27,9 @@ class Constraint < ActiveRecord::Base
 		self.role.eql? 'IN' and self.constraint_type.name.eql? 'COREQUISITE' and self.constraint_set.constraint_set_type.name = 'BINARY'
 	end
 
+	def pre_to_object(source_id, target_object)
+		ConstraintsChecker::Constraints::Prerequisite.new(source_id, target_object)
+	end
 
 	def pairs
 		if self.role.eql? 'OUT'

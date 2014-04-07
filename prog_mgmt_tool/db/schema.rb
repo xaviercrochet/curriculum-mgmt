@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407122238) do
+ActiveRecord::Schema.define(version: 20140407132949) do
 
   create_table "catalogs", force: true do |t|
     t.string   "faculty"
@@ -86,6 +86,13 @@ ActiveRecord::Schema.define(version: 20140407122238) do
   add_index "courses", ["block_id", "block_type"], name: "index_courses_on_block_id_and_block_type"
   add_index "courses", ["catalog_id"], name: "index_courses_on_catalog_id"
 
+  create_table "courses_user_catalogs", id: false, force: true do |t|
+    t.integer "user_catalog_id"
+    t.integer "course_id"
+  end
+
+  add_index "courses_user_catalogs", ["user_catalog_id"], name: "index_courses_user_catalogs_on_user_catalog_id"
+
   create_table "p_modules", force: true do |t|
     t.integer  "catalog_id"
     t.integer  "program_id"
@@ -97,6 +104,8 @@ ActiveRecord::Schema.define(version: 20140407122238) do
   add_index "p_modules", ["program_id"], name: "index_p_modules_on_program_id"
 
   create_table "picks", force: true do |t|
+    t.integer  "course_id"
+    t.integer  "user_catalog_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -128,9 +137,12 @@ ActiveRecord::Schema.define(version: 20140407122238) do
   add_index "sub_modules", ["p_module_id"], name: "index_sub_modules_on_p_module_id"
 
   create_table "user_catalogs", force: true do |t|
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "user_catalogs", ["user_id"], name: "index_user_catalogs_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
