@@ -65,7 +65,6 @@ class Catalog < ActiveRecord::Base
 		parse_spreadsheet(PModule, "NAME", parser)
 		parse_spreadsheet(SubModule, "Name", parser)
 		parse_spreadsheet(Program, "Name", parser)
-		parse_constraint_spreadsheet(PModule, "NAME", parser)
 
 	end
 

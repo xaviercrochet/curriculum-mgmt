@@ -18,12 +18,22 @@ module ConstraintsChecker
 			end
 
 			def check
-				constraints.each do |c|
-					if ! c.check
-						return false
+				p "number of contraints for <"+id.to_s+">:" + constraints.size.to_s
+				if constraints.size > 0
+					logs = []
+					constraints.each do |c|
+						 logs << c.check
 					end
+					p "Entity check method"
+					p logs.size.to_s
+					if logs.size == 0 
+						true
+					else
+						logs
+					end
+				else
+					true
 				end
-				true
 			end
 
 		end
@@ -38,7 +48,7 @@ module ConstraintsChecker
 				super(id, name, catalog) 
 				self.p_module = p_module
 				self.sub_module = sub_module
-				self.passed = false
+				self.passed = true
 			end
 
 		end
@@ -81,6 +91,7 @@ module ConstraintsChecker
 			end
 
 			def add_course(course)
+				p "Adding course ..."
 				self.courses.insert(course.id, course)
 			end
 
@@ -89,12 +100,22 @@ module ConstraintsChecker
 			end
 
 			def check
+				logs = []
 				courses.each do |course|
-					if ! course.check
-						return false
+					if ! course.nil?
+						result = course.check 
+						if ! result 
+							logs << result
+						end
 					end
 				end
-				true
+				p "Catalog check method"
+				p logs.size
+				if logs.size == 0
+					true
+				else
+					logs
+				end
 			end
 		end
 	end

@@ -1,8 +1,6 @@
 module ConstraintsChecker
 	module Constraints
 		class Constraint
-			def check
-			end
 		end
 
 		class PropertyConstraint < Constraint
@@ -18,13 +16,18 @@ module ConstraintsChecker
 
 			def check
 				if ! target.property.nil?
-					return target.property.eql? value
+					if ! target.property.eql? value
+						{self.property.to_s => value.to_s}
+					end
+				else
+					{self.property.to_s => 'not present'}
 				end
 				false
 			end
 		end
 
 		class BinaryConstraint < Constraint
+			
 			attr_accessor :source
 			attr_accessor :target
 
@@ -41,12 +44,14 @@ module ConstraintsChecker
 			end
 
 			def check
-				course = target.catalog.search_course(source.id)
+				p "Prerequisite check"
+				course = target.catalog.search_course(source)
 				if course.nil?
-					false
+					{not_present: source}
 				else
-					course.passed
+					{not_passed: source}
 				end
+				true
 			end
 		end
 

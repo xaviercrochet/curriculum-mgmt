@@ -25,6 +25,9 @@ class PModule < ActiveRecord::Base
 		end
 	end
 
+	def to_object
+	end
+
 	def name
 		p = self.properties.where(:p_type => 'NAME').first
 		if p.nil?

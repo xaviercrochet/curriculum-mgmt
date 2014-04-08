@@ -9,13 +9,22 @@ class UserCatalog < ActiveRecord::Base
 
 	
 	def check
-		catalog.check
+		self.catalog_object.check
+	end
+
+	def object
+		self.catalog_object
 	end
 
 	def to_object
 		self.catalog_object = ConstraintsChecker::Entities::Catalog.new
+		p "building catalog object ..."	
 		self.courses.each do |course|
-			catalog.add_course(course.to_object(self.catalog_object, nil, nil))
+			self.catalog_object.add_course(course.to_object(self.catalog_object, nil, nil))
 		end
+		p self.catalog_object.check
+		
+
+		p "finished building catalog object."
 	end
 end
