@@ -27,8 +27,12 @@ class Constraint < ActiveRecord::Base
 		self.role.eql? 'IN' and self.constraint_type.name.eql? 'COREQUISITE' and self.constraint_set.constraint_set_type.name = 'BINARY'
 	end
 
-	def pre_to_object(source_id, target_object)
-		ConstraintsChecker::Constraints::Prerequisite.new(source_id, target_object)
+	def to_object(target_object)
+		if self.constraint_type.name.eql? "PREREQUISITE"
+			ConstraintsChecker::Constraints::Prerequisite.new(self.entity.id, target_object)
+		elsif self.constraint_type.name.eql? "COREQUISITE"
+			ConstraintsChecker::Constraints::Corequisite.new(self.entity.id, target_object)
+		end
 	end
 
 	def pairs
@@ -36,6 +40,8 @@ class Constraint < ActiveRecord::Base
 			self.constraint_set.constraints.in
 		elsif self.is_binary_corequisite?
 			self.constraint_set.constraints.out
+		else
+			Constraint.none
 		end
 	end
 

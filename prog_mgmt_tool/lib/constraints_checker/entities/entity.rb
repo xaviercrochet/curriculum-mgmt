@@ -24,8 +24,7 @@ module ConstraintsChecker
 					constraints.each do |c|
 						 logs << c.check
 					end
-					p "Entity check method"
-					p logs.size.to_s
+					p logs.to_s
 					if logs.size == 0 
 						true
 					else
@@ -85,37 +84,33 @@ module ConstraintsChecker
 			attr_accessor :sub_modules
 
 			def initialize()
-				self.courses = []
+				self.courses = {}
 				self.p_modules = []
 				self.sub_modules = []
 			end
 
 			def add_course(course)
 				p "Adding course ..."
-				self.courses.insert(course.id, course)
+				self.courses[course.id] = course
 			end
 
 			def search_course(id)
-				courses.at(id)
+				p "seach course <"+id.to_s+">"
+				if courses[id].nil?
+					p "COUCOU"
+				end
+				courses[id]
 			end
 
 			def check
 				logs = []
-				courses.each do |course|
-					if ! course.nil?
-						result = course.check 
-						if ! result 
-							logs << result
-						end
+				p "#of courses : "+courses.size.to_s
+				courses.each do |key, value|
+					if ! value.nil?
+						logs << value.check 
 					end
 				end
-				p "Catalog check method"
-				p logs.size
-				if logs.size == 0
-					true
-				else
-					logs
-				end
+				logs.flatten!
 			end
 		end
 	end

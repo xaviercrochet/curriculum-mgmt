@@ -45,13 +45,18 @@ module ConstraintsChecker
 
 			def check
 				p "Prerequisite check"
-				course = target.catalog.search_course(source)
+				course = target.catalog.search_course(self.source)
+				p "Course Name : "+course.name.to_s
 				if course.nil?
-					{not_present: source}
+					p "Course not present!"
+					{not_present: self.source}
+				elsif ! course.passed
+					p "Course present but not passed!"
+					{not_passed: self.source}
 				else
-					{not_passed: source}
+					p "Prerequisite check passed!"
+					true
 				end
-				true
 			end
 		end
 
@@ -61,7 +66,15 @@ module ConstraintsChecker
 			end
 
 			def check
-				! target.catalog.search_course(source.id)
+				p "Corequisite check"
+				course = target.catalog.search_course(self.source)
+				if course.nil?
+					p "Course not present!"
+					{not_present: self.source}
+				else
+					p "Corequisite check passed!"
+					true
+				end
 			end
 		end
 	end

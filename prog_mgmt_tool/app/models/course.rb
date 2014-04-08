@@ -77,13 +77,18 @@ class Course < ActiveRecord::Base
   end
 
   def to_object(catalog, p_module, sub_module)
-     self.course_object = ConstraintsChecker::Entities::Course.new(self.id, self.properties.where(:p_type => 'SIGLE'), catalog, p_module, sub_module)
+     self.course_object = ConstraintsChecker::Entities::Course.new(self.id, self.name, catalog, p_module, sub_module)
      self.binary_prerequisites.each do |c|
-      pres = c.constraint_set.constraints.in
-      pres.each do |pre|
-        self.course_object.add_constraint(pre.pre_to_object(pre.entity.id, self.course_object))
+      c.pairs.each do |pre|
+        self.course_object.add_constraint(pre.to_object(self.course_object))
       end
     end
+    self.binary_corequisites.each do |c|
+      c.pairs.each do |co|
+        self.course_object.add_constraint(co.to_object(self.course_object))
+      end
+    end
+
     p "Constriants : "+self.course_object.constraints.size.to_s
     self.course_object
   end
