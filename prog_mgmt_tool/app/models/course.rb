@@ -31,6 +31,15 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def credits
+    c = self.properties.where(:p_tupe => 'CREDITS').first
+    if p.nil?
+      'NONE'
+    else
+      c.value
+    end
+  end
+
 
   def binary_corequisites
        constraints = self.constraints.includes(:constraint_type, constraint_set: :constraint_set_type).where(:constraint_types => {:name => 'COREQUISITE'}, :constraint_set_types => {:name => 'BINARY'})
@@ -77,7 +86,7 @@ class Course < ActiveRecord::Base
   end
 
   def to_object(catalog, p_module, sub_module)
-     self.course_object = ConstraintsChecker::Entities::Course.new(self.id, self.name, catalog, p_module, sub_module)
+     self.course_object = ConstraintsChecker::Entities::Course.new(self.id, self.name, self.credits, catalog, p_module, sub_module)
      self.binary_prerequisites.each do |c|
       c.pairs.each do |pre|
         self.course_object.add_constraint(pre.to_object(self.course_object))

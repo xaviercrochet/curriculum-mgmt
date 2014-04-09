@@ -43,7 +43,7 @@ module ConstraintsChecker
 			attr_accessor :passed
 			attr_accessor :credits
 
-			def initialize(id, name, catalog, sub_module, p_module)
+			def initialize(id, name, credits, catalog, sub_module, p_module)
 				super(id, name, catalog) 
 				self.p_module = p_module
 				self.sub_module = sub_module
