@@ -26,6 +26,28 @@ module ConstraintsChecker
 			end
 		end
 
+		class Min < PropertyConstraint
+
+			def initialize(target, value)
+				super(target, 'MIN', value)
+			end
+
+			def check
+				target.check_min(self.value)
+			end
+		end
+
+		class Max < PropertyConstraint
+
+			def initialize(target, value)
+				super(target, 'MAX', value)
+			end
+
+			def check
+				target.check_max(self.value)
+			end
+		end
+
 		class BinaryConstraint < Constraint
 			
 			attr_accessor :source
@@ -45,8 +67,7 @@ module ConstraintsChecker
 
 			def check
 				p "Prerequisite check"
-				course = target.catalog.search_course(self.source)
-				p "Course Name : "+course.name.to_s
+				course = target.catalog.find_course(self.source)
 				if course.nil?
 					p "Course not present!"
 					{not_present: self.source}
@@ -67,7 +88,7 @@ module ConstraintsChecker
 
 			def check
 				p "Corequisite check"
-				course = target.catalog.search_course(self.source)
+				course = target.catalog.find_course(self.source)
 				if course.nil?
 					p "Course not present!"
 					{not_present: self.source}

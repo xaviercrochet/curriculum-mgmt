@@ -32,7 +32,7 @@ class Course < ActiveRecord::Base
   end
 
   def credits
-    c = self.properties.where(:p_tupe => 'CREDITS').first
+    c = self.properties.where(:p_type => 'CREDITS').first
     if p.nil?
       'NONE'
     else
@@ -85,8 +85,8 @@ class Course < ActiveRecord::Base
     end
   end
 
-  def to_object(catalog, p_module, sub_module)
-     self.course_object = ConstraintsChecker::Entities::Course.new(self.id, self.name, self.credits, catalog, p_module, sub_module)
+  def to_object(catalog)
+     self.course_object = ConstraintsChecker::Entities::Course.new(self.id, self.name, self.credits, catalog, nil)
      self.binary_prerequisites.each do |c|
       c.pairs.each do |pre|
         self.course_object.add_constraint(pre.to_object(self.course_object))

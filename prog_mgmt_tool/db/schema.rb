@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20140409114711) do
     t.integer "course_id"
   end
 
+  add_index "courses_user_catalogs", ["course_id"], name: "index_courses_user_catalogs_on_course_id"
   add_index "courses_user_catalogs", ["user_catalog_id"], name: "index_courses_user_catalogs_on_user_catalog_id"
 
   create_table "p_modules", force: true do |t|
@@ -105,10 +106,10 @@ ActiveRecord::Schema.define(version: 20140409114711) do
 
   create_table "p_modules_user_catalogs", id: false, force: true do |t|
     t.integer "user_catalog_id"
-    t.integer "p_modules_id"
+    t.integer "p_module_id"
   end
 
-  add_index "p_modules_user_catalogs", ["p_modules_id"], name: "index_p_modules_user_catalogs_on_p_modules_id"
+  add_index "p_modules_user_catalogs", ["p_module_id"], name: "index_p_modules_user_catalogs_on_p_module_id"
   add_index "p_modules_user_catalogs", ["user_catalog_id"], name: "index_p_modules_user_catalogs_on_user_catalog_id"
 
   create_table "picks", force: true do |t|
@@ -126,10 +127,10 @@ ActiveRecord::Schema.define(version: 20140409114711) do
 
   create_table "programs_user_catalogs", id: false, force: true do |t|
     t.integer "user_catalog_id"
-    t.integer "programs_id"
+    t.integer "program_id"
   end
 
-  add_index "programs_user_catalogs", ["programs_id"], name: "index_programs_user_catalogs_on_programs_id"
+  add_index "programs_user_catalogs", ["program_id"], name: "index_programs_user_catalogs_on_program_id"
   add_index "programs_user_catalogs", ["user_catalog_id"], name: "index_programs_user_catalogs_on_user_catalog_id"
 
   create_table "properties", force: true do |t|
@@ -154,10 +155,10 @@ ActiveRecord::Schema.define(version: 20140409114711) do
 
   create_table "sub_modules_user_catalogs", id: false, force: true do |t|
     t.integer "user_catalog_id"
-    t.integer "sub_modules_id"
+    t.integer "sub_module_id"
   end
 
-  add_index "sub_modules_user_catalogs", ["sub_modules_id"], name: "index_sub_modules_user_catalogs_on_sub_modules_id"
+  add_index "sub_modules_user_catalogs", ["sub_module_id"], name: "index_sub_modules_user_catalogs_on_sub_module_id"
   add_index "sub_modules_user_catalogs", ["user_catalog_id"], name: "index_sub_modules_user_catalogs_on_user_catalog_id"
 
   create_table "user_catalogs", force: true do |t|

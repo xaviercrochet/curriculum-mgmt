@@ -38,15 +38,13 @@ module ConstraintsChecker
 		end
 
 		class Course < Entity
-			attr_accessor :sub_module
-			attr_accessor :p_module
+			attr_accessor :parent
 			attr_accessor :passed
 			attr_accessor :credits
 
-			def initialize(id, name, credits, catalog, sub_module, p_module)
+			def initialize(id, name, credits, catalog, parent)
 				super(id, name, catalog) 
-				self.p_module = p_module
-				self.sub_module = sub_module
+				self.parent = parent
 				self.passed = true
 			end
 
@@ -56,10 +54,39 @@ module ConstraintsChecker
 			attr_accessor :sub_modules
 			attr_accessor :courses
 
-			def initialize(id, name, catalog, courses, sub_modules)
-				super(id, name, catalog) 
-				self.courses = courses
-				self.sub_modules = sub_modules
+			def initialize(id, name, catalog)
+				super(id, name, catalog)
+			end
+
+			def add_course(course)
+				courses[course.id] = course
+			end
+
+			def find_course(course_id)
+				p "searching course <"+course_id.to_s+">"
+				if courses[course_id].nil?
+					p "Course not found :-/"
+				end
+				courses[course_id]
+			end
+
+			def count_credits
+				credits = 0
+				self.sub_modues.each do |m|
+					credits = credits + m.count_credits.to_i
+				end
+				self.courses.each do |c|
+					credits = credits + c.credits.to_i unless c.credits.eql? 'NONE'
+				end
+				credits
+			end
+
+			def check_min(value)
+				self.count_credits >= value
+			end
+
+			def check_max(value)
+				self.count_credits <= value
 			end
 
 		end
@@ -67,8 +94,6 @@ module ConstraintsChecker
 		class SubModule < Entity
 			attr_accessor :p_module
 			attr_accessor :courses
-			attr_accessor :min_credits
-			attr_accessor :max_credits
 
 			def initialize(id, name, catalog, courses, p_module)
 				super(id, name, catalog) 
@@ -76,6 +101,21 @@ module ConstraintsChecker
 				self.p_module = p_module
 			end
 
+			def count_credits
+				credits = 0
+				self.courses.each do |c|
+					credits = credits + c.credits.to_i unless c.credits.eql? 'NONE'
+				end
+				credits
+			end
+
+			def check_min(value)
+				count_credits >= value
+			end
+
+			def check_max(value)
+				count_credits <= value
+			end
 		end
 
 		class Catalog
@@ -85,8 +125,16 @@ module ConstraintsChecker
 
 			def initialize()
 				self.courses = {}
-				self.p_modules = []
-				self.sub_modules = []
+				self.p_modules = {}
+				self.sub_modules = {}
+			end
+
+			def find_p_module(id)
+				p "searching course <"+id.to_s+">"
+				if self.p_modules[id].nil?
+					p "PModule not found :-/"
+				end
+				self.p_modules[id]
 			end
 
 			def add_course(course)
@@ -94,12 +142,16 @@ module ConstraintsChecker
 				self.courses[course.id] = course
 			end
 
-			def search_course(id)
+			def add_p_module(p_module_id)
+				self.p_modules[p_module_id]
+			end
+
+			def find_course(id)
 				p "seach course <"+id.to_s+">"
-				if courses[id].nil?
-					p "COUCOU"
+				if self.courses[id].nil?
+					p "Course not found :-/"
 				end
-				courses[id]
+				self.courses[id]
 			end
 
 			def check

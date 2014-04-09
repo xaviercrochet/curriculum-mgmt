@@ -1,3 +1,6 @@
+require 'constraints_checker/constraints/constraint'
+require 'constraints_checker/entities/entity'
+
 class PModule < ActiveRecord::Base
   belongs_to :program
   belongs_to :catalog
@@ -5,6 +8,8 @@ class PModule < ActiveRecord::Base
   has_many :courses, as: :block, dependent: :destroy
   has_many :sub_modules, dependent: :destroy
   has_many :constraints, :as => :entity, dependent: :destroy
+
+  attr_accessor :p_module_object
 
 
 	def self.find_by_property(property_type, property_value, catalog)
@@ -25,7 +30,32 @@ class PModule < ActiveRecord::Base
 		end
 	end
 
-	def to_object
+	def find_property(p_type)
+		self.includes(:properties).where('properties.p_type' => p_type).first
+	end
+
+	def contraints(p_module_object)
+		constraints = []
+		min = self.find_property('MIN')
+		if ! min.nil?
+			constraints << ConstraintChecker::Constraints::Min.new(p_module_object, min.value)
+		end
+		max = self.find_property('MAX')
+		if !max.nil?
+			constraints << ConstraintChecker::Constraints::Max.new(p_module_object, max.value)
+		end
+		constraints 
+
+	end
+
+
+	def to_object(catalog_object)
+		self.p_module_object = ConstraintsChecker::Entities::PModule.new(self.id, self.name, catalog_object)
+		contraints = self.constraints(self.p_module_object)
+		constraints.each do |c|
+			self.p_module_object.add_constraint(c)
+		end
+		self.p_module_object
 	end
 
 	def name
