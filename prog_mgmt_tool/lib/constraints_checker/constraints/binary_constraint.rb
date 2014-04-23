@@ -5,26 +5,26 @@ module ConstraintsChecker
     class BinaryConstraint < Constraint
       
       attr_accessor :course
-      attr_accessor :pair_id
+      attr_accessor :target_id
 
-      def initialize(course, pair_id)
+      def initialize(course, target_id)
         self.course = course
-        self.pair_id = pair_id
+        self.target_id = target_id
       end
     end
 
     class Prerequisite < BinaryConstraint
       
-      def initialize(course, pair_id)
-        super(course, pair_id)
+      def initialize(course, target_id)
+        super(course, target_id)
       end
 
       def check
-        result = self.course.find_course(pair_id)
+        result = self.course.find_course(target_id)
         if result.nil?
-          return {prerequisite_missing: self.source}
+          return {prerequisite_missing: self.target_id}
         elsif ! result.passed
-          return {not_passed: self.source}
+          return {not_passed: self.target_id}
         else
           return true
         end
@@ -32,14 +32,14 @@ module ConstraintsChecker
     end
 
     class Corequisite < BinaryConstraint
-      def initialize(course, pair_id)
-        super(course, pair_id)
+      def initialize(course, target_id)
+        super(course, target_id)
       end
 
       def check
-        result self.course.find_course(pair_id)
+        result = self.course.find_course(target_id)
         if result.nil?
-          {corequisite_missing: self.source}
+          {corequisite_missing: self.target_id}
         else
           true
         end

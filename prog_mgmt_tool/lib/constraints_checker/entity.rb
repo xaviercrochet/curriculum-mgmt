@@ -66,7 +66,8 @@ module ConstraintsChecker
 				 	logs << c.check
 				 end
 			end
-			return logs				
+			logs << check_childrens_constraints
+			return logs.flatten				
 		end
 
 		def check_max(value)
