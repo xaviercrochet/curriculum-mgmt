@@ -5,28 +5,50 @@ module ConstraintsChecker
 		attr_accessor :childrens
 		attr_accessor :constraints
 
+		def initialize(properties)
+			super(properties)
+			self.constraints = []
+			self.childrens = []
+		end
+
 		def add_constraint(constraint)
-			self.constraints ||= []
 			self.constraints << constraint
 		end
 
 		def add_constraints(constraints)
-			@constraints ||= []
 			constraints.each do |c|
 				@constraints << c
 			end
 		end
 
 		def add_children(children)
-			@childrens ||= []
 			@childrens << children
+			children.parent = self
 		end
 
 		def add_childrens(childrens)
-			@childrens ||= []
 			childrens.each do |c|
 				@childrens << c
+				c.parent = self
 			end
+		end
+
+		def search(children_id, children_type)
+			root = find_root
+			root.find_children(children_id, children_type)
+		end
+
+		def find_children(children_id, children_type)
+			result
+			if self.id.eql? children_id and self.class.name.eql? children_type
+				result = self
+			else
+				@childrens.each do |c|
+					result = c.find_children(children_id, children_type)
+					break if result
+				end
+			end
+			return result
 		end
 
 		def count_credits
@@ -55,7 +77,14 @@ module ConstraintsChecker
 			return count_credits >= value.to_i
 		end
 
-	private
+		def find_root
+			if @parent.nil?
+				return self
+			else
+				return @parent.find_root
+			end
+		end
+	private		
 		
 		def check_childrens_constraints
 			logs = []

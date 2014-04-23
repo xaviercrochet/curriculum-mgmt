@@ -4,50 +4,43 @@ module ConstraintsChecker
   module Constraints
     class BinaryConstraint < Constraint
       
-      attr_accessor :source
-      attr_accessor :target
+      attr_accessor :course
+      attr_accessor :pair_id
 
-      def initialize(source, target)
-        self.source = source
-        self.target = target
+      def initialize(course, pair_id)
+        self.course = course
+        self.pair_id = pair_id
       end
     end
 
     class Prerequisite < BinaryConstraint
       
-      def initialize(source, target)
-        super(source, target)
+      def initialize(course, pair_id)
+        super(course, pair_id)
       end
 
       def check
-        p "Prerequisite check"
-        course = target.catalog.find_course(self.source)
-        if course.nil?
-          p "Course not present!"
-          {not_present: self.source}
-        elsif ! course.passed
-          p "Course present but not passed!"
-          {not_passed: self.source}
+        result = self.course.find_course(pair_id)
+        if result.nil?
+          return {prerequisite_missing: self.source}
+        elsif ! result.passed
+          return {not_passed: self.source}
         else
-          p "Prerequisite check passed!"
-          true
+          return true
         end
       end
     end
 
     class Corequisite < BinaryConstraint
-      def initialize(source, target)
-        super(source, target)
+      def initialize(course, pair_id)
+        super(course, pair_id)
       end
 
       def check
-        p "Corequisite check"
-        course = target.catalog.find_course(self.source)
-        if course.nil?
-          p "Course not present!"
-          {not_present: self.source}
+        result self.course.find_course(pair_id)
+        if result.nil?
+          {corequisite_missing: self.source}
         else
-          p "Corequisite check passed!"
           true
         end
       end
