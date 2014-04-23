@@ -6,13 +6,27 @@ module ConstraintsChecker
 		attr_accessor :constraints
 
 		def add_constraint(constraint)
+			self.constraints ||= []
+			self.constraints << constraint
+		end
+
+		def add_constraints(constraints)
 			@constraints ||= []
-			@constraints << constraint
+			constraints.each do |c|
+				@constraints << c
+			end
 		end
 
 		def add_children(children)
 			@childrens ||= []
 			@childrens << children
+		end
+
+		def add_childrens(childrens)
+			@childrens ||= []
+			childrens.each do |c|
+				@childrens << c
+			end
 		end
 
 		def count_credits
@@ -24,12 +38,21 @@ module ConstraintsChecker
 		end
 
 		def check
-			p "number of contraints for <"+id.to_s+">:" + @constraints.size.to_s
 			logs = []
 			@constraints.each do |c|
-					 logs << c.check
+				if c.check != true
+				 	logs << c.check
+				 end
 			end
 			return logs				
+		end
+
+		def check_max(value)
+			return count_credits <= value.to_i
+		end
+
+		def check_min(value)
+			return count_credits >= value.to_i
 		end
 
 	private

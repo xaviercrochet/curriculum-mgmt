@@ -1,8 +1,11 @@
 require 'entity'
 require 'entities/course'
+require 'constraint'
 
 describe ConstraintsChecker::Entity do
 	
+
+
 
 	it "Entity Test" do
 		parent = ConstraintsChecker::Entity.new(name: "Parent")
@@ -18,13 +21,17 @@ describe ConstraintsChecker::Entity do
 		course2 = ConstraintsChecker::Entities::Course.new(name: "SINF4242", credits: "6")
 		course3 = ConstraintsChecker::Entities::Course.new(name: "SINF4243")
 
+		constraint1 = ConstraintsChecker::Constraint.new
+		constraint2 = ConstraintsChecker::Constraint.new
+		constraint3 = ConstraintsChecker::Constraint.new
+
 		entity.add_children(course1)
-		entity.add_children(course2)
-		entity.add_children(course3)
+		entity.add_childrens([course2, course3])
+		entity.add_constraint(constraint1)
+		entity.add_constraints([constraint3, constraint2])
 
-		p entity.childrens.to_s
-
-		expect(entity.childrens.size).to be == 3 
+		expect(entity.childrens.size).to be == 3
+		expect(entity.constraints.size).to be == 3
 		expect(entity.count_credits).to be == 10
 		# ConstraintsChecker::Entities::Course.new(0, "caca", "caca", "caca", "caca").should be_an_instance_of ConstraintsChecker::Entities::Course
 		# catalog = ConstraintsChecker::Entities::Catalog.new
