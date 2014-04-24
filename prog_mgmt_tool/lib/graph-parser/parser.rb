@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'entities/program'
 require 'catalog'
+require 'entities/p_module'
 
 module GraphParser
   class Parser
@@ -38,15 +39,8 @@ module GraphParser
       end
     end
 
-    def test(xml)
-      nodes = xml.xpath('/graphml/graph/node')
-      p nodes
-      nodes.each do |n|
-        print_info(n)
-      end
-    end
-  
-  private
+
+private
 
     def parse_edge(edge)
     end
@@ -61,15 +55,38 @@ module GraphParser
             p "*******************************************************************"
             program = GraphParser::Entities::Program.new(node.values[0], 'NONE')
             program.node = node
-            @catalog.add_program(program)
+            @catalog.add_program(node.values[0], program)
             node.children.each do |c|
               if c.key?("key") and check_attributes(c.values, 0, "d6")
-                program.name = get_name_for_program(c)
+                program.name = get_name_for_group(c)
                 p program.name
+              else
+                parse_entities(program, c)
               end
             end
 
         end
+      end
+    end
+
+    def parse_entities(parent, node)
+      if node.key?("edgedefault")
+        node.children.each do |c|
+          parse_entity(parent, c)
+        end
+      end
+    end
+
+    def parse_entity(parent, node)
+      if check_attributes(node.values, 1, "group")
+        p "---------------------------------------------------------------------" 
+        print_info(node)
+        id = node.values[0] unless ! node.key?("id")
+        p id
+        node = node.child.next.next.next
+        p get_name_for_group(node)
+        p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(node))
+        parent.add_p_module(id, p_module)
       end
     end
 
@@ -87,8 +104,8 @@ module GraphParser
        attributes.size >= index and attributes[index].eql? value
     end
 
-    def get_name_for_program(node)
-      node = get_node_from_name(c, "ProxyAutoBoundsNode" )
+    def get_name_for_group(node)
+      node = get_node_from_name(node, "ProxyAutoBoundsNode" )
       node = get_node_from_name(node, "Realizers")
       node = get_node_from_name(node, "GroupNode")
       node = get_node_from_name(node, "NodeLabel")

@@ -19,6 +19,16 @@ module GraphParser
       def add_p_module(id, p_module)
         @p_modules[id] = p_module
       end
+
+      def print
+        p @name
+        @p_modules.each do |pm|
+          pm.print
+        end
+        @courses.each do |c|
+          c.print
+        end
+      end
     end
   end
 end

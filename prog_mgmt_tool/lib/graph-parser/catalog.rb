@@ -23,6 +23,19 @@ module GraphParser
       @programs[id] = program
     end
 
+    def print
+      @programs.each do |pp|
+        pp.print
+      end
+      @p_module.each do |pm|
+        pm.print
+      end
+
+      @courses.each do |c|
+        c.print
+      end
+    end
+
 
   end
 end
