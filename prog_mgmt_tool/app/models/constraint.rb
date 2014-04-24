@@ -1,6 +1,3 @@
-require 'constraints_checker/constraints/constraint'
-require 'constraints_checker/entities/entity'
-
 class Constraint < ActiveRecord::Base
   belongs_to :constraint_type
   belongs_to :constraint_set
