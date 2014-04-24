@@ -1,53 +1,42 @@
 require 'entity'
-require 'entities/course'
 module GraphParser
   module Entities
-    class PModule < Entity
+    class PModule < Entity 
       attr_accessor :p_modules
-      attr_accessor :courses
-      
+
       def initialize(id, name)
         super(id, name)
-        @p_modules = {}
-        @courses = {}
+        @p_modules = []
       end
 
-      def add_course(id, course)
-        @courses[id] = course
-      end
-
-      def add_p_module(id, p_module)
-        @p_modules[id] = p_module
-      end
-
-      def count_courses
-        result = @courses.size
-
-        @p_modules.each do |key, value|
-          result = result + value.count_courses
+      def find_course(id)
+        result = nil
+        @courses.each do |c|
+          if c.id.eql? id
+            return result
+          end
+        end
+        @p_modules.each do |m|
+          result = m.find_course(id)
+          if !result.nil?
+            return result
+          end
         end
         return result
+      end
+
+      def add_p_module(p_module)        
+        @p_modules << p_module
       end
 
       def count_p_modules
-        result = 0
+        result = @p_modules.size
 
-        @p_modules.each do |key, value|
-          result = result + value.count_p_modules
+        @p_modules.each do |m|
+          result = result + m.count_p_modules
         end
         return result
-      end
-
-
-      def print
-        p "MODULE : " + @name
-        @p_modules.each do |key,value|
-          value.print
-        end
-        @courses.each do |key,value|
-          value.print
-        end
-      end
+      end 
     end
   end
 end

@@ -6,8 +6,8 @@ describe GraphParser::Entities::Program do
   
   it "Test Program Object" do
     program = GraphParser::Entities::Program.new(42, "program")
-    program.add_course(1, course)
-    program.add_p_module(1, p_module)
+    program.add_course(course)
+    program.add_p_module(p_module)
 
     expect(program.name).to include ("program")
     expect(program.courses.size).to be == 1

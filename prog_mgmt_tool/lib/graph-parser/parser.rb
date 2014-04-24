@@ -39,13 +39,23 @@ module GraphParser
       end
       p  "#Courses : " + @catalog.count_courses.to_s
       p "#Modules : " + @catalog.count_p_modules.to_s
+      result =  @catalog.find_course("n0::n0::n0")
     end
 
 
 private
 
     def parse_edge(edge)
-      p "parsing edge"
+      source_id = edge.values[1]
+      target_id = edge.values[2]
+      target = @catalog.find_course(target_id)
+      source = @catalog.find_course(source_id)
+      if target.nil? or source.nil?
+      else
+        type = ""
+        constraint = GraphParser::Constraint.new(source, target, type)
+        target.add_constraint(constraint)
+      end
     end
 
     def parse_node(node)
@@ -57,7 +67,7 @@ private
         if node.values[0].size == 2
             program = GraphParser::Entities::Program.new(node.values[0], 'NONE')
             program.node = node
-            @catalog.add_program(node.values[0], program)
+            @catalog.add_program(program)
             node.children.each do |c|
               if c.key?("key") and check_attributes(c.values, 0, "d6")
                 program.name = get_name_for_group(c)
@@ -86,7 +96,8 @@ private
           if c.key?("key") and check_attributes(c.values, 0, "d6") 
             course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
             course.node = c
-            parent.add_course(id, course)
+            parent.add_course(course)
+            @catalog.add_course(course) #Plus facile pour effectuer les recherches après
           end
         end
       end
@@ -101,7 +112,7 @@ private
           if c.key?("key") and check_attributes(c.values, 0, "d6")
             p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(c))
             p_module.node = c
-            parent.add_p_module(id, p_module)
+            parent.add_p_module(p_module)
           else
             parse_entities(parent, c) 
           end
