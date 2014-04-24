@@ -4,8 +4,8 @@ class PModule < ActiveRecord::Base
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :courses, as: :block, dependent: :destroy
-  has_many :sub_modules, dependent: :destroy
-
+  has_many :sub_modules, class_name: "PModule", foreign_key: "parent_id", dependent: :destroy
+  belongs_to :parent, class_name: "PModule"
 
 	def self.find_by_property(property_type, property_value, catalog)
 		catalog.p_modules.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value).first
