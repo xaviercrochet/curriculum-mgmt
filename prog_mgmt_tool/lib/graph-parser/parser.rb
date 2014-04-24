@@ -86,7 +86,9 @@ private
         node = node.child.next.next.next
         p get_name_for_group(node)
         p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(node))
+        p_module.node = node
         parent.add_p_module(id, p_module)
+        print_info(node)
       end
     end
 
