@@ -21,7 +21,7 @@ class ConstraintSet < ActiveRecord::Base
 
 	def self.create_unary_constraint_on_properties(entity, type, value)
 		set_type = ConstraintSetType.create_type("UNARY", entity.catalog)
-		p "SET TYPE: " + set_type.to_s
+		
 		set = set_type.constraint_sets.create
 		constraint_type = ConstraintType.create_type(type, entity.catalog)
 		constraint = entity.constraints.new
