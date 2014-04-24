@@ -4,7 +4,7 @@ module GraphParser
     class Course < Entity
 
       def print
-        p name
+        p "COURSE : "+@name
       end
     end
   end

@@ -1,3 +1,8 @@
+require 'entities/course'
+require 'entities/program'
+require 'entities/p_module'
+require 'entity'
+
 module GraphParser
   class Catalog
 
@@ -24,15 +29,15 @@ module GraphParser
     end
 
     def print
-      @programs.each do |pp|
-        pp.print
+      @programs.each do |key, value|
+        value.print
       end
-      @p_module.each do |pm|
-        pm.print
+      @p_modules.each do |key, value|
+        value.print
       end
 
-      @courses.each do |c|
-        c.print
+      @courses.each do |key, value|
+        value.print
       end
     end
 

@@ -1,4 +1,7 @@
 require 'entity'
+require 'entities/p_module'
+require 'entities/course'
+
 module GraphParser
   module Entities
     class Program < Entity
@@ -21,12 +24,12 @@ module GraphParser
       end
 
       def print
-        p @name
-        @p_modules.each do |pm|
-          pm.print
+        p "PROGRAM : " +@name
+        @p_modules.each do |key,value|
+          value.print
         end
-        @courses.each do |c|
-          c.print
+        @courses.each do |key,value|
+          value.print
         end
       end
     end

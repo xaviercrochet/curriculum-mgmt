@@ -37,6 +37,7 @@ module GraphParser
           parse_edge(c)
         end
       end
+      @catalog.print
     end
 
 
@@ -70,25 +71,35 @@ private
     end
 
     def parse_entities(parent, node)
-      if node.key?("edgedefault")
-        node.children.each do |c|
-          parse_entity(parent, c)
+      if node.key?("id")
+        if node.key?("edgedefault") 
+          node.children.each do |c|
+            parse_entity(parent, c)
+          end
+        else
+          p "course found!!"
         end
       end
     end
 
     def parse_entity(parent, node)
       if check_attributes(node.values, 1, "group")
-        p "---------------------------------------------------------------------" 
-        print_info(node)
+        p "---------------------------------------------------------------------"
         id = node.values[0] unless ! node.key?("id")
-        p id
-        node = node.child.next.next.next
-        p get_name_for_group(node)
-        p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(node))
-        p_module.node = node
-        parent.add_p_module(id, p_module)
         print_info(node)
+        node.children.each do |c| 
+          if c.key?("key") and check_attributes(c.values, 0, "d6")
+            p get_name_for_group(c)
+            p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(c))
+            p_module.node = c
+            parent.add_p_module(id, p_module)
+            p " * * *"
+            print_info(c)
+            p " * * *"
+          else
+            parse_entities(p_module, node) 
+          end
+        end
       end
     end
 
