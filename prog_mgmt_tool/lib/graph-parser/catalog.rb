@@ -28,6 +28,32 @@ module GraphParser
       @programs[id] = program
     end
 
+    def count_courses
+      result = @courses.size
+      @programs.each do |key, value|
+        result = result + value.count_courses
+      end
+
+      @p_modules.each do |key, value|
+        result = result + value.count_courses
+      end
+
+      return result
+
+    end
+
+    def count_p_modules
+      result = @p_modules.size
+      @p_modules.each do |key, value|
+        result = result + value.count_p_modules
+      end
+
+      @programs.each do |key, value|
+        result = result + value.count_p_modules
+      end
+      return result
+    end
+
     def print
       @programs.each do |key, value|
         value.print

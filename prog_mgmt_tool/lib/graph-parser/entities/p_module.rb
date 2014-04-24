@@ -20,6 +20,25 @@ module GraphParser
         @p_modules[id] = p_module
       end
 
+      def count_courses
+        result = @courses.size
+
+        @p_modules.each do |key, value|
+          result = result + value.count_courses
+        end
+        return result
+      end
+
+      def count_p_modules
+        result = 0
+
+        @p_modules.each do |key, value|
+          result = result + value.count_p_modules
+        end
+        return result
+      end
+
+
       def print
         p "MODULE : " + @name
         @p_modules.each do |key,value|

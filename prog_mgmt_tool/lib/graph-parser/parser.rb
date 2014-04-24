@@ -38,6 +38,8 @@ module GraphParser
         end
       end
       @catalog.print
+      p  "#Courses : " + @catalog.count_courses.to_s
+      p "#Modules : " + @catalog.count_p_modules.to_s
     end
 
 
@@ -71,16 +73,30 @@ private
     end
 
     def parse_entities(parent, node)
-      if node.key?("id")
-        if node.key?("edgedefault") 
-          node.children.each do |c|
-            parse_entity(parent, c)
-          end
-        else
-          p "course found!!"
+      if node.key?("edgedefault") 
+        node.children.each do |c|
+          parse_entity(parent, c)
+          parse_course(parent, c)
         end
       end
     end
+
+    def parse_course(parent, node)
+      if node.key?("id") and node.values.size == 1
+        p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+        id = node.values[0] unless ! node.key?("id")
+        node.children.each do |c|
+          if c.key?("key") and check_attributes(c.values, 0, "d6") 
+            p get_name_for_course(c)
+            course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
+            course.node = c
+            parent.add_course(id, course)
+          end
+        end
+      end
+    end
+
+
 
     def parse_entity(parent, node)
       if check_attributes(node.values, 1, "group")
@@ -97,7 +113,7 @@ private
             print_info(c)
             p " * * *"
           else
-            parse_entities(p_module, node) 
+            parse_entities(parent, c) 
           end
         end
       end
@@ -115,6 +131,14 @@ private
 
     def check_attributes(attributes, index, value)
        attributes.size >= index and attributes[index].eql? value
+    end
+
+
+    def get_name_for_course(node)
+      p node.name
+      node = get_node_from_name(node, "ShapeNode")
+      node = get_node_from_name(node, "NodeLabel")
+      return node.content
     end
 
     def get_name_for_group(node)
