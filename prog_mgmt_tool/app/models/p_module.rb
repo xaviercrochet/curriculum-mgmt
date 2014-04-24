@@ -6,8 +6,6 @@ class PModule < ActiveRecord::Base
   has_many :courses, as: :block, dependent: :destroy
   has_many :sub_modules, dependent: :destroy
 
-  attr_accessor :p_module_object
-
 
 	def self.find_by_property(property_type, property_value, catalog)
 		catalog.p_modules.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value).first

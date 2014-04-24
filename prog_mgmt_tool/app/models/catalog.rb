@@ -9,7 +9,6 @@ class Catalog < ActiveRecord::Base
 	has_many :programs, dependent: :destroy
 	has_many :courses, dependent: :destroy
 	has_many :p_modules, dependent: :destroy
-	has_many :sub_modules, dependent: :destroy
 	has_many :constraint_types, dependent: :destroy
 	
 

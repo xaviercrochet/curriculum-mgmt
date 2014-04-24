@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140424095541) do
+ActiveRecord::Schema.define(version: 20140424132303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,9 +108,11 @@ ActiveRecord::Schema.define(version: 20140424095541) do
     t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "parent_id"
   end
 
   add_index "p_modules", ["catalog_id"], name: "index_p_modules_on_catalog_id", using: :btree
+  add_index "p_modules", ["parent_id"], name: "index_p_modules_on_parent_id", using: :btree
   add_index "p_modules", ["program_id"], name: "index_p_modules_on_program_id", using: :btree
 
   create_table "p_modules_user_catalogs", id: false, force: true do |t|
@@ -144,16 +146,6 @@ ActiveRecord::Schema.define(version: 20140424095541) do
     t.datetime "updated_at"
     t.boolean  "primary",     default: false
   end
-
-  create_table "sub_modules", force: true do |t|
-    t.integer  "p_module_id"
-    t.integer  "catalog_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sub_modules", ["catalog_id"], name: "index_sub_modules_on_catalog_id", using: :btree
-  add_index "sub_modules", ["p_module_id"], name: "index_sub_modules_on_p_module_id", using: :btree
 
   create_table "sub_modules_user_catalogs", id: false, force: true do |t|
     t.integer "user_catalog_id"
