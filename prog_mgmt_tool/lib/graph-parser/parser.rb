@@ -59,9 +59,16 @@ module GraphParser
       if node.key?("id") and node.key?("yfiles.foldertype") and check_attributes(node.values, 1, "group")
         if node.values[0].size == 2
             p "*******************************************************************"
-            program = GraphParser::Entities::Program.new(node.values[0], get_name_for_program(node))
+            program = GraphParser::Entities::Program.new(node.values[0], 'NONE')
             program.node = node
-            p program.name
+            @catalog.add_program(program)
+            node.children.each do |c|
+              if c.key?("key") and check_attributes(c.values, 0, "d6")
+                program.name = get_name_for_program(c)
+                p program.name
+              end
+            end
+
         end
       end
     end
@@ -81,15 +88,11 @@ module GraphParser
     end
 
     def get_name_for_program(node)
-      node.children.each do |c|
-        if c.key?("key") and check_attributes(c.values, 0, "d6")
-          node = get_node_from_name(c, "ProxyAutoBoundsNode" )
-          node = get_node_from_name(node, "Realizers")
-          node = get_node_from_name(node, "GroupNode")
-          node = get_node_from_name(node, "NodeLabel")
-          return node.content
-        end
-      end
+      node = get_node_from_name(c, "ProxyAutoBoundsNode" )
+      node = get_node_from_name(node, "Realizers")
+      node = get_node_from_name(node, "GroupNode")
+      node = get_node_from_name(node, "NodeLabel")
+      return node.content
     end
 
     def get_node_from_name(node, name)
