@@ -37,7 +37,6 @@ module GraphParser
           parse_edge(c)
         end
       end
-      @catalog.print
       p  "#Courses : " + @catalog.count_courses.to_s
       p "#Modules : " + @catalog.count_p_modules.to_s
     end
@@ -46,6 +45,7 @@ module GraphParser
 private
 
     def parse_edge(edge)
+      p "parsing edge"
     end
 
     def parse_node(node)
@@ -55,14 +55,12 @@ private
     def parse_program(node)
       if node.key?("id") and node.key?("yfiles.foldertype") and check_attributes(node.values, 1, "group")
         if node.values[0].size == 2
-            p "*******************************************************************"
             program = GraphParser::Entities::Program.new(node.values[0], 'NONE')
             program.node = node
             @catalog.add_program(node.values[0], program)
             node.children.each do |c|
               if c.key?("key") and check_attributes(c.values, 0, "d6")
                 program.name = get_name_for_group(c)
-                p program.name
               else
                 parse_entities(program, c)
               end
@@ -83,11 +81,9 @@ private
 
     def parse_course(parent, node)
       if node.key?("id") and node.values.size == 1
-        p "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
         id = node.values[0] unless ! node.key?("id")
         node.children.each do |c|
           if c.key?("key") and check_attributes(c.values, 0, "d6") 
-            p get_name_for_course(c)
             course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
             course.node = c
             parent.add_course(id, course)
@@ -100,18 +96,12 @@ private
 
     def parse_entity(parent, node)
       if check_attributes(node.values, 1, "group")
-        p "---------------------------------------------------------------------"
         id = node.values[0] unless ! node.key?("id")
-        print_info(node)
         node.children.each do |c| 
           if c.key?("key") and check_attributes(c.values, 0, "d6")
-            p get_name_for_group(c)
             p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(c))
             p_module.node = c
             parent.add_p_module(id, p_module)
-            p " * * *"
-            print_info(c)
-            p " * * *"
           else
             parse_entities(parent, c) 
           end
@@ -135,7 +125,6 @@ private
 
 
     def get_name_for_course(node)
-      p node.name
       node = get_node_from_name(node, "ShapeNode")
       node = get_node_from_name(node, "NodeLabel")
       return node.content
