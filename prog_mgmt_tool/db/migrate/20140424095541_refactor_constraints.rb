@@ -5,6 +5,8 @@ class RefactorConstraints < ActiveRecord::Migration
     remove_column :constraints, :role
     add_column :constraints, :course_id, :integer
     add_index :constraints, :course_id
+    remove_column :constraints, :constraint_set_id
+    add_column :constraints, :set_type, :string, default: "binary"
     # add_column :course, :target_id, :integer
     # add_index :course, :target_id
 

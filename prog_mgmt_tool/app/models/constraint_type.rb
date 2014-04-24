@@ -6,9 +6,9 @@ class ConstraintType < ActiveRecord::Base
 	}
 
 		def self.create_type(type, catalog)
-		c_type = ConstraintType.where(:name => type).first
+		c_type = catalog.constraint_types.where(name: type).first
 		if c_type.nil?
-			c_type = catalog.constraint_types.create(:name => type)
+			c_type = catalog.constraint_types.create(name: type)
 		end
 		c_type
 	end

@@ -10,7 +10,6 @@ class Catalog < ActiveRecord::Base
 	has_many :courses, dependent: :destroy
 	has_many :p_modules, dependent: :destroy
 	has_many :sub_modules, dependent: :destroy
-	has_many :constraint_set_types, dependent: :destroy
 	has_many :constraint_types, dependent: :destroy
 	
 
@@ -260,7 +259,15 @@ class Catalog < ActiveRecord::Base
 	def create_constraints(edges, nodes, courses)
 		edges.each do |edge|
 			if ! edge.get_source.get_is_constraint? and ! edge.get_destination.get_is_constraint?
-				ConstraintSet.create_binary_constraint(edge, courses, self)
+				Constraint.create_binary_constraint(edge, courses, self)
+			end
+		end
+	end
+
+	def create_constraint_sets(edges, nodes, courses)
+		nodes.each do |node|
+			if node.get_is_constraint?
+				Constraint.create_n_ary_constraint(node, edges, courses, self)
 			end
 		end
 	end
@@ -276,7 +283,7 @@ class Catalog < ActiveRecord::Base
 		sub_modules = create_sub_modules(modules, nodes)
 		courses = create_courses(programs, modules, sub_modules, nodes)
 		create_constraints(edges, nodes, courses)
-		ConstraintSet.create_sets(edges, courses, nodes, self)
+		create_constraint_sets(edges, nodes, courses)
 
 	end
 

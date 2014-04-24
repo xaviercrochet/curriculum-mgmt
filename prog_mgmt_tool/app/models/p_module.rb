@@ -1,5 +1,3 @@
-require 'constraints_checker/constraints/constraint'
-require 'constraints_checker/entities/entity'
 
 class PModule < ActiveRecord::Base
   belongs_to :program
@@ -7,7 +5,6 @@ class PModule < ActiveRecord::Base
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :courses, as: :block, dependent: :destroy
   has_many :sub_modules, dependent: :destroy
-  has_many :constraints, :as => :entity, dependent: :destroy
 
   attr_accessor :p_module_object
 
