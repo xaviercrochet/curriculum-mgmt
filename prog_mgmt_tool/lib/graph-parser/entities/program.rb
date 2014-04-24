@@ -6,8 +6,8 @@ module GraphParser
       attr_accessor :p_modules
       attr_accessor :courses
       
-      def initialize(name)
-        super(name)
+      def initialize(id, name)
+        super(id, name)
         @p_modules = {}
         @courses = {}
       end

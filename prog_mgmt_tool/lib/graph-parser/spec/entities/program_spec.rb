@@ -5,7 +5,7 @@ describe GraphParser::Entities::Program do
   let(:p_module){ double(name: "module") }
   
   it "Test Program Object" do
-    program = GraphParser::Entities::Program.new("program")
+    program = GraphParser::Entities::Program.new(42, "program")
     program.add_course(1, course)
     program.add_p_module(1, p_module)
 
