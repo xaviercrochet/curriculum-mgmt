@@ -2,8 +2,15 @@ class Constraint < ActiveRecord::Base
   belongs_to :constraint_type
   belongs_to :course
   has_and_belongs_to_many :courses
+  default_scope includes(:constraint_type)
   scope :in, -> {where(:role => 'IN')}
   scope :out, -> {where(:role => 'OUT')}
+
+  scope :prerequisites, -> {where(constraint_types: {name: "PREREQUISITE"})}
+  scope :corequisites, -> {where(constraint_types: {name: "COREQUISITE"})}
+  scope :binary, -> {where(set_type: "BINARY")}
+  scope :xor, -> {where(set_type: "X")}
+  scope :o_r, -> {where(set_type: "OR")}
 
   before_save {
   	self.set_type = set_type.upcase
@@ -28,6 +35,7 @@ class Constraint < ActiveRecord::Base
 
 	def self.create_n_ary_constraint(node, edges, courses, catalog)
 		set_type = node.get_name.to_s
+		p "SET TYPE: " + set_type.to_s
 		type = ConstraintType.create_type(edges.first.get_type.to_s, catalog) 
 		edges_dst = node.get_outcoming_edges(edges)
 		destinations = []

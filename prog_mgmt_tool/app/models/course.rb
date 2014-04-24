@@ -1,7 +1,7 @@
 class Course < ActiveRecord::Base
 
   attr_accessor :course_object
-  
+  default_scope includes(:properties)
   has_and_belongs_to_many :user_catalogs
   belongs_to :block, polymorphic: true
   belongs_to :catalog

@@ -3,28 +3,28 @@
 	= @course.name 
 	constraints
 
-- if @binary_prerequisites.count > 0
+- if @constraints.binary.prerequisites.count > 0
 	%h4 Prerequisites
-	= render 'constraints', constraints: @binary_prerequisites
+	= render 'constraints', constraints: @constraints.binary.prerequisites
 
-- if @binary_corequisites.count > 0
+- if @constraints.binary.corequisites.count > 0
 	%h4 Corequisites
-	= render 'constraints', constraints: @binary_corequisites
+	= render 'constraints', constraints: @constraints.binary.corequisites
 
-- if @xor_corequisites.count > 0
+- if @constraints.xor.corequisites.count > 0
 	%h4 Xor Corequisites
-	= render 'constraints', constraints: @xor_corequisites
+	= render 'constraints', constraints: @constraints.xor.corequisites
 
-- if @or_corequisites.count > 0
+- if @constraints.o_r.corequisites.count > 0
 	%h4 Or Corequisites
-	= render 'constraints', constraints: @or_corequisites
+	= render 'constraints', constraints: @constraints.o_r.corequisites
 
-- if @or_prerequisites.count > 0
+- if @constraints.o_r.prerequisites.count > 0
 	%h4 Or Prerequisites
-	= render 'constraints', constraints: @or_prerequisites
+	= render 'constraints', constraints: @constraints.o_r.prerequisites
 
-- if @xor_prerequisites.count > 0
+- if @constraints.xor.prerequisites.count > 0
 	%h4 XOr Prerequisites
-	= render 'constraints', constraints: @xor_prerequisites
+	= render 'constraints', constraints: @constraints.xor.prerequisites
 
 
