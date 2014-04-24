@@ -1,13 +1,10 @@
 class Constraint < ActiveRecord::Base
   belongs_to :constraint_type
-  belongs_to :constraint_set
-  belongs_to :entity, :polymorphic => true
+  belongs_to :course
+  has_and_belongs_to_many :courses
   scope :in, -> {where(:role => 'IN')}
   scope :out, -> {where(:role => 'OUT')}
 
-  before_save {
-  	self.role = role.upcase
-  }
 
   def self.create_constraint(course, set, edge, role, catalog)
 		type = ConstraintType.create_type(edge.get_type, catalog)

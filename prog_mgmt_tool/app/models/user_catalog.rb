@@ -1,5 +1,3 @@
-require 'constraints_checker/constraints/constraint'
-require 'constraints_checker/entities/entity'
 
 class UserCatalog < ActiveRecord::Base
 	attr_accessor :catalog_object

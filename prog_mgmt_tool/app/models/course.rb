@@ -1,6 +1,3 @@
-require 'constraints_checker/constraints/constraint'
-require 'constraints_checker/entities/entity'
-
 class Course < ActiveRecord::Base
 
   attr_accessor :course_object
@@ -10,7 +7,7 @@ class Course < ActiveRecord::Base
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :course_entities, dependent: :destroy
-  has_many :constraints, :as => :entity, dependent: :destroy
+  has_many :constraints, dependent: :destroy
 
   def build(properties)
   	p "Building course properties ..."

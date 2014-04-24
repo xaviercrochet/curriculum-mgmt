@@ -1,7 +1,6 @@
 class RefactorConstraintTable < ActiveRecord::Migration
   def change
   	remove_column :constraints, :catalog_id
-  	remove_column :constraints, :name
   	remove_column :constraints, :set_id
   	remove_column :constraints, :set_type
   	remove_column :constraints, :constraint_type
