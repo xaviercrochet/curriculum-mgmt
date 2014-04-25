@@ -17,7 +17,7 @@ class Constraint < ActiveRecord::Base
   }
 
 
-  def self.create_constraint(catalog, set_type, type, source, destination)
+  def self.create_constraint(set_type, type, source, destination)
 		 
 		constraint = destination.constraints.create()
 		constraint.constraint_type = type
@@ -26,11 +26,9 @@ class Constraint < ActiveRecord::Base
 		constraint.save
 	end
 
-	def self.create_binary_constraint(edge, courses, catalog)
-		type = ConstraintType.create_type(edge.get_type.to_s, catalog)
-		source = Course.where(:catalog_id => catalog.id, :id => courses[edge.get_source.get_id]["real_id"].to_i).first
-		destination = Course.where(:catalog_id => catalog.id, :id => courses[edge.get_destination.get_id]["real_id"].to_i).first
-		Constraint.create_constraint(catalog, "BINARY", type, source, destination)
+	def self.create_binary_constraint(source, destination, type)
+    type = ConstraintType.create_type(type, source.catalog)
+		Constraint.create_constraint("BINARY", type, source, destination)
 	end
 
 	def self.create_n_ary_constraint(node, edges, courses, catalog)

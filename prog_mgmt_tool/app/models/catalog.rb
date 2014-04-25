@@ -98,6 +98,22 @@ class Catalog < ActiveRecord::Base
 		parser.catalog.constraint_sets.each do |c|
 			build_constraint_set(c)
 		end
+
+		parser.catalog.courses.each do |c|
+			build_constraints(c.constraints)
+		end
+	end
+
+	def build_constraints(constraints)
+		constraints.each do |constraint|
+			build_constraint(constraint)
+		end
+	end
+
+	def build_constraint(constraint)
+		source = Course.find(constraint.source.real_id)
+		destination = Course.find(constraint.destination.real_id)
+		Constraint.create_binary_constraint(source, destination, constraint.type)
 	end
 
 	def build_program(program)
