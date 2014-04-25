@@ -150,6 +150,18 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def build_constraint_set(constraint_set)
+		source_ids = []
+		constraint_set.sources.each do |source|
+			source_ids << source.real_id
+		end
+
+		destination_ids = []
+		constraint_set.destinations.each do |destination|
+			destination_ids << destination.real_id
+		end
+		sources = Course.find(source_ids)
+		destinations = Course.find(destination_ids)
+		Constraint.create_n_ary_constraint(sources, destinations, constraint_set.set_type, constraint_set.type)
 	end
 
 	def entities_to_hash(collection, alldata)

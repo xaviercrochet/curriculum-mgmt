@@ -31,25 +31,12 @@ class Constraint < ActiveRecord::Base
 		Constraint.create_constraint("BINARY", type, source, destination)
 	end
 
-	def self.create_n_ary_constraint(node, edges, courses, catalog)
-		set_type = node.get_name.to_s
-		p "SET TYPE: " + set_type.to_s
-		type = ConstraintType.create_type(edges.first.get_type.to_s, catalog) 
-		edges_dst = node.get_outcoming_edges(edges)
-		destinations = []
-		edges_dst.each do |edge|
-			destinations << Course.find(courses[edge.get_destination.get_id.to_i]["real_id"])
-		end
-
-		edges_src = node.get_incoming_edges(edges)
-		sources = []
-		edges_src.each do |edge|
-			sources << Course.find(courses[edge.get_source.get_id.to_i]["real_id"])
-		end
+	def self.create_n_ary_constraint(sources, destinations, set_type, type)
+		type = ConstraintType.create_type(type, sources.first.catalog) 
 
 		destinations.each do |course_dst|
 			sources.each do |course_src|
-				Constraint.create_constraint(catalog, set_type, type, course_src, course_dst)
+				Constraint.create_constraint(set_type, type, course_src, course_dst)
 			end
 		end
 	end
