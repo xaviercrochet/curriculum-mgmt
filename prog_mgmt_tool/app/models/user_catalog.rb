@@ -4,7 +4,6 @@ class UserCatalog < ActiveRecord::Base
 
 	has_and_belongs_to_many :courses
 	has_and_belongs_to_many :p_modules
-	has_and_belongs_to_many :sub_modules
 	has_and_belongs_to_many :programs
 	belongs_to :user
 

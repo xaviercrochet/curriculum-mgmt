@@ -1,8 +1,8 @@
 class Program < ActiveRecord::Base
-	has_many :p_modules, dependent: :destroy
 	has_many :properties, as: :entity, dependent: :destroy
-	has_many :courses, as: :block, dependent: :destroy
 	belongs_to :catalog
+	has_and_belongs_to_many :p_modules
+	has_and_belongs_to_many :courses
 
 	def self.find_by_property(property_type, property_value, catalog)
 		catalog.programs.includes(:properties).where('property.p_type' => propertyy_type, 'property.p_value' => property_value).first

@@ -1,7 +1,7 @@
 
 class PModule < ActiveRecord::Base
-  belongs_to :program
   belongs_to :catalog
+  has_and_belongs_to_many :programs
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :courses, as: :block, dependent: :destroy
   has_many :sub_modules, class_name: "PModule", foreign_key: "parent_id", dependent: :destroy

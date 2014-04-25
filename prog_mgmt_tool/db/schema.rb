@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140424132303) do
+ActiveRecord::Schema.define(version: 20140425111218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,14 @@ ActiveRecord::Schema.define(version: 20140424132303) do
   add_index "courses", ["block_id", "block_type"], name: "index_courses_on_block_id_and_block_type", using: :btree
   add_index "courses", ["catalog_id"], name: "index_courses_on_catalog_id", using: :btree
 
+  create_table "courses_programs", id: false, force: true do |t|
+    t.integer "program_id"
+    t.integer "course_id"
+  end
+
+  add_index "courses_programs", ["course_id"], name: "index_courses_programs_on_course_id", using: :btree
+  add_index "courses_programs", ["program_id"], name: "index_courses_programs_on_program_id", using: :btree
+
   create_table "courses_user_catalogs", id: false, force: true do |t|
     t.integer "user_catalog_id"
     t.integer "course_id"
@@ -114,6 +122,14 @@ ActiveRecord::Schema.define(version: 20140424132303) do
   add_index "p_modules", ["catalog_id"], name: "index_p_modules_on_catalog_id", using: :btree
   add_index "p_modules", ["parent_id"], name: "index_p_modules_on_parent_id", using: :btree
   add_index "p_modules", ["program_id"], name: "index_p_modules_on_program_id", using: :btree
+
+  create_table "p_modules_programs", id: false, force: true do |t|
+    t.integer "program_id"
+    t.integer "p_module_id"
+  end
+
+  add_index "p_modules_programs", ["p_module_id"], name: "index_p_modules_programs_on_p_module_id", using: :btree
+  add_index "p_modules_programs", ["program_id"], name: "index_p_modules_programs_on_program_id", using: :btree
 
   create_table "p_modules_user_catalogs", id: false, force: true do |t|
     t.integer "user_catalog_id"
