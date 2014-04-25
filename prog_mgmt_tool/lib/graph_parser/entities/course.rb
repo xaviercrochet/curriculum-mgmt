@@ -6,6 +6,7 @@ module GraphParser
       attr_accessor :name
       attr_accessor :node
       attr_accessor :constraints
+      attr_accessor :real_id
 
       def initialize(id, name)
         @id = id
