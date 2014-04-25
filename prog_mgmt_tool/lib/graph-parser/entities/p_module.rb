@@ -1,4 +1,4 @@
-require 'entity'
+require_relative 'entity'
 module GraphParser
   module Entities
     class PModule < Entity 

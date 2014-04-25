@@ -1,4 +1,4 @@
-require 'entities/course'
+require_relative 'entities/course'
 
 module GraphParser
   class Constraint

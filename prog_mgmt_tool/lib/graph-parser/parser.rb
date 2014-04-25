@@ -1,9 +1,10 @@
 require 'nokogiri'
-require 'entities/program'
-require 'catalog'
-require 'entities/p_module'
-require 'entities/constraint_set'
 require 'constraint'
+require 'catalog'
+require_relative 'entities/program'
+require_relative 'entities/p_module'
+require_relative 'entities/constraint_set'
+
 
 module GraphParser
   class Parser
@@ -28,6 +29,7 @@ module GraphParser
       else
         p "File not found"
       end
+      parse
 
     end
 

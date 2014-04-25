@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
 require 'spreadsheet'
-require 'xgml_parser/xgml_parser'
+require 'graph-parser/parser'
 require 'xls_parser/xls_reader'
 require 'xls_parser/xls_writer'
 
@@ -36,9 +36,7 @@ class Catalog < ActiveRecord::Base
 			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
 				file.write(uploaded_io.read)
 			end
-			parser = XgmlParser::Parser.new(self.filename)
-			parser.parse
-			create_objects(parser)
+			parser = GraphParser::Parser.new(self.filename)
 		end
 	end
 

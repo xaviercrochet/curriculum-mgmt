@@ -1,7 +1,7 @@
-require 'entities/course'
-require 'entities/program'
-require 'entities/p_module'
-require 'entity'
+require_relative 'entities/course'
+require_relative 'entities/program'
+require_relative 'entities/p_module'
+require_relative 'entities/entity'
 
 module GraphParser
   class Catalog

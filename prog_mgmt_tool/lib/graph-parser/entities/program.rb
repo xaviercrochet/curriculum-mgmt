@@ -1,6 +1,6 @@
-require 'entity'
-require 'entities/p_module'
-require 'entities/course'
+require_relative 'entity'
+require_relative 'p_module'
+require_relative 'course'
 
 module GraphParser
   module Entities
