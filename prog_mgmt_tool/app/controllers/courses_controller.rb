@@ -1,22 +1,21 @@
 class CoursesController < ApplicationController
-  before_filter :catalog
 
 
  def destroy
     @course = Course.find(params[:id])
-    @context = @course.block
+    @p_module = @course.p_module
     @course.destroy
-    redirect_to index_url(@context)
+    redirect_to p_module_courses_path(@p_module)
   end
 
   def show
     @course = Course.find(params[:id])
-    @p_module = @course.block
+    @p_module = @course.p_module
   end
 
   def index
-    @context = context
-    @courses = @context.courses
+    @p_module = PModule.find(params[:p_module_id])
+    @courses = @p_module.courses
   end
 
   private
