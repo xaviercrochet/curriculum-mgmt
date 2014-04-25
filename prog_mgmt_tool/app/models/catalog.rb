@@ -36,6 +36,7 @@ class Catalog < ActiveRecord::Base
 				file.write(uploaded_io.read)
 			end
 			parser = GraphParser::Parser.new(self.filename)
+			build(parser)
 		end
 	end
 
@@ -89,6 +90,51 @@ class Catalog < ActiveRecord::Base
 	
 
 	private
+
+	def build(parser)
+		parser.catalog.programs.each do |p|
+			build_program(p)
+		end
+		parser.catalog.constraint_sets.each do |c|
+			build_constraint_set(c)
+		end
+	end
+
+	def build_program(program)
+		p = self.programs.create
+		p.properties.create(p_type: "NAME", value: program.name)
+		program.courses.each do |course|
+			build_course(course, p, nil)
+		end
+		program.p_modules.each do |p_module|
+			build_p_module(p_module, p, nil)
+		end
+	end
+
+	def build_course(course, program, p_module)
+		c = self.courses.create
+		c.properties.create(p_type: "SIGLE", value: course.name)
+		course.real_id = c.id
+		program.courses << c
+		p_module.courses << c unless p_module.nil?
+	end
+
+	def build_p_module(p_module, program, parent)
+		m = self.p_modules.create
+		m.properties.create(p_type: "NAME", value: p_module.name)
+		program.p_modules << m
+		parent.p_modules << m unless parent.nil?
+		p_module.p_modules.each do |pm|
+			build_b_module(pm, program, m)
+		end
+
+		p_module.courses.each do |c|
+			build_course(c, program, m)
+		end
+	end
+
+	def build_constraint_set(constraint_set)
+	end
 
 	def entities_to_hash(collection, alldata)
 		entities = Array.new

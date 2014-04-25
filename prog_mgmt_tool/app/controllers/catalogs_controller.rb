@@ -28,9 +28,9 @@ class CatalogsController < ApplicationController
 
 	def show
 		@catalog = Catalog.find(params[:id])
-		File.open(Rails.root.join('', '',  'app/assets/javascripts/coucou.json'),  "w+") do |f|
-			f.write(@catalog.to_json)
-		end
+		# File.open(Rails.root.join('', '',  'app/assets/javascripts/coucou.json'),  "w+") do |f|
+		# 	f.write(@catalog.to_json)
+		# end
 
 	end
 

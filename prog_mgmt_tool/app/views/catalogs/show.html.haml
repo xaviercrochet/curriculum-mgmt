@@ -18,6 +18,8 @@
 				= f.submit
 		- if @catalog.has_programs?
 			= link_to 'Programs', catalog_programs_path(@catalog)
+		- if @catalog.p_modules.count > 0
+			= link_to 'Modules', catalog_p_modules_path(@catalog)
 		= link_to 'Download Catalog Infos', catalog_catalog_download_path(@catalog)
 	.span9
 		%h3 Catalog Overview
