@@ -2,6 +2,8 @@ require 'nokogiri'
 require 'entities/program'
 require 'catalog'
 require 'entities/p_module'
+require 'entities/constraint_set'
+require 'constraint'
 
 module GraphParser
   class Parser
@@ -39,20 +41,42 @@ module GraphParser
       end
       p  "#Courses : " + @catalog.count_courses.to_s
       p "#Modules : " + @catalog.count_p_modules.to_s
-      result =  @catalog.find_course("n0::n0::n0")
+      p "#CosntraintSet : " + @catalog.constraint_sets.size.to_s
     end
 
 
-private
+  private
+
+    def get_edge_type(edge)
+      edge.children.each do |c|
+        if c.key?("key") and check_attributes(c.values, 0, "d9")
+          node = get_node_from_name(c, "PolyLineEdge")
+          node = get_node_from_name(node, "Arrows")
+          if node.values[1].eql? "standard"
+            return "PREREQUISITE"
+          elsif node.values[1].eql? "none"
+            return "COREQUISITE"
+          end
+        end
+      end
+      return "NONE"
+    end
 
     def parse_edge(edge)
+      type = get_edge_type(edge)
       source_id = edge.values[1]
       target_id = edge.values[2]
       target = @catalog.find_course(target_id)
       source = @catalog.find_course(source_id)
-      if target.nil? or source.nil?
+      if target.nil? 
+        set = @catalog.find_constraint_set(target_id)
+        set.add_source(source)
+        set.type = type
+      elsif source.nil?
+        set = @catalog.find_constraint_set(source_id)
+        set.add_destination(target)
+        set.type = type
       else
-        type = ""
         constraint = GraphParser::Constraint.new(source, target, type)
         target.add_constraint(constraint)
       end
@@ -84,7 +108,7 @@ private
       if node.key?("edgedefault") 
         node.children.each do |c|
           if c.key?("id") and c.values.size == 1
-            parse_course(parent, c)
+            parse_course_or_set(parent, c)
           elsif check_attributes(c.values, 1, "group")
             parse_entity(parent, c)
           end
@@ -92,17 +116,25 @@ private
       end
     end
 
-    def parse_course(parent, node)
+    def parse_course_or_set(parent, node)
       id = node.values[0] unless ! node.key?("id")
       node.children.each do |c|
-        if c.key?("key") and check_attributes(c.values, 0, "d6") 
-          course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
-          course.node = c
-          parent.add_course(course)
-          @catalog.add_course(course) #Plus facile pour effectuer les recherches après
+        if c.key?("key") and check_attributes(c.values, 0, "d6")
+          if get_node_from_name(c, "ShapeNode")
+            course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
+            course.node = c
+            parent.add_course(course)
+            @catalog.add_course(course) #Plus facile pour effectuer les recherches après
+          elsif get_node_from_name(c, "GenericNode")
+            set = GraphParser::Entities::ConstraintSet.new(id, get_name_for_constraint_set(c))
+            set.node = c
+            @catalog.add_constraint_set(set)
+          end
         end
       end
     end
+
+
 
 
 
@@ -133,6 +165,11 @@ private
        attributes.size >= index and attributes[index].eql? value
     end
 
+    def get_name_for_constraint_set(node)
+      node = get_node_from_name(node, "GenericNode")
+      node = get_node_from_name(node, "NodeLabel")
+      return node.content
+    end
 
     def get_name_for_course(node)
       node = get_node_from_name(node, "ShapeNode")
@@ -154,7 +191,7 @@ private
           return c
         end
       end
-      return node
+      return false
     end
 
     def print_info(element)

@@ -33,6 +33,7 @@ module GraphParser
           return c
         end
       end
+      return result
     end
 
     def find_constraint_set(id)
@@ -42,6 +43,7 @@ module GraphParser
           return c
         end
       end
+      return result
     end
 
     def add_course(course)
