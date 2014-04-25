@@ -11,7 +11,7 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
-    @block = @course.block
+    @p_module = @course.block
   end
 
   def index
