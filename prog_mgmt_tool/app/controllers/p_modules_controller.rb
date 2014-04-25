@@ -2,7 +2,7 @@ class PModulesController < ApplicationController
 
   def index
     @catalog = Catalog.find(params[:catalog_id])
-  	@p_modules = @catalog.p_modules
+  	@p_modules = @catalog.p_modules.where(parent_id: nil)
 	end
 
   def show
