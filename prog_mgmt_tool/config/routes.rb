@@ -7,6 +7,7 @@ Thesis::Application.routes.draw do
     get :download
     patch :upload
     resources :p_modules, shallow: true do
+      resources :sub_modules
       resources :courses, shallow: true do
         resources :constraints
       end

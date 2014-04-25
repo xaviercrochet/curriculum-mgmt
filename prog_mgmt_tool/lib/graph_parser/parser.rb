@@ -150,14 +150,16 @@ module GraphParser
 
     def parse_entity(parent, node)
       id = node.values[0] unless ! node.key?("id")
-      node.children.each do |c| 
+      p_module = nil
+      node.children.each do |c|
+
         if c.key?("key") and check_attributes(c.values, 0, "d6")
           p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(c))
           p_module.node = c
           parent.add_p_module(p_module)
         else
-          parse_entities(parent, c) 
-        end
+          parse_entities(p_module, c)
+        end         
       end
     end
 

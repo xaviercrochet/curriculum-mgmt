@@ -123,9 +123,9 @@ class Catalog < ActiveRecord::Base
 		m = self.p_modules.create
 		m.properties.create(p_type: "NAME", value: p_module.name)
 		program.p_modules << m
-		parent.p_modules << m unless parent.nil?
+		parent.sub_modules << m unless parent.nil?
 		p_module.p_modules.each do |pm|
-			build_b_module(pm, program, m)
+			build_p_module(pm, program, m)
 		end
 
 		p_module.courses.each do |c|
