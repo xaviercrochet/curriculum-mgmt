@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
 require 'spreadsheet'
-require 'graph-parser/parser'
+require 'graph_parser/parser'
 require 'xls_parser/xls_reader'
 require 'xls_parser/xls_writer'
 
