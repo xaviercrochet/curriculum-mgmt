@@ -8,4 +8,5 @@
 	= link_to 'Sub Modules', p_module_sub_modules_path(@p_module)
 - if @p_module.has_courses?
 	= link_to 'Courses', p_module_courses_path(@p_module)
+= link_to 'Delete', @p_module, method: :delete, data:{confirm: 'Are you sure?'}
 = link_to 'Back', catalog_p_modules_path(@catalog)

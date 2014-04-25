@@ -11,9 +11,9 @@ class PModulesController < ApplicationController
   end
 
   def destroy
-    @catalog = Catalog.find(params[:id])
-  	@p_module = @catalog.p_modules.find(params[:format])
-  	@p_module.destroy
-  	redirect_to catalog_p_modules_path(@program)
+    @p_module = PModule.find(params[:id])
+    @catalog = @p_module.catalog
+    @p_module.destroy
+  	redirect_to catalog_p_modules_path(@catalog)
   end
 end
