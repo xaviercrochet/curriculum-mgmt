@@ -20,6 +20,8 @@
 			= link_to 'Programs', catalog_programs_path(@catalog)
 		- if @catalog.p_modules.count > 0
 			= link_to 'Modules', catalog_p_modules_path(@catalog)
+		- if @catalog.courses.count > 0
+			= link_to 'Courses', catalog_courses_path(@catalog)
 		= link_to 'Download Catalog Infos', catalog_catalog_download_path(@catalog)
 	.span9
 		%h3 Catalog Overview

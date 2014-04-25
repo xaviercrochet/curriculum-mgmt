@@ -3,7 +3,6 @@
 		%strong
 			= p.p_type + ":"
 		= p.value
-
-= link_to 'Back', p_module_courses_path(@p_module)
+    
 = link_to 'Constraints', course_constraints_path(@course)
 = link_to 'Delete', @course, method: :delete, data: { confirm: 'Are you sure?'}

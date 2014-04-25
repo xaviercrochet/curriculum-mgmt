@@ -11,7 +11,7 @@
 		%tr
 			%td= c.name
 			%td= link_to 'Show', c
-			%td= link_to 'Delete', course_path(c), method: :delete, data: { confirm: 'Are you sure?'}
+			%td= link_to 'Delete', c, method: :delete, data: { confirm: 'Are you sure?'}
 
-= link_to 'Back', @p_module
+= link_to 'Back', polymorphic_url(@context)
 

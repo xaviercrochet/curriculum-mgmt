@@ -10,7 +10,7 @@
 		%tr
 			%td= p.properties.first.value
 			%td= link_to 'Show', p
-			%td= link_to 'Delete', program_path(@catalog, p), method: :delete, data: { confirm: 'Are you sure?'}
+			%td= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?'}
 
 = link_to 'Back', @catalog
 

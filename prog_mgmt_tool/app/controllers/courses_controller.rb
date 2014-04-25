@@ -10,12 +10,11 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
-    @p_module = @course.p_module
   end
 
   def index
-    @p_module = PModule.find(params[:p_module_id])
-    @courses = @p_module.courses
+    @context = context
+    @courses = @context.courses
   end
 
   private
@@ -71,21 +70,15 @@ class CoursesController < ApplicationController
     end
     
     def context
-      if params[:sub_module_id]
-        p "SUB MODULE"
-        id = params[:sub_module]
-        block_type = "SubModule"
-        SubModule.find(params[:sub_module_id])
-      elsif params[:p_module_id]
-        p "MODULE"
-        id = params[:p_module]
+      if params[:p_module_id]
         block_type = "PModule"
         PModule.find(params[:p_module_id])
       elsif params[:program_id]
-        p "Program"
-        id = params[:program_id]
         block_type = "Program"
         Program.find(params[:program_id])
+      elsif params[:catalog_id]
+        block_type = "Catalog"
+        Catalog.find(params[:catalog_id])
       end
     end
 

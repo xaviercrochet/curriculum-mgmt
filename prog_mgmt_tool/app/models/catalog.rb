@@ -131,7 +131,7 @@ class Catalog < ActiveRecord::Base
 		c = self.courses.create
 		c.properties.create(p_type: "SIGLE", value: course.name)
 		course.real_id = c.id
-		program.courses << c
+		program.courses << c unless program.nil?
 		p_module.courses << c unless p_module.nil?
 	end
 
@@ -145,7 +145,7 @@ class Catalog < ActiveRecord::Base
 		end
 
 		p_module.courses.each do |c|
-			build_course(c, program, m)
+			build_course(c, nil, m)
 		end
 	end
 

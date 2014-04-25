@@ -6,6 +6,7 @@ Thesis::Application.routes.draw do
   resources :catalogs, shallow: true do
     get :download
     patch :upload
+    resources :courses
     resources :p_modules, shallow: true do
       resources :sub_modules
       resources :courses, shallow: true do
@@ -14,6 +15,8 @@ Thesis::Application.routes.draw do
     end
     resources :programs, shallow: true do
       resources :properties
+      resources :courses
+      resources :p_modules
     end
   end
 end
