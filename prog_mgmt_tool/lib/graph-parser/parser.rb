@@ -83,22 +83,23 @@ private
     def parse_entities(parent, node)
       if node.key?("edgedefault") 
         node.children.each do |c|
-          parse_entity(parent, c)
-          parse_course(parent, c)
+          if c.key?("id") and c.values.size == 1
+            parse_course(parent, c)
+          elsif check_attributes(c.values, 1, "group")
+            parse_entity(parent, c)
+          end
         end
       end
     end
 
     def parse_course(parent, node)
-      if node.key?("id") and node.values.size == 1
-        id = node.values[0] unless ! node.key?("id")
-        node.children.each do |c|
-          if c.key?("key") and check_attributes(c.values, 0, "d6") 
-            course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
-            course.node = c
-            parent.add_course(course)
-            @catalog.add_course(course) #Plus facile pour effectuer les recherches après
-          end
+      id = node.values[0] unless ! node.key?("id")
+      node.children.each do |c|
+        if c.key?("key") and check_attributes(c.values, 0, "d6") 
+          course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
+          course.node = c
+          parent.add_course(course)
+          @catalog.add_course(course) #Plus facile pour effectuer les recherches après
         end
       end
     end
@@ -106,16 +107,14 @@ private
 
 
     def parse_entity(parent, node)
-      if check_attributes(node.values, 1, "group")
-        id = node.values[0] unless ! node.key?("id")
-        node.children.each do |c| 
-          if c.key?("key") and check_attributes(c.values, 0, "d6")
-            p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(c))
-            p_module.node = c
-            parent.add_p_module(p_module)
-          else
-            parse_entities(parent, c) 
-          end
+      id = node.values[0] unless ! node.key?("id")
+      node.children.each do |c| 
+        if c.key?("key") and check_attributes(c.values, 0, "d6")
+          p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(c))
+          p_module.node = c
+          parent.add_p_module(p_module)
+        else
+          parse_entities(parent, c) 
         end
       end
     end
