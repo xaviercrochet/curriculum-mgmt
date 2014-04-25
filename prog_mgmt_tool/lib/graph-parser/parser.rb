@@ -108,7 +108,7 @@ module GraphParser
       if node.key?("edgedefault") 
         node.children.each do |c|
           if c.key?("id") and c.values.size == 1
-            parse_course_or_set(parent, c)
+            parse_sub_graph(parent, c)
           elsif check_attributes(c.values, 1, "group")
             parse_entity(parent, c)
           end
@@ -116,22 +116,30 @@ module GraphParser
       end
     end
 
-    def parse_course_or_set(parent, node)
+    def parse_sub_graph(parent, node)
       id = node.values[0] unless ! node.key?("id")
       node.children.each do |c|
         if c.key?("key") and check_attributes(c.values, 0, "d6")
           if get_node_from_name(c, "ShapeNode")
-            course = GraphParser::Entities::Course.new(id, get_name_for_course(c))
-            course.node = c
-            parent.add_course(course)
-            @catalog.add_course(course) #Plus facile pour effectuer les recherches après
+            parse_course(parent, c, id)
           elsif get_node_from_name(c, "GenericNode")
-            set = GraphParser::Entities::ConstraintSet.new(id, get_name_for_constraint_set(c))
-            set.node = c
-            @catalog.add_constraint_set(set)
+            parse_constraint_set(c, id)
           end
         end
       end
+    end
+
+    def parse_course(parent, node, id)
+      course = GraphParser::Entities::Course.new(id, get_name_for_course(node))
+      course.node = node
+      parent.add_course(course)
+      @catalog.add_course(course)
+    end
+
+    def parse_constraint_set(node, id)
+      set = GraphParser::Entities::ConstraintSet.new(id, get_name_for_constraint_set(node))
+      set.node = node
+      @catalog.add_constraint_set(set)
     end
 
 
