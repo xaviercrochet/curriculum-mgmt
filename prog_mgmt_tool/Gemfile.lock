@@ -41,7 +41,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
-    commonjs (0.2.7)
     d3-rails (3.3.7)
       railties (>= 3.1)
     devise (3.2.4)
@@ -71,11 +70,6 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
-    less (2.4.0)
-      commonjs (~> 0.2.7)
-    less-rails (2.4.2)
-      actionpack (>= 3.1)
-      less (~> 2.4.0)
     libv8 (3.16.14.3)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -115,10 +109,11 @@ GEM
       json (~> 1.4)
     ref (1.0.5)
     ruby-ole (1.2.11.7)
-    sass (3.2.14)
-    sass-rails (4.0.1)
+    sass (3.2.18)
+    sass-rails (4.0.2)
       railties (>= 4.0.0, < 5.0)
-      sass (>= 3.1.10)
+      sass (~> 3.2.0)
+      sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0.0)
     sdoc (0.4.0)
       json (~> 1.8)
@@ -146,11 +141,6 @@ GEM
       polyglot (>= 0.3.1)
     turbolinks (2.2.1)
       coffee-rails
-    twitter-bootstrap-rails (2.2.8)
-      actionpack (>= 3.1)
-      execjs
-      rails (>= 3.1)
-      railties (>= 3.1)
     tzinfo (0.3.38)
     uglifier (2.4.0)
       execjs (>= 0.3.0)
@@ -171,7 +161,6 @@ DEPENDENCIES
   haml-rails (>= 0.3.4)
   jbuilder (~> 1.2)
   jquery-rails
-  less-rails
   nokogiri
   paperclip
   pg
@@ -181,5 +170,4 @@ DEPENDENCIES
   spreadsheet
   therubyracer
   turbolinks
-  twitter-bootstrap-rails
   uglifier (>= 1.3.0)

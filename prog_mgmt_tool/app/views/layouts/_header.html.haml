@@ -1,8 +1,8 @@
-%header.navbar.navbar-fixed-top.navbar-inverse
+.navbar.navbar-default.navbar-fixed-top
   = include_gon
-  .navbar-inner
-    .container
-      = link_to "Home", root_path, class: 'brand'
+  .navbar-header
+    .container-fluid
+      = link_to "Home", root_path, class: 'navbar-brand'
       %nav
         / %ul.nav.pull-right
         /   - if signed_in?
@@ -19,3 +19,7 @@
         /           = link_to "Sign out", signout_path, method: "delete"
         /   - else
         /     %li= link_to "Sign in", signin_path
+  .collapse.navbar-collapse
+    %ul.nav.navbar-nav
+      %li
+        = link_to "Catalogs", catalogs_path

@@ -1,3 +1,26 @@
 // Place all the styles related to the landing_page controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+h1 {
+  font-family: "Helvetica Neue";
+  font-weight: lighter;
+  font-size: 4em;
+  color: #FFFFFF;
+}
+
+h2 {
+  color: #FFFFFF;
+  font-size: 2em;
+}
+
+th {
+  color: #FFFFFF;
+  padding: 5px;
+}
+
+td {
+  color: #FFFFFF;
+  padding: 5px;
+}
