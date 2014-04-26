@@ -9,6 +9,8 @@ class Course < ActiveRecord::Base
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :constraints, dependent: :destroy
 
+  scope :without_parent, -> {where(p_module_id: nil)}
+
   def build(properties)
   	p "Building course properties ..."
   	properties.each do |key, value|

@@ -1,0 +1,7 @@
+%h1 Nouveau Programme
+= form_for [@catalog, @program] do |f|
+  = f.fields_for :property do |builder|
+    = render 'property_fields', f: builder
+
+  %p
+    = f.submit

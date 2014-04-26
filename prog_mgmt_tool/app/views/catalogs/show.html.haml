@@ -1,5 +1,5 @@
 .row
-	.span9
+	.col-md-9
 		%h1 Catalog
 		%p
 			%strong
@@ -16,16 +16,15 @@
 				= f.file_field :data
 			%p
 				= f.submit
-		- if @catalog.has_programs?
-			= link_to 'Programs', catalog_programs_path(@catalog)
-		- if @catalog.p_modules.count > 0
-			= link_to 'Modules', catalog_p_modules_path(@catalog)
-		- if @catalog.courses.count > 0
-			= link_to 'Courses', catalog_courses_path(@catalog)
 		= link_to 'Download Catalog Infos', catalog_catalog_download_path(@catalog)
-	.span9
-		%h3 Catalog Overview
-		%script{:src => '/assets/test.js.coffee'}
-
+	/ .span9
+	/ 	%h3 Catalog Overview
+	/ 	%script{:src => '/assets/test.js.coffee'}
+	.col-md-3
+		.list-group
+			= link_to 'Programs', catalog_programs_path(@catalog), class: "list-group-item"
+			= link_to 'Modules', catalog_p_modules_path(@catalog), class: "list-group-item"
+			= link_to 'Courses', catalog_courses_path(@catalog), class: "list-group-item"
+			
 
 	

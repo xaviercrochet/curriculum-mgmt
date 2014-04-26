@@ -23,12 +23,14 @@ class Program < ActiveRecord::Base
 	end
 
 	def name
+		name = "NONE"
 		p = self.properties.where(:p_type => 'NAME').first
 		if p.nil?
-			self.properties.first.value
+			name = self.properties.first.value unless self.properties.count == 0
 		else
-			p.value
+			name = p.value
 		end
+		return name
 	end
 
 	def has_modules?

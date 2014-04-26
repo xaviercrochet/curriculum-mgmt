@@ -1,4 +1,5 @@
 %h1 Listing programs
+= link_to 'Nouveau Programme', new_catalog_program_path
 %table
 	%tr
 		%th 
@@ -8,9 +9,10 @@
 		%th
 	- @programs.each do |p|
 		%tr
-			%td= p.properties.first.value
+			%td= p.name
 			%td= link_to 'Show', p
 			%td= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?'}
+
 
 = link_to 'Back', @catalog
 
