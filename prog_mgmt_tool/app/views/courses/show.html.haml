@@ -43,7 +43,7 @@
                         Prérequis disjonctifs (OR)
                   #collapseTree.panel-collapse.collapse
                     .panel-body
-                      = render 'constraints', constraints: @course.constraints.binary.o_r.prerequisites
+                      = render 'constraints', constraints: @course.constraints.o_r.prerequisites
                 .panel.panel-default
                   .panel-heading
                     .text-center
@@ -51,7 +51,7 @@
                         Corequis disjonctifs (OR)
                   #collapseFour.panel-collapse.collapse
                     .panel-body
-                      = render 'constraints', constraints: @course.constraints.binary.o_r.prerequisites
+                      = render 'constraints', constraints: @course.constraints.o_r.corequisites
                 .panel.panel-default
                   .panel-heading
                     .text-center
@@ -59,7 +59,7 @@
                         Prérequis disjonctifs exclusifs (X-OR)
                   #collapseFive.panel-collapse.collapse
                     .panel-body
-                      = render 'constraints', constraints: @course.constraints.binary.xor.prerequisites
+                      = render 'constraints', constraints: @course.constraints.xor.prerequisites
                 .panel.panel-default
                   .panel-heading
                     .text-center
@@ -67,4 +67,4 @@
                         Corequis disjonctifs exclusifs (X-OR)
                   #collapseSix.panel-collapse.collapse
                     .panel-body
-                      = render 'constraints', constraints: @course.constraints.binary.xor.corequisites
+                      = render 'constraints', constraints: @course.constraints.xor.corequisites

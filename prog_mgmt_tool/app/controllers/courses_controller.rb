@@ -12,11 +12,13 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @catalog = @course.catalog
     @back = back
+    record_history
   end
 
   def index
     @context = context
     @courses = @context.courses
+    record_history
   end
 
 private
