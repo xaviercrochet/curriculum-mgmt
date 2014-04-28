@@ -1,17 +1,23 @@
-%h1 Course Catalogs
-= link_to 'New Catalog', new_catalog_path
-%table
-	%tr
-		%th Faculty
-		%th Department
-		%th 
-		%th
-		%th
-	- @catalogs.each do |c|
-		%tr
-			%td= c.faculty
-			%td= c.department
-			%td= link_to 'Show', c
-			%td= link_to 'Programs', catalog_programs_path(c)
-			%td= link_to 'Delete', c, method: :delete, data: {confirm: 'Are you sure?'}
+.col-md-8.col-md-offset-2
+	%h2
+		.text-center
+			Catalogues de cours
+	.panel.panel-default
+		.panel-heading
+			= link_to 'Créer un nouveau catalogue', new_catalog_path, class: "btn btn-primary btn-lg btn-block"
+		.panel-body
+			%table.table.table-bordered
+				%thead
+					%tr
+						%th.text-center Faculté
+						%th.text-center Department
+						%th 
+						%th
+				%tbody
+					- @catalogs.each do |c|
+						%tr
+							%td.text-center= c.faculty
+							%td.text-center= c.department
+							%td= link_to 'Plus d\'informations', c, class: "btn btn-primary btn-block"
+							%td= link_to 'Supprimer', c, method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"
 

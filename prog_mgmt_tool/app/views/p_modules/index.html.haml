@@ -1,18 +1,20 @@
-%h1 Listing program modules
-
-%table
-	%tr
-		%th
-		%th
-		%th
-		%th
-		%th
-		%th
-	- @p_modules.each do |p|
-		%tr
-			%td= p.name
-			%td= link_to 'Show', p
-			%td= link_to 'Delete', p, method: :delete, data:{confirm: 'Are you sure?'}
-
-= link_to 'Back', @catalog
+.col-md-8.col-md-offset-2
+	%h2.text-center
+		Modules
+	.panel.panel-default
+		.panel-heading.text-center
+			= link_to @catalog do
+				%span.glyphicon.glyphicon-chevron-left
+				Retour vers la page précédente
+		.panel-body
+			%table.table.table-bordered
+				%thead
+					%tr
+						%th.text-center NOM 
+						%th
+				%tbody
+					- @p_modules.each do |p|
+						%tr
+							%td= link_to p.name, p, class: "btn btn-primary btn-block"
+							%td= link_to 'Supprimer', p, method: :delete, data:{confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"
 

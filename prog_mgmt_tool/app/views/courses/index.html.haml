@@ -1,17 +1,21 @@
-%h1 Listing courses
-%table
-	%tr
-		%th 
-		%th
-		%th
-		%th
-		%th
-		%th
-	- @courses.each do |c|
-		%tr
-			%td= c.name
-			%td= link_to 'Show', c
-			%td= link_to 'Delete', c, method: :delete, data: { confirm: 'Are you sure?'}
-
-= link_to 'Back', polymorphic_url(@context)
+.col-md-8.col-md-offset-2
+	%h2
+		.text-center
+			Cours
+	.panel.panel-default
+		.panel-heading.text-center
+			= link_to polymorphic_url(@context) do
+				%span.glyphicon.glyphicon-chevron-left
+				Retour vers la page précédente
+		.panel-body
+			%table.table.table-bordered
+				%thead
+					%tr
+						%th.text-center SIGLE 
+						%th
+					%tbody
+						- @courses.each do |c|
+							%tr
+								%td= link_to c.name, c, class: "btn btn-primary btn-block"
+								%td= link_to 'Supprimer', c, method: :delete, data: { confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"
 
