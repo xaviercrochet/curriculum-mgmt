@@ -21,6 +21,10 @@ class Course < ActiveRecord::Base
   	end
   end
 
+  def self.page_name
+    "COURS"
+  end
+
   def name
     p = self.properties.where(:p_type => 'SIGLE').first
     if p.nil?
@@ -103,8 +107,9 @@ class Course < ActiveRecord::Base
 
   def properties_to_hash
     props = Hash.new
+    props["SIGLE"] = self.name
     self.properties.each do |p|
-      props[p.p_type.to_s] = p.value.to_s
+      props[p.p_type.to_s] = p.value.to_s unless p.p_type.eql? "SIGLE"
     end
     props
   end

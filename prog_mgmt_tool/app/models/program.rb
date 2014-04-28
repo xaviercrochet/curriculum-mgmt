@@ -8,6 +8,10 @@ class Program < ActiveRecord::Base
 		catalog.programs.includes(:properties).where('property.p_type' => propertyy_type, 'property.p_value' => property_value).first
 	end
 
+	def self.page_name
+		"PROGRAMMES"
+	end
+
 	def update_properties(properties)
 		properties.each do |key, value|
 			p = self.properties.where(:p_type => key.to_s).first
@@ -72,8 +76,9 @@ class Program < ActiveRecord::Base
  	
  	def properties_to_hash
     props = Hash.new
+    props["NAME"] = self.name
     self.properties.each do |p|
-      props[p.p_type.to_s] = p.value.to_s
+      props[p.p_type.to_s] = p.value.to_s unless p.p_type.eql? "NAME"
     end
     props
   end

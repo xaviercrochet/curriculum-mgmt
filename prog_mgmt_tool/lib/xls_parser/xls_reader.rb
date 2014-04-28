@@ -1,8 +1,8 @@
 require 'spreadsheet'
 module XlsParser
 	class XlsReader
-		@book
-		@filename
+		attr_accessor :book
+		attr_accessor :filename
 
 		def initialize(filename)
 			@filename = filename
@@ -29,11 +29,7 @@ module XlsParser
 			end
 		end
 
-		def get_book
-			@book
-		end
-
-		private
+	private
 
 		def find_resource_identifier(sheet, name)
 			i = 0

@@ -4,8 +4,8 @@ module XlsParser
 	
 	class XlsWriter
 		
-		@book
-		@filename
+		attr_accessor :book
+		attr_accessor :filename
 
 		def initialize(filename)
 			Spreadsheet.client_encoding = 'UTF-8'
@@ -45,11 +45,7 @@ module XlsParser
 		end
 
 
-		def get_book
-			@book
-		end
-
-		private
+	private
 
 		def write_properties(properties, row, header)
 			properties.each do |key, value|

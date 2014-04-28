@@ -60,8 +60,7 @@ class Catalog < ActiveRecord::Base
 		parser = XlsParser::XlsReader.new(self.ss_filename)
 		parse_spreadsheet(Course, "SIGLE", parser)
 		parse_spreadsheet(PModule, "NAME", parser)
-		parse_spreadsheet(SubModule, "Name", parser)
-		parse_spreadsheet(Program, "Name", parser)
+		parse_spreadsheet(Program, "NAME", parser)
 
 	end
 
@@ -164,16 +163,12 @@ class Catalog < ActiveRecord::Base
 		Constraint.create_n_ary_constraint(sources, destinations, constraint_set.set_type, constraint_set.type)
 	end
 
-	def entities_to_hash(collection, alldata)
+	def entities_to_hash(collection)
 		entities = Array.new
 		collection.each do |element|
-			if alldata
-				entities.push(element.properties_to_hash)
-			else
-				entities.push(element.name)
-			end
+			entities.push(element.properties_to_hash)
 		end
-		entities
+		return entities
 	end
 
 	def build_sub_modules_catalog
@@ -216,7 +211,7 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def parse_spreadsheet(entity_model, entity_identificator, parser)
-		entities = parser.parse_sheet(entity_model.to_s.pluralize.upcase, entity_identificator.upcase)
+		entities = parser.parse_sheet(entity_model.page_name, entity_identificator.upcase)
 		if ! entities.nil?
 			update_entities_properties(entity_model, entities, entity_identificator)
 		else
@@ -239,14 +234,14 @@ class Catalog < ActiveRecord::Base
 
 
 	def create_spreadsheets(parser)
-		parser.create_spreadsheet(entities_to_hash(self.courses, true), 'Courses')
-		p_modules = PModule.joins(:program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(entities_to_hash(p_modules, true), 'PModules')
-		sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
-		parser.create_spreadsheet(entities_to_hash(sub_modules, true), 'SubModules')
-		parser.create_empty_spreadsheet(PModule.constraints_header, entities_to_hash(p_modules, false), 'PModules Constraints')
-		parser.create_empty_spreadsheet(SubModule.constraints_header, entities_to_hash(sub_modules, false), 'SubModules Constraints')
-		parser.create_empty_spreadsheet(Program.constraints_header, entities_to_hash(programs, false), 'Programs Constraints')
+		parser.create_spreadsheet(entities_to_hash(self.programs), "Programmes")
+		parser.create_spreadsheet(entities_to_hash(self.courses), 'Cours')
+		parser.create_spreadsheet(entities_to_hash(self.p_modules), 'Modules')
+		#sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
+		#parser.create_spreadsheet(entities_to_hash(sub_modules), 'SubModules')
+		# parser.create_empty_spreadsheet(PModule.constraints_header, entities_to_hash(p_modules, false), 'PModules Constraints')
+		# parser.create_empty_spreadsheet(SubModule.constraints_header, entities_to_hash(sub_modules, false), 'SubModules Constraints')
+		# parser.create_empty_spreadsheet(Program.constraints_header, entities_to_hash(programs, false), 'Programs Constraints')
 	end
 end
 

@@ -45,6 +45,10 @@ class PModule < ActiveRecord::Base
 
 	end
 
+	def self.page_name
+		"MODULES"
+	end
+
 
 	def to_object(catalog_object)
 		self.p_module_object = ConstraintsChecker::Entities::PModule.new(self.id, self.name, catalog_object)
@@ -104,8 +108,9 @@ class PModule < ActiveRecord::Base
 
 	def properties_to_hash
     props = Hash.new
+    props["NAME"] = self.name
     self.properties.each do |p|
-      props[p.p_type.to_s] = p.value.to_s
+      props[p.p_type.to_s] = p.value.to_s unless p.p_type.eql? "NAME"
     end
     props
   end
