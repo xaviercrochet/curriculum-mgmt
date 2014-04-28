@@ -1,0 +1,10 @@
+%h1 Nouveau Programme
+= form_for [@catalog, @program] do |f|
+  = f.fields_for :property do |builder|
+    = render 'property_fields', f: builder
+  = f.fields_for :p_modules do |builder|
+    = render 'programs/p_module/p_modules', f: builder, p_modules: @p_modules
+  = f.fields_for :courses do |builder|
+    = render 'programs/course/courses', f: builder, courses: @catalog.courses.without_parent
+  %p
+    = f.submit

@@ -1,0 +1,70 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading
+      .text-center
+        = @course.name
+        .pull-right
+          = link_to  @course, method: :delete, data: { confirm: 'Are you sure?'} do
+            %span.glyphicon.glyphicon-remove
+    .panel-heading.text-center
+      = link_to @back do
+        %span.glyphicon.glyphicon-chevron-left
+          Retour vers la page précédente
+    .panel-body.text-center
+      #main.panel-group
+        .panel.panel-default
+          .panel-heading
+            .text-heading.text-center
+              %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#collapseMain"}
+                Contraintes
+          #collapseMain.panel-collapse.collapse
+            .panel-body
+              #accordion.panel-group
+                .panel.panel-default
+                  .panel-heading
+                    .text-center
+                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne"}
+                        Corequis
+                  #collapseOne.panel-collapse.collapse
+                    .panel-body
+                      = render 'constraints', constraints: @course.constraints.binary.corequisites
+                .panel.panel-default
+                  .panel-heading
+                    .text-center
+                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTwo"}
+                        Prérequis
+                  #collapseTwo.panel-collapse.collapse
+                    .panel-body
+                      = render 'constraints', constraints: @course.constraints.binary.prerequisites
+                .panel.panel-default
+                  .panel-heading
+                    .text-center
+                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTree"}
+                        Prérequis disjonctifs (OR)
+                  #collapseTree.panel-collapse.collapse
+                    .panel-body
+                      = render 'constraints', constraints: @course.constraints.binary.o_r.prerequisites
+                .panel.panel-default
+                  .panel-heading
+                    .text-center
+                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseFour"}
+                        Corequis disjonctifs (OR)
+                  #collapseFour.panel-collapse.collapse
+                    .panel-body
+                      = render 'constraints', constraints: @course.constraints.binary.o_r.prerequisites
+                .panel.panel-default
+                  .panel-heading
+                    .text-center
+                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseFive"}
+                        Prérequis disjonctifs exclusifs (X-OR)
+                  #collapseFive.panel-collapse.collapse
+                    .panel-body
+                      = render 'constraints', constraints: @course.constraints.binary.xor.prerequisites
+                .panel.panel-default
+                  .panel-heading
+                    .text-center
+                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseSix"}
+                        Corequis disjonctifs exclusifs (X-OR)
+                  #collapseSix.panel-collapse.collapse
+                    .panel-body
+                      = render 'constraints', constraints: @course.constraints.binary.xor.corequisites

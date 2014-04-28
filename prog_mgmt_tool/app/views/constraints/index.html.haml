@@ -1,0 +1,30 @@
+%h1 
+	Listing
+	= @course.name 
+	constraints
+
+- if @constraints.binary.prerequisites.count > 0
+	%h4 Prerequisites
+	= render 'constraints', constraints: @constraints.binary.prerequisites
+
+- if @constraints.binary.corequisites.count > 0
+	%h4 Corequisites
+	= render 'constraints', constraints: @constraints.binary.corequisites
+
+- if @constraints.xor.corequisites.count > 0
+	%h4 Xor Corequisites
+	= render 'constraints', constraints: @constraints.xor.corequisites
+
+- if @constraints.o_r.corequisites.count > 0
+	%h4 Or Corequisites
+	= render 'constraints', constraints: @constraints.o_r.corequisites
+
+- if @constraints.o_r.prerequisites.count > 0
+	%h4 Or Prerequisites
+	= render 'constraints', constraints: @constraints.o_r.prerequisites
+
+- if @constraints.xor.prerequisites.count > 0
+	%h4 XOr Prerequisites
+	= render 'constraints', constraints: @constraints.xor.prerequisites
+
+

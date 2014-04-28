@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  module_type: MyString
+  credits: 1
+  program_id: 
+
+two:
+  name: MyString
+  module_type: MyString
+  credits: 1
+  program_id: 

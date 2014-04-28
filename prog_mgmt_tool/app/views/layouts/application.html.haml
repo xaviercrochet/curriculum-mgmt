@@ -1,0 +1,27 @@
+!!!
+%html
+  %head
+    %title Program Managing Tool
+    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = csrf_meta_tags
+  %body
+    = render 'layouts/header'
+    .container
+      .row
+        .col-md-8.col-md-offset-2
+          = yield
+      /   .span3
+      /     .well.sidebar-nav
+      /       %h3 Sidebar
+      /       %ul.nav.nav-list
+      /         %li.nav-header Sidebar
+      /         %li= link_to "Link1", "/path1"
+      /         %li= link_to "Link2", "/path2"
+      /         %li= link_to "Link3", "/path3"
+      /     / /.well
+      /   / /span
+      / / /row
+    / %footer
+    /   %p &copy; UCL-INGI 2014
+    / /container

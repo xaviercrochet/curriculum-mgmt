@@ -1,0 +1,21 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading
+      .text-center
+        = @p_module.name
+    .panel-heading.text-center
+      = link_to @back do
+        %span.glyphicon.glyphicon-chevron-left
+          Retour vers la page précédente
+    .panel-body
+      %ul.nav.nav-pills.nav-stacked
+        %li
+          = link_to p_module_sub_modules_path(@p_module) do
+            = content_tag(:label, "Modules")
+            %span.badge.pull-right
+              = @p_module.sub_modules.count
+        %li
+          = link_to p_module_courses_path(@p_module) do
+            = content_tag(:label, "Cours")
+            %span.badge.pull-right
+              = @p_module.courses.count

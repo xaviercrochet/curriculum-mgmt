@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  catalog_id: 
+  course_id: 
+  set_id: 1
+  set_type: MyString
+  role: MyString
+  constraint_type: MyString
+
+two:
+  catalog_id: 
+  course_id: 
+  set_id: 1
+  set_type: MyString
+  role: MyString
+  constraint_type: MyString
