@@ -14,6 +14,7 @@ class ProgramsController < ApplicationController
 
   def new
     @catalog = Catalog.find(params[:catalog_id])
+    @p_modules = @catalog.p_modules.without_parent
     @program = Program.new
     2.times do
       property = @program.properties.build
@@ -25,6 +26,13 @@ class ProgramsController < ApplicationController
     @program = @catalog.programs.create
     @program.properties.create(p_type: "NAME", value: params[:program][:property][:name])
     @program.properties.create(p_type: "CREDITS", value: params[:program][:property][:credits])
+    params[:program][:p_modules][:ids].each do |value|
+      @program.p_modules << PModule.find(value.to_i) unless value.eql? "0"
+    end
+    params[:program][:courses][:ids].each do |value|
+      @program.courses << Course.find(value.to_i) unless value.eql? "0"
+    end
+    p params.inspect
     redirect_to @program
   end
 

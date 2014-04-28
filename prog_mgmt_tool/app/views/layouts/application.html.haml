@@ -9,7 +9,8 @@
     = render 'layouts/header'
     .container
       .row
-        = yield
+        .col-md-8.col-md-offset-2
+          = yield
       /   .span3
       /     .well.sidebar-nav
       /       %h3 Sidebar
