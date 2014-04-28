@@ -4,6 +4,8 @@ development:
   encoding: unicode
   pool: 5
   timeout: 5000
+  username: xavier
+  password: 
 test:
   adapter: postgresql
   encoding: unicode
