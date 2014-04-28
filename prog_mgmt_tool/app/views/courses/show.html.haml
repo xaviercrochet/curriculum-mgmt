@@ -1,8 +1,14 @@
-- @course.properties.each do |p|
-	%p
-		%strong
-			= p.p_type + ":"
-		= p.value
-    
-= link_to 'Constraints', course_constraints_path(@course)
-= link_to 'Delete', @course, method: :delete, data: { confirm: 'Are you sure?'}
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading
+      .text-center
+        = @course.name
+        .pull-right
+          = link_to  @course, method: :delete, data: { confirm: 'Are you sure?'} do
+            %span.glyphicon.glyphicon-remove
+    .panel-heading.text-center
+      = link_to @back do
+        %span.glyphicon.glyphicon-chevron-left
+          Retour vers la page précédente
+    .panel-body.text-center
+      = link_to 'Contraintes', course_constraints_path(@course)
