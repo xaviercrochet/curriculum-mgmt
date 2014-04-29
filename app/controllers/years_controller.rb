@@ -38,6 +38,7 @@ class YearsController < ApplicationController
   def index
     @student_program = StudentProgram.find(params[:student_program_id])
     @years = @student_program.years
+    @back = back
     record_history
   end
 

@@ -1,7 +1,10 @@
 .col-md-8.col-md-offset-2
+  %h2.text-center Année
   .panel.panel-default
     .panel-heading.text-center
-      %h4 Année
+      = link_to @back do
+        %span.glyphicon.glyphicon-chevron-left
+          Retour vers la page précédente
     .panel-body
       %ul.nav.nav-tabs
         %li.active

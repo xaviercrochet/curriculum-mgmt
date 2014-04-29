@@ -24,6 +24,7 @@ class StudentProgramsController < ApplicationController
 
   def index
     @student_programs = StudentProgram.all
+    @back = back
     record_history
   end
 

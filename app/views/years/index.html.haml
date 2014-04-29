@@ -3,7 +3,10 @@
     Années du programme de cours
   .panel.panel-default
     .panel-heading.text-center
-      Années
+      = link_to @back do
+        %span.glyphicon.glyphicon-chevron-left
+          Retour vers la page précédente
+    .panel-body
     .panel-body
       - i = 1
       - @years.each do |c|
