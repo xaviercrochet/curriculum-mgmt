@@ -1,4 +1,4 @@
-require 'entity'
+require_relative '../entity'
 module ConstraintsChecker
   module Entities
     class PModule < Entity

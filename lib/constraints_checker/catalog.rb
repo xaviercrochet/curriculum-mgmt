@@ -3,11 +3,13 @@ module ConstraintsChecker
     attr_accessor :courses
     attr_accessor :p_modules
     attr_accessor :sub_modules
+    attr_accessor :logs
 
     def initialize()
       self.courses = {}
       self.p_modules = {}
       self.sub_modules = {}
+      self.logs = {prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passet: []}
     end
 
     def find_p_module(id)
@@ -35,16 +37,24 @@ module ConstraintsChecker
     end
 
     def check
-      logs = []
-      p "#of courses : "+courses.size.to_s
+      logs = @logs
       courses.each do |key, value|
         if ! value.nil?
           p value.to_s
-          p "#of constraints : "+value.constraints.size.to_s
-          logs << value.check 
+          logs = build_logs(logs, value.check) 
         end
       end
-      logs.flatten!
+      return logs
+    end
+
+  private
+    def build_logs(logs, new_data)
+      new_data.each do |element|
+        element.each do |key, value|
+          logs[key] = logs[key] + value
+        end
+      end
+      return logs
     end
   end
 end

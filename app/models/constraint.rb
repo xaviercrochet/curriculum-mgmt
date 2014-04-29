@@ -57,9 +57,15 @@ class Constraint < ActiveRecord::Base
       elsif self.prerequisite?
         constraint = ConstraintsChecker::Constraints::Prerequisite.new(course, self.courses.first.id)
       end
-    else
     end
     return constraint
+  end
+
+  def get_constraint_set_object(course)
+    constraint_set = nil
+    self.courses.each do |c|
+    end
+    return constraint_set
   end
 
 	def to_object(target_object)
@@ -69,4 +75,6 @@ class Constraint < ActiveRecord::Base
 			ConstraintsChecker::Constraints::Corequisite.new(self.entity.id, target_object)
 		end
 	end	
+
+
 end
