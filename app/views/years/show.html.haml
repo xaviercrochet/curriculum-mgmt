@@ -1,2 +1,23 @@
 .col-md-8.col-md-offset-2
-  %h2.text-center Année
+  .panel.panel-default
+    .panel-heading.text-center
+      %h4 Année
+    .panel-body
+      %ul.nav.nav-tabs
+        %li.active
+          %a{"data-toggle" => "tab", :href => "#first_semester"} Premier Quadri
+        %li
+          %a{"data-toggle" => "tab", :href => "#second_semester"} Second Quadri
+      .tab-content
+        #first_semester.tab-pane.active
+          .panel.panel-default
+            .panel-heading.text-center
+              Cours
+            .panel-body
+              = render 'years/show/courses', courses: @year.first_semester.courses
+        #second_semester.tab-pane
+          .panel.panel-default
+            .panel-heading.text-center
+              Cours
+            .panel-body
+              = render 'years/show/courses', courses: @year.second_semester.courses    

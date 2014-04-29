@@ -13,10 +13,10 @@
           .tab-content
             #first_semester.tab-pane.active
               = fields_for :q1 do |builder|
-                = render 'courses', f: builder, courses: @student_program.program.all_courses
+                = render 'years/new/courses', f: builder, courses: @student_program.program.all_courses
             #second_semester.tab-pane
               = fields_for :q2 do |builder|
-                = render 'courses', f: builder, courses: @student_program.program.all_courses
+                = render 'years/new/courses', f: builder, courses: @student_program.program.all_courses
           
           %p
           = f.submit "Ajouter l'année", class: "btn btn-primary btn-lg btn-block"

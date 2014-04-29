@@ -2,15 +2,16 @@ class YearsController < ApplicationController
   def new
     @student_program = StudentProgram.find(params[:student_program_id])
     @year = Year.new
-    @year.build_first_semester
-    @year.build_second_semester
+    2.times do
+      @year.semesters.build
+    end
   end
 
   def create
     @student_program = StudentProgram.find(params[:student_program_id])
     @year = @student_program.years.create
-    @first_semester = @year.create_first_semester(slot: 1)
-    @second_semester = @year.create_second_semester(slot: 2)
+    @first_semester = @year.semesters.create(slot: 1)
+    @second_semester = @year.semesters.create(slot: 2)
     params[:q1][:ids].each do |id|
       @first_semester.courses << Course.find(id.to_i) unless id.eql? "0"
     end
