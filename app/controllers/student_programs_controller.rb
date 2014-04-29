@@ -18,12 +18,25 @@ class StudentProgramsController < ApplicationController
 
   def show
     @student_program = StudentProgram.find(params[:id])
+    @back = back
+    record_history
   end
 
   def index
     @student_programs = StudentProgram.all
+    record_history
   end
 
 private
+
+  def record_history
+    session[:history] ||= []
+    session[:history].push request.url
+    session[:history] = session[:history].last(10)
+  end
+
+  def back
+    session[:history].pop
+  end
 
 end
