@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ConstraintSetTypeTest < ActiveSupport::TestCase
+class SemesterTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
