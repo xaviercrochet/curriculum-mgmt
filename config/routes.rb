@@ -3,6 +3,14 @@ CurriculumMgmt::Application.routes.draw do
   get "landing_page/index"
   root "landing_page#index"
  
+  resources :student_programs, shallow: true do
+    resources :years, shallow: true do
+      resources :semesters, shallow: true do
+        resources :courses
+      end
+    end
+  end
+
   resources :catalogs, shallow: true do
     get :download
     patch :upload

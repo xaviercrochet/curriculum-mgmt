@@ -1,0 +1,18 @@
+.col-md-8.col-md-offset-2
+  %h2
+    .text-center
+      Programmes de cours des étudiants
+    .panel.panel-default
+      .panel-heading.text-center
+        = link_to 'Nouveau Programme', new_student_program_path, class: "btn btn-primary btn-lg btn-block"
+      .panel-body
+        %table.table.table-centered
+          %thead
+            %tr
+              %th
+              %th
+          %tbody
+            -@student_programs.each do |p|
+              %tr
+                %td= link_to "Plus d'informations", p, cass: "btn btn-primary btn-block"
+                %td= link_to "Supprimer", p, method: :delete, data: {confirm: "Êtes vous sûr?"}, class: "btn btn-primary btn-block"

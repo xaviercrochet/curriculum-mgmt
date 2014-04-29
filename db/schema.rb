@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140429010049) do
+ActiveRecord::Schema.define(version: 20140429092517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20140429010049) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "filename"
+    t.boolean  "main",        default: false
   end
 
   create_table "constraint_types", force: true do |t|
@@ -126,8 +127,10 @@ ActiveRecord::Schema.define(version: 20140429010049) do
     t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "catalog_id"
   end
 
+  add_index "student_programs", ["catalog_id"], name: "index_student_programs_on_catalog_id", using: :btree
   add_index "student_programs", ["program_id"], name: "index_student_programs_on_program_id", using: :btree
 
   create_table "users", force: true do |t|

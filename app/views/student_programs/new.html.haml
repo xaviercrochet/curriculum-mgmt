@@ -1,0 +1,16 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading.text-center
+      %h4 Nouveau Programme d'étudiants
+    .panel-body
+      .form-horizontal
+        = form_for @student_program do |f|
+          .form-group
+            .col-md-3
+              = f.label :program, "PROGRAMME", class: "control-label"
+            .col-md-9
+              = collection_select(:student_program, :program_id, @catalog.programs, :id, :name, {}, {class: "form-control"})
+              %p.help-block{:style => 'color: red;'} Choisissez le program de cours que vous voulez suivre
+
+          %p
+            = f.submit "Créer le programme", class: "btn btn-primary btn-lg btn-block"

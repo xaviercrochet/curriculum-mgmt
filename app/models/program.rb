@@ -1,6 +1,7 @@
 class Program < ActiveRecord::Base
 	has_many :properties, as: :entity, dependent: :destroy
 	belongs_to :catalog
+	has_many :student_programs
 	has_and_belongs_to_many :p_modules
 	has_and_belongs_to_many :courses
 
