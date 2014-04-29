@@ -9,8 +9,12 @@
             .col-md-3
               = f.label :program, "PROGRAMME", class: "control-label"
             .col-md-9
-              = collection_select(:student_program, :program_id, @catalog.programs, :id, :name, {}, {class: "form-control"})
-              %p.help-block{:style => 'color: red;'} Choisissez le program de cours que vous voulez suivre
+              - if ! @program.nil?
+                = collection_select(:student_program, :program_id, @catalog.programs, :id, :name, {}, {class: "form-control"})
+                %p.help-block{:style => 'color: red;'} Choisissez le program de cours que vous voulez suivre
+              - else
+                %p.help-block{:style => 'color: red;'} La commission de programme n'a pas encore importé le catalogue de cours
+
 
           %p
             = f.submit "Créer le programme", class: "btn btn-primary btn-lg btn-block"
