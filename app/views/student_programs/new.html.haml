@@ -9,7 +9,7 @@
             .col-md-3
               = f.label :program, "PROGRAMME", class: "control-label"
             .col-md-9
-              - if ! @program.nil?
+              - if ! @catalog.nil?
                 = collection_select(:student_program, :program_id, @catalog.programs, :id, :name, {}, {class: "form-control"})
                 %p.help-block{:style => 'color: red;'} Choisissez le program de cours que vous voulez suivre
               - else
