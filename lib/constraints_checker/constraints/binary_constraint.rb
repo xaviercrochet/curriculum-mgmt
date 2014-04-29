@@ -1,4 +1,4 @@
-require 'constraint'
+require_relative '../constraint'
 
 module ConstraintsChecker
   module Constraints

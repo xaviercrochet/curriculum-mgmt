@@ -1,10 +1,10 @@
+require 'constraints_checker/constraints/binary_constraint'
+
 class Constraint < ActiveRecord::Base
   belongs_to :constraint_type
   belongs_to :course
   has_and_belongs_to_many :courses
   default_scope includes(:constraint_type)
-  scope :in, -> {where(:role => 'IN')}
-  scope :out, -> {where(:role => 'OUT')}
 
   scope :prerequisites, -> {where(constraint_types: {name: "PREREQUISITE"})}
   scope :corequisites, -> {where(constraint_types: {name: "COREQUISITE"})}
@@ -40,6 +40,27 @@ class Constraint < ActiveRecord::Base
 			end
 		end
 	end
+
+  def corequisite?
+    return self.constraint_type.name.eql? "COREQUISITE"
+  end
+
+  def prerequisite?
+    return self.constraint_type.name.eql? "PREREQUISITE"
+  end
+
+  def get_constraint_object(course)
+    constraint = nil
+    if self.courses.count == 1
+      if self.corequisite?
+        constraint = ConstraintsChecker::Constraints::Corequisite.new(course, self.courses.first.id)
+      elsif self.prerequisite?
+        constraint = ConstraintsChecker::Constraints::Prerequisite.new(course, self.courses.first.id)
+      end
+    else
+    end
+    return constraint
+  end
 
 	def to_object(target_object)
 		if self.constraint_type.name.eql? "PREREQUISITE"

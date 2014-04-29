@@ -1,3 +1,5 @@
+require 'constraints_checker/entities/course'
+
 class Course < ActiveRecord::Base
 
   attr_accessor :course_object
@@ -91,21 +93,18 @@ class Course < ActiveRecord::Base
     end
   end
 
-  def to_object(catalog)
-     self.course_object = ConstraintsChecker::Entities::Course.new(self.id, self.name, self.credits, catalog, nil)
-     self.binary_prerequisites.each do |c|
-      c.pairs.each do |pre|
-        self.course_object.add_constraint(pre.to_object(self.course_object))
-      end
-    end
-    self.binary_corequisites.each do |c|
-      c.pairs.each do |co|
-        self.course_object.add_constraint(co.to_object(self.course_object))
-      end
+  def get_course_object
+    course = ConstraintsChecker::Entities::Course.new(name: self.name, id: self.id, passed: "true")
+    self.constraints.binary.corequisites.each do |c|
+      p "constraint found"
+      course.add_constraint(c.get_constraint_object(course))
     end
 
-    p "Constriants : "+self.course_object.constraints.size.to_s
-    self.course_object
+    self.constraints.binary.prerequisites.each do |c|
+      p "constraint found"
+      course.add_constraint(c.get_constraint_object(course))
+    end
+    return course
   end
 
   def properties_to_hash

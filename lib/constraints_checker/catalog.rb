@@ -1,4 +1,4 @@
-module constraints_checker
+module ConstraintsChecker
   class Catalog
     attr_accessor :courses
     attr_accessor :p_modules
@@ -19,7 +19,6 @@ module constraints_checker
     end
 
     def add_course(course)
-      p "Adding course ..."
       self.courses[course.id] = course
     end
 
@@ -40,6 +39,8 @@ module constraints_checker
       p "#of courses : "+courses.size.to_s
       courses.each do |key, value|
         if ! value.nil?
+          p value.to_s
+          p "#of constraints : "+value.constraints.size.to_s
           logs << value.check 
         end
       end

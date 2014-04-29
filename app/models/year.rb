@@ -21,4 +21,11 @@ class Year < ActiveRecord::Base
     errors.add(:semester, "Too Many Second Semesters")  if self.semesters.where(slot: 2).count > 1
   end 
 
+  def get_course_objects
+    courses = []
+    courses = courses + self.first_semester.get_courses_objects
+    courses = courses + self.second_semester.get_courses_objects
+    return courses
+  end
+
 end
