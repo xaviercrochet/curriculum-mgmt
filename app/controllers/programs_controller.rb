@@ -3,6 +3,7 @@ class ProgramsController < ApplicationController
   def index
     @catalog = Catalog.find(params[:catalog_id])
     @programs = @catalog.programs
+    record_history
   end
 
   def destroy
@@ -39,5 +40,18 @@ class ProgramsController < ApplicationController
   def show
     @program = Program.find(params[:id])
     @catalog = @program.catalog
+    @back = back
+    record_history
+  end
+
+private
+  def record_history
+    session[:history] ||= []
+    session[:history].push request.url
+    session[:history] = session[:history].last(10)
+  end
+
+  def back
+    session[:history].pop
   end
 end
