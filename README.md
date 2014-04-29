@@ -5,4 +5,4 @@ TODO
 - Add PropertyConstraint (to represent property constraints in db)
 - Add navigation (Nautilus style) to help navigation through pages
 - Remove SubModule stuff without breaking things if possible
-
+- Upload files to Amazon s3
