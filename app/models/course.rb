@@ -1,7 +1,7 @@
 class Course < ActiveRecord::Base
 
   attr_accessor :course_object
-  default_scope includes(:properties)
+  #default_scope includes(:properties) deprecated!
   has_and_belongs_to_many :user_catalogs
   has_and_belongs_to_many :programs
   belongs_to :p_module
@@ -19,6 +19,10 @@ class Course < ActiveRecord::Base
   		@p.value = value.to_s
   		@p.save
   	end
+  end
+
+  def self.default_scope
+    self.includes(:properties)
   end
 
   def self.page_name

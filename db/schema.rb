@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140425122058) do
+ActiveRecord::Schema.define(version: 20140429010049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,23 +24,6 @@ ActiveRecord::Schema.define(version: 20140425122058) do
     t.datetime "updated_at"
     t.string   "filename"
   end
-
-  create_table "constraint_set_types", force: true do |t|
-    t.string   "name"
-    t.integer  "catalog_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "constraint_set_types", ["catalog_id"], name: "index_constraint_set_types_on_catalog_id", using: :btree
-
-  create_table "constraint_sets", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "constraint_set_type_id"
-  end
-
-  add_index "constraint_sets", ["constraint_set_type_id"], name: "index_constraint_sets_on_constraint_set_type_id", using: :btree
 
   create_table "constraint_types", force: true do |t|
     t.string   "name"
@@ -70,20 +53,6 @@ ActiveRecord::Schema.define(version: 20140425122058) do
   add_index "constraints_courses", ["constraint_id"], name: "index_constraints_courses_on_constraint_id", using: :btree
   add_index "constraints_courses", ["course_id"], name: "index_constraints_courses_on_course_id", using: :btree
 
-  create_table "course_entities", force: true do |t|
-    t.string   "year"
-    t.integer  "credits"
-    t.string   "professor"
-    t.string   "url"
-    t.integer  "course_id"
-    t.integer  "semester_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "course_entities", ["course_id"], name: "index_course_entities_on_course_id", using: :btree
-  add_index "course_entities", ["semester_id"], name: "index_course_entities_on_semester_id", using: :btree
-
   create_table "courses", force: true do |t|
     t.integer  "catalog_id"
     t.datetime "created_at"
@@ -102,17 +71,16 @@ ActiveRecord::Schema.define(version: 20140425122058) do
   add_index "courses_programs", ["course_id"], name: "index_courses_programs_on_course_id", using: :btree
   add_index "courses_programs", ["program_id"], name: "index_courses_programs_on_program_id", using: :btree
 
-  create_table "courses_user_catalogs", id: false, force: true do |t|
-    t.integer "user_catalog_id"
+  create_table "courses_semesters", id: false, force: true do |t|
+    t.integer "semester_id"
     t.integer "course_id"
   end
 
-  add_index "courses_user_catalogs", ["course_id"], name: "index_courses_user_catalogs_on_course_id", using: :btree
-  add_index "courses_user_catalogs", ["user_catalog_id"], name: "index_courses_user_catalogs_on_user_catalog_id", using: :btree
+  add_index "courses_semesters", ["course_id"], name: "index_courses_semesters_on_course_id", using: :btree
+  add_index "courses_semesters", ["semester_id"], name: "index_courses_semesters_on_semester_id", using: :btree
 
   create_table "p_modules", force: true do |t|
     t.integer  "catalog_id"
-    t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "parent_id"
@@ -120,7 +88,6 @@ ActiveRecord::Schema.define(version: 20140425122058) do
 
   add_index "p_modules", ["catalog_id"], name: "index_p_modules_on_catalog_id", using: :btree
   add_index "p_modules", ["parent_id"], name: "index_p_modules_on_parent_id", using: :btree
-  add_index "p_modules", ["program_id"], name: "index_p_modules_on_program_id", using: :btree
 
   create_table "p_modules_programs", id: false, force: true do |t|
     t.integer "program_id"
@@ -130,27 +97,11 @@ ActiveRecord::Schema.define(version: 20140425122058) do
   add_index "p_modules_programs", ["p_module_id"], name: "index_p_modules_programs_on_p_module_id", using: :btree
   add_index "p_modules_programs", ["program_id"], name: "index_p_modules_programs_on_program_id", using: :btree
 
-  create_table "p_modules_user_catalogs", id: false, force: true do |t|
-    t.integer "user_catalog_id"
-    t.integer "p_module_id"
-  end
-
-  add_index "p_modules_user_catalogs", ["p_module_id"], name: "index_p_modules_user_catalogs_on_p_module_id", using: :btree
-  add_index "p_modules_user_catalogs", ["user_catalog_id"], name: "index_p_modules_user_catalogs_on_user_catalog_id", using: :btree
-
   create_table "programs", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "catalog_id"
   end
-
-  create_table "programs_user_catalogs", id: false, force: true do |t|
-    t.integer "user_catalog_id"
-    t.integer "program_id"
-  end
-
-  add_index "programs_user_catalogs", ["program_id"], name: "index_programs_user_catalogs_on_program_id", using: :btree
-  add_index "programs_user_catalogs", ["user_catalog_id"], name: "index_programs_user_catalogs_on_user_catalog_id", using: :btree
 
   create_table "properties", force: true do |t|
     t.string   "p_type"
@@ -162,21 +113,22 @@ ActiveRecord::Schema.define(version: 20140425122058) do
     t.boolean  "primary",     default: false
   end
 
-  create_table "sub_modules_user_catalogs", id: false, force: true do |t|
-    t.integer "user_catalog_id"
-    t.integer "sub_module_id"
-  end
-
-  add_index "sub_modules_user_catalogs", ["sub_module_id"], name: "index_sub_modules_user_catalogs_on_sub_module_id", using: :btree
-  add_index "sub_modules_user_catalogs", ["user_catalog_id"], name: "index_sub_modules_user_catalogs_on_user_catalog_id", using: :btree
-
-  create_table "user_catalogs", force: true do |t|
-    t.integer  "user_id"
+  create_table "semesters", force: true do |t|
+    t.integer  "year_id"
+    t.integer  "slot"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "user_catalogs", ["user_id"], name: "index_user_catalogs_on_user_id", using: :btree
+  add_index "semesters", ["year_id"], name: "index_semesters_on_year_id", using: :btree
+
+  create_table "student_programs", force: true do |t|
+    t.integer  "program_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "student_programs", ["program_id"], name: "index_student_programs_on_program_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -195,5 +147,13 @@ ActiveRecord::Schema.define(version: 20140425122058) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "years", force: true do |t|
+    t.integer  "student_program_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "years", ["student_program_id"], name: "index_years_on_student_program_id", using: :btree
 
 end

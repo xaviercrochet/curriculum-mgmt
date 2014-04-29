@@ -1,8 +1,7 @@
-class RefactorPModules < ActiveRecord::Migration
+class RefactorPModule < ActiveRecord::Migration
   def change
-    drop_table :sub_modules
     add_column :p_modules, :parent_id, :integer
     add_index :p_modules, :parent_id
-
+    remove_column :p_modules, :program_id
   end
 end
