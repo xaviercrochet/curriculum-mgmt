@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 20140429092517) do
 
   create_table "student_programs", force: true do |t|
     t.integer  "program_id"
+    t.boolean  "validated",  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "catalog_id"
