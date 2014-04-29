@@ -1,0 +1,22 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading.text-center
+      %h4 Nouvelle Année
+    .panel-body
+      .form-horizontal
+        = form_for [@student_program, @year] do |f|
+          %ul.nav.nav-tabs
+            %li.active
+              %a{"data-toggle" => "tab", :href => "#first_semester"} Premier Quadri
+            %li
+              %a{"data-toggle" => "tab", :href => "#second_semester"} Second Quadri
+          .tab-content
+            #first_semester.tab-pane.active
+              = fields_for :q1 do |builder|
+                = render 'courses', f: builder, courses: @student_program.program.all_courses
+            #second_semester.tab-pane
+              = fields_for :q2 do |builder|
+                = render 'courses', f: builder, courses: @student_program.program.all_courses
+          
+          %p
+          = f.submit "Ajouter l'année", class: "btn btn-primary btn-lg btn-block"

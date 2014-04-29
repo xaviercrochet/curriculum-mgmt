@@ -13,6 +13,20 @@ class Program < ActiveRecord::Base
 		"PROGRAMMES"
 	end
 
+	def all_courses
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
+		result = []
+		result = result +  prgrm.courses
+		prgrm.p_modules.each do |pm|
+			result = result +  pm.courses
+			pm.sub_modules.each do |sm|
+				result = result +  sm.courses
+			end
+		end
+		return result
+
+	end
+
 	def update_properties(properties)
 		properties.each do |key, value|
 			p = self.properties.where(:p_type => key.to_s).first

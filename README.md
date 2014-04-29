@@ -7,3 +7,4 @@ TODO
 - Remove SubModule stuff without breaking things if possible
 - Upload files to Amazon s3
 - Add main attribute to Catalog (to specify the one we have to use)
+- Add Time attribute to course, to specify wich semester he's dispensed

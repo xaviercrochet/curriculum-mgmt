@@ -1,0 +1,10 @@
+.col-md-8.col-md-offset-2
+  %h3.text-center
+    Années du programme de cours
+  .panel.panel-default
+    .panel-heading
+      = link_to 'Ajouter une nouvelle année', new_student_program_year_path(@student_program), class: "btn btn-primaryy btn-lg btn-block"
+    .panel-body
+      - @years.each do |c|
+        %p
+          COUCOU
