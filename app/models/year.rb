@@ -13,6 +13,10 @@ class Year < ActiveRecord::Base
     self.semesters.where(slot: 2).first
   end
 
+  def passed?
+    self.passed
+  end
+
   def year_can_only_have_on_first_semester
     errors.add(:semester, "Too Many First Semesters") if self.semesters.where(slot: 1).count > 1
   end
