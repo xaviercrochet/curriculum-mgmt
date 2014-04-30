@@ -14,7 +14,7 @@
           = link_to "Informations sur le programme choisi", @student_program.program, class:'btn btn-block btn-default'
       .row
         .col-md-8.col-md-offset-2  
-          = link_to "Vérifier les contraintes", '#', class:'btn btn-block btn-warning'
+          = link_to "Vérifier les contraintes", student_program_student_program_check_path(@student_program), class:'btn btn-block btn-warning'
       .row
         .col-md-8.col-md-offset-2
           = link_to "Envoyer à la validation", '#', class:'btn btn-block btn-danger'

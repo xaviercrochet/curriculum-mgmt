@@ -1,0 +1,10 @@
+%table.table.table-bordered
+  %thead
+    %tr
+      %th Nom
+      %th Crédits
+  %tbody
+    - courses.each do |course|
+      %tr
+        %td= course.name
+        %td= course.credits

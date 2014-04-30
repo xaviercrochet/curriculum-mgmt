@@ -9,7 +9,7 @@ module ConstraintsChecker
       self.courses = {}
       self.p_modules = {}
       self.sub_modules = {}
-      self.logs = {prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passet: []}
+      self.logs = {prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passed: []}
     end
 
     def find_p_module(id)
@@ -40,7 +40,6 @@ module ConstraintsChecker
       logs = @logs
       courses.each do |key, value|
         if ! value.nil?
-          p value.to_s
           logs = build_logs(logs, value.check) 
         end
       end

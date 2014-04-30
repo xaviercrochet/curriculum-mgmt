@@ -1,0 +1,18 @@
+
+%h3.text-center Vérification des contraintes du programme
+.panel.panel-default
+  .panel-heading.text-center
+    = link_to @back do
+      %span.glyphicon.glyphicon-chevron-left
+        Retour vers la page précédente
+  .panel-body
+    %ul.nav.nav-tabs
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#pre"} Prérequis Manquants
+      %li
+        %a{"data-toggle" => "tab", :href => "#co"} Corequis Manquants
+    .tab-content
+      #pre.tab-pane.active
+        = render "courses", courses: @prerequisites
+      #co.tab-pane
+        = render "courses", courses: @corequisites

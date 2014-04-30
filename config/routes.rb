@@ -2,8 +2,9 @@ CurriculumMgmt::Application.routes.draw do
   devise_for :users
   get "landing_page/index"
   root "landing_page#index"
- 
+
   resources :student_programs, shallow: true do
+    get :check
     resources :years, shallow: true do
       resources :semesters, shallow: true do
         resources :courses

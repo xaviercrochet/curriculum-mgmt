@@ -11,6 +11,6 @@ class StudentProgram < ActiveRecord::Base
         c.add_course(course)
       end
     end
-    c.check
+    return c.check
   end
 end

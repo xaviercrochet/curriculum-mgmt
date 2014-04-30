@@ -28,6 +28,15 @@ class StudentProgramsController < ApplicationController
     record_history
   end
 
+  def check
+    @student_program = StudentProgram.find(params[:student_program_id])
+    @logs = @student_program.check_constraints
+    @prerequisites = Course.find(@logs[:"prerequisites_missing"])
+    @corequisites = Course.find(@logs[:corequisites_missing])
+    @back = back
+    record_history
+  end
+
 private
 
   def record_history
