@@ -13,6 +13,17 @@ class PModule < ActiveRecord::Base
 		catalog.p_modules.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value).first
 	end
 
+	def mandatory?
+		p = self.properties.where(p_type: "MANDATORY").first
+		if p.nil? 
+			return false
+		elsif p.value.eql? 'NO'
+			return false
+		else
+			return true
+		end
+	end
+
 	def update_properties(properties)
 		properties.each do |key, value|
 			p = self.properties.where(:p_type => key.to_s).first

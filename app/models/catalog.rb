@@ -236,7 +236,7 @@ class Catalog < ActiveRecord::Base
 	def create_spreadsheets(parser)
 		parser.create_spreadsheet(entities_to_hash(self.programs), "Programmes")
 		parser.create_spreadsheet(entities_to_hash(self.courses), 'Cours')
-		parser.create_spreadsheet(entities_to_hash(self.p_modules), 'Modules')
+		parser.create_spreadsheet(entities_to_hash(self.p_modules.without_parent), 'Modules')
 		#sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
 		#parser.create_spreadsheet(entities_to_hash(sub_modules), 'SubModules')
 		# parser.create_empty_spreadsheet(PModule.constraints_header, entities_to_hash(p_modules, false), 'PModules Constraints')
