@@ -4,9 +4,10 @@ class Semester < ActiveRecord::Base
   validates_inclusion_of :slot, :in => 1..2
 
   def get_courses_objects
+    passed = self.year.passed?
     courses = []
     self.courses.each do |course|
-      courses << course.get_course_object
+      courses << course.get_course_object(passed)
     end
     return courses
   end

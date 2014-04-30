@@ -93,8 +93,8 @@ class Course < ActiveRecord::Base
     end
   end
 
-  def get_course_object
-    course = ConstraintsChecker::Entities::Course.new(name: self.name, id: self.id, passed: "true")
+  def get_course_object(passed)
+    course = ConstraintsChecker::Entities::Course.new(name: self.name, id: self.id, passed: passed)
     self.constraints.binary.corequisites.each do |c|
       course.add_constraint(c.get_constraint_object(course))
     end
