@@ -40,7 +40,7 @@ gem "haml"
 gem 'haml-rails', '>= 0.3.4', :group => :development
 gem 'bcrypt-ruby'
 gem 'nokogiri'
-gem 'paperclip'
+gem "paperclip", "~> 3.5.3"
 gem 'spreadsheet'
 gem "d3-rails"
 gem 'gon'

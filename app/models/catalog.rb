@@ -12,7 +12,9 @@ class Catalog < ActiveRecord::Base
 	has_many :constraint_types, dependent: :destroy
 
 	has_attached_file :spreadsheet, path: "spreadsheets/:id/:filename"
+	validates_attachment_content_type :spreadsheet, content_type: "application/vnd.ms-excel"
 	has_attached_file :graph, path: "graphes/:id/:filename"
+	validates_attachment :graph, content_type: {content_type: "application/xml", content_type: "application/octet-stream"}
 	
 
 
@@ -31,7 +33,6 @@ class Catalog < ActiveRecord::Base
 	end
 
 
-
 	def upload(data)
 		if data[:data]
 			uploaded_io = data[:data]
@@ -41,6 +42,12 @@ class Catalog < ActiveRecord::Base
 			parser = GraphParser::Parser.new(self.filename)
 			build(parser)
 		end
+	end
+
+	def parse
+		graph = open(self.graph_url)
+		parser = GraphParser::Parser.new(graph)
+		build(parser)
 	end
 
 	def upload_spreadsheet(data)
@@ -87,11 +94,20 @@ class Catalog < ActiveRecord::Base
 
 	end
 
+	def graph_url
+		URI.escape("http://s3.amazonaws.com/curriculum_mgmt/graphes/"+self.id.to_s + "/" + self.graph_file_name)
+	end
+
 	
 
 	
 
 	private
+
+
+
+	def spread_sheet_url
+	end
 
 	def build(parser)
 		parser.catalog.programs.each do |p|

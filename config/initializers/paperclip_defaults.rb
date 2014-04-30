@@ -1,1 +1,1 @@
-Paperclip::Attachment.default_options[:url] = 'http://curriculum-mgmt.s3-website-eu-west-1.amazonaws.com/'
+Paperclip::Attachment.default_options[:url] = 'https://curriculum-mgmt.s3-eu-west-1.amazonaws.com'
