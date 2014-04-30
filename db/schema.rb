@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430131628) do
+ActiveRecord::Schema.define(version: 20140430144331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,15 @@ ActiveRecord::Schema.define(version: 20140430131628) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "filename"
-    t.boolean  "main",        default: false
+    t.boolean  "main",                     default: false
+    t.string   "graph_file_name"
+    t.string   "graph_content_type"
+    t.integer  "graph_file_size"
+    t.datetime "graph_updated_at"
+    t.string   "spreadsheet_file_name"
+    t.string   "spreadsheet_content_type"
+    t.integer  "spreadsheet_file_size"
+    t.datetime "spreadsheet_updated_at"
   end
 
   create_table "constraint_types", force: true do |t|

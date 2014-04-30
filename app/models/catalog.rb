@@ -10,6 +10,9 @@ class Catalog < ActiveRecord::Base
 	has_many :courses, dependent: :destroy
 	has_many :p_modules, dependent: :destroy
 	has_many :constraint_types, dependent: :destroy
+
+	has_attached_file :spreadsheet, path: "spreadsheets/:id/:filename"
+	has_attached_file :graph, path: "graphes/:id/:filename"
 	
 
 

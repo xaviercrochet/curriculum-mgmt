@@ -45,6 +45,7 @@ gem 'spreadsheet'
 gem "d3-rails"
 gem 'gon'
 gem 'devise'
+gem 'aws-sdk'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
