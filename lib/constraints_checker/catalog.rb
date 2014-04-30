@@ -1,15 +1,17 @@
+require_relative 'entity'
 module ConstraintsChecker
-  class Catalog
+  class Catalog < Entity
     attr_accessor :courses
     attr_accessor :p_modules
     attr_accessor :sub_modules
     attr_accessor :logs
 
-    def initialize()
+    def initialize(properties)
+      super(properties)
       self.courses = {}
       self.p_modules = {}
       self.sub_modules = {}
-      self.logs = {prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passed: []}
+      self.logs = {or_corequisites_missing: [], prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passed: []}
     end
 
     def find_p_module(id)
@@ -22,6 +24,7 @@ module ConstraintsChecker
 
     def add_course(course)
       self.courses[course.id] = course
+      course.parent = self
     end
 
     def add_p_module(p_module_id)
@@ -34,6 +37,10 @@ module ConstraintsChecker
         p "Course not found :-/"
       end
       self.courses[id]
+    end
+
+    def find_root
+      self
     end
 
     def check

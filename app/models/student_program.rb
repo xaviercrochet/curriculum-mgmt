@@ -7,7 +7,7 @@ class StudentProgram < ActiveRecord::Base
   has_and_belongs_to_many :p_modules
 
   def check_constraints
-    c = ConstraintsChecker::Catalog.new
+    c = ConstraintsChecker::Catalog.new(id: self.id)
     self.years.each do |year|
       year.get_course_objects.each do |course|
         c.add_course(course)

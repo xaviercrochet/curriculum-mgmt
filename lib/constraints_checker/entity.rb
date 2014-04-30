@@ -34,6 +34,7 @@ module ConstraintsChecker
 		end
 
 		def search(children_id, children_type)
+			p root.to_s
 			root = find_root
 			root.find_children(children_id, children_type)
 		end

@@ -5,6 +5,7 @@ module ConstraintsChecker
     class BinaryConstraint < Constraint
       
       attr_accessor :course
+      #target => target de la contrainte, les dépendances d'un cours par exemple
       attr_accessor :target_id
 
       def initialize(course, target_id)
@@ -20,7 +21,7 @@ module ConstraintsChecker
       end
 
       def check
-        result = self.course.find_course(target_id)
+        result = self.course.find_course(self.target_id)
         if result.nil?
           return {prerequisites_missing: [self.target_id]}
         elsif ! result.passed
@@ -37,7 +38,7 @@ module ConstraintsChecker
       end
 
       def check
-        result = self.course.find_course(target_id)
+        result = self.course.find_course(self.target_id)
         if result.nil?
           {corequisites_missing: [self.target_id]}
         else
