@@ -1,0 +1,21 @@
+%ul.nav.nav-tabs
+  %li.active
+    %a{"data-toggle" => "tab", :href => "#mandatory"} Modules obligatoires
+  %li
+    %a{"data-toggle" => "tab", :href => "#optional"} Modules optionnels
+= form_for @student_program do |f|
+  .tab-content
+    #mandatory.tab-pane.active
+      - student_program.program.mandatory_modules.each do |m|
+        %p
+          = fields_for :mandatory_modules do |f|
+            = f.label m.name
+            = f.check_box :ids, {multiple: true, checked: student_program.is_p_module_present?(m)}, m.id
+
+    #optional.tab-pane
+      - student_program.program.optional_modules.each do |m|
+        %p
+          = fields_for :optional_modules do |f|
+            = f.label m.name
+            = f.check_box :ids, {multiple: true, checked: student_program.is_p_module_present?(m)}, m.id
+  = f.submit "Mettre à jour les modules", class: "btn btn-primary btn-lg btn-block"

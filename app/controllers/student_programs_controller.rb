@@ -8,12 +8,34 @@ class StudentProgramsController < ApplicationController
     @program = Program.find(params[:student_program][:program_id])
     @student_program = @program.student_programs.create
     redirect_to @student_program
+    record_history
+  end
+
+  def configure
+    @student_program = StudentProgram.find(params[:student_program_id])
+    @years = @student_program.years
+    @back = back
+    record_history
   end
 
   def destroy
     @student_program = StudentProgram.find(params[:id])
     @student_program.destroy
     redirect_to student_programs_path
+  end
+
+  def update
+    @student_program = StudentProgram.find(params[:id])
+    @student_program.p_modules = []
+    params[:mandatory_modules][:ids].each do |id|
+      @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
+    end
+
+    params[:optional_modules][:ids].each do |id|
+      @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
+    end
+    record_history
+    redirect_to student_program_student_program_configure_path(@student_program)
   end
 
   def show

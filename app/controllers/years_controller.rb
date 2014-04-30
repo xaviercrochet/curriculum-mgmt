@@ -23,10 +23,13 @@ class YearsController < ApplicationController
     redirect_to @year
   end
 
-  def update
-  end
+
 
   def destroy
+    @year = Year.find(params[:id])
+    @student_program = @year.student_program
+    @year.destroy
+    redirect_to student_program_student_program_configure_path(@student_program)
   end
 
   def show

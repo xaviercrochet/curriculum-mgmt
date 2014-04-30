@@ -16,6 +16,11 @@ class StudentProgram < ActiveRecord::Base
     return c.check
   end
 
+  def is_p_module_present?(p_module)
+    self.p_modules.where(id: p_module.id).count > 0
+  end
+
+
   def validation_request_already_sent
     self.validations.count > 0
   end

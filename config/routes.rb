@@ -6,6 +6,7 @@ CurriculumMgmt::Application.routes.draw do
     get :validate
   end
   resources :student_programs, shallow: true do
+    get :configure
     get :new_validation
     get :check
     resources :years, shallow: true do

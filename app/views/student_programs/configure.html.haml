@@ -1,0 +1,18 @@
+.col-md-8.col-md-offset-2
+  %h3.text-center Configuration du Programme de Cours
+  .panel.panel-default
+    .panel-heading.text-center
+      = link_to @back do
+        %span.glyphicon.glyphicon-chevron-left
+          Retour vers la page précédente
+    .panel-body
+      %ul.nav.nav-tabs
+        %li.active
+          %a{"data-toggle" => "tab", :href => "#module"} Configuration des modules
+        %li.pull-right
+          %a{"data-toggle" => "tab", :href => "#year"} Configuration des années
+      .tab-content
+        #module.tab-pane.active
+          = render 'modules', student_program: @student_program
+        #year.tab-pane
+          = render 'years', years: @student_program.years

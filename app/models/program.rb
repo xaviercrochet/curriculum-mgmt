@@ -5,12 +5,33 @@ class Program < ActiveRecord::Base
 	has_and_belongs_to_many :p_modules
 	has_and_belongs_to_many :courses
 
+
 	def self.find_by_property(property_type, property_value, catalog)
 		catalog.programs.includes(:properties).where('property.p_type' => propertyy_type, 'property.p_value' => property_value).first
 	end
 
 	def self.page_name
 		"PROGRAMMES"
+	end
+
+	def mandatory_modules
+		modules = []
+		self.p_modules.without_parent.each do |m|
+			modules << m if m.mandatory?
+		end
+		return modules
+	end
+
+	def self.default_scope
+    self.includes(:p_modules)
+  end
+
+	def optional_modules
+		modules = []
+		self.p_modules.without_parent.each do |m|
+			modules << m unless m.mandatory?
+		end
+		return modules
 	end
 
 	def all_courses

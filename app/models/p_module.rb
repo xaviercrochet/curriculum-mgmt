@@ -17,12 +17,13 @@ class PModule < ActiveRecord::Base
 		p = self.properties.where(p_type: "MANDATORY").first
 		if p.nil? 
 			return false
-		elsif p.value.eql? 'NO'
-			return false
-		else
+		elsif p.value.eql? 'YES'
 			return true
+		else
+			return false
 		end
 	end
+
 
 	def update_properties(properties)
 		properties.each do |key, value|
