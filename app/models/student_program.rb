@@ -24,7 +24,7 @@ class StudentProgram < ActiveRecord::Base
     self.save
   end
 
-  def unvalidate
+  def devalidate
     self.validated = false
     self.save
   end
