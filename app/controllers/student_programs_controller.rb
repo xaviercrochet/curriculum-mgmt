@@ -29,11 +29,12 @@ class StudentProgramsController < ApplicationController
     @student_program.p_modules = []
     params[:mandatory_modules][:ids].each do |id|
       @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
-    end
+    end unless params[:mandatory_modules].nil?
 
     params[:optional_modules][:ids].each do |id|
       @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
-    end
+    end unless params[:optional_modules].nil?
+    
     redirect_to student_program_student_program_configure_path(@student_program)
   end
 

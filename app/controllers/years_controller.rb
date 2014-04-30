@@ -17,11 +17,12 @@ class YearsController < ApplicationController
     @second_semester = @year.semesters.create(slot: 2)
     params[:q1][:ids].each do |id|
       @first_semester.courses << Course.find(id.to_i) unless id.eql? "0"
-    end
+    end unless params[:q1].nil?
 
     params[:q2][:ids].each do |id|
       @second_semester.courses << Course.find(id.to_i) unless id.eql? "0"
-    end
+    end unless params[:q2].nil?
+    
     @student_program.devalidate
     redirect_to @year
   end
