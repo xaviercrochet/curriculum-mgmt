@@ -17,4 +17,4 @@
           = link_to "Vérifier les contraintes", student_program_student_program_check_path(@student_program), class:'btn btn-block btn-primary'
       .row
         .col-md-8.col-md-offset-2
-          = link_to "Envoyer à la validation", student_program_student_program_new_validation_path(@student_program), class:'btn btn-block btn-danger', disabled: @student_program.validation_request_already_sent
+          = link_to "Envoyer à la validation", student_program_student_program_new_validation_path(@student_program), class:'btn btn-block btn-danger', disabled: @student_program.state

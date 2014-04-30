@@ -21,5 +21,15 @@ class StudentProgram < ActiveRecord::Base
 
   def validate
     self.validated = true
+    self.save
+  end
+
+  def unvalidate
+    self.validated = false
+    self.save
+  end
+
+  def state
+    self.validated or self.validation_request_already_sent
   end
 end

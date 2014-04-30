@@ -19,7 +19,7 @@ class YearsController < ApplicationController
     params[:q2][:ids].each do |id|
       @second_semester.courses << Course.find(id.to_i) unless id.eql? "0"
     end
-    
+    @student_program.unvalidate
     redirect_to @year
   end
 
