@@ -38,8 +38,11 @@ class Catalog < ActiveRecord::Base
 			parser = GraphParser::Parser.new(graph)
 			build(parser)
 			# filename = URI.escape("http://s3.amazonaws.com/curriculum_mgmt/spreadsheets/" + self.id.to_s + "/data.xls")
-			# parser = XlsParser::XlsWriter.new(filename)
-			# create_spreadsheets(parser)
+			parser = XlsParser::XlsWriter.new("data.xls")
+			create_spreadsheets(parser)
+			file = File.open("data.xls")
+			update(spreadsheet: file)
+			file.close
 		end
 	end
 
