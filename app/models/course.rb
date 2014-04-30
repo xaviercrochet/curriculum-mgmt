@@ -41,7 +41,7 @@ class Course < ActiveRecord::Base
 
   def credits
     c = self.properties.where(:p_type => 'CREDITS').first
-    if p.nil?
+    if c.nil?
       'NONE'
     else
       c.value

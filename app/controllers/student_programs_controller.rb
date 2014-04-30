@@ -37,6 +37,12 @@ class StudentProgramsController < ApplicationController
     record_history
   end
 
+  def new_validation
+    @student_program = StudentProgram.find(params[:student_program_id])
+    @student_program.validations.create
+    redirect_to @student_program
+  end
+
 private
 
   def record_history

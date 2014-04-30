@@ -1,0 +1,16 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading.text-center
+      %h4 Demandes de validation
+    .panel-body
+      %table.table.table-bordered
+        %thead
+        %tbody
+        - @validations.each do |validation|
+          %tr
+            %td
+              = link_to "Programme", validation.student_program, class: "btn btn-primary btn-block"
+            %td
+              = link_to "Valider", validation_validate_path(validation), data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-success btn-block"
+            %td
+              = link_to "Refuser", validation, method: :delete, data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-danger btn-block" 

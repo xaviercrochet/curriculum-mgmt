@@ -1,5 +1,5 @@
 .col-md-8.col-md-offset-2
-  %h2
+  %h3
     .text-center
       Programmes de cours des étudiants
   .panel.panel-default
@@ -12,5 +12,5 @@
           -@student_programs.each do |p|
             %tr
               %td.text-center
-                = link_to "Plus d'informations", p, cass: "btn btn-primary btn-block"
+                = link_to "Plus d'informations", p, class: "btn btn-primary btn-block"
               %td= link_to "Supprimer", p, method: :delete, data: {confirm: "Êtes vous sûr?"}, class: "btn btn-primary btn-block"
