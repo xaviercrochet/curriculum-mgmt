@@ -17,7 +17,6 @@
 					2 - Compléter le fichier excel
 				.text-center
 					3 - Mettre à jour le fichier excel
-					= @catalog.id
 			= link_to '1 - Télécharger les informations du catalogue', @catalog.spreadsheet_url, class: "btn btn-danger btn-lg btn-block"
 			= form_for @catalog, :url => catalog_catalog_upload_path(@catalog) do |f|
 				.form-group
