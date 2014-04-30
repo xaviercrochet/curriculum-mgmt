@@ -8,7 +8,6 @@ TODO
   - Allow one of the two parties to tag year as passed
 - Student Program
   - Proopose optional module if available or if course of those module are chosen
-  - Add mandatory modules
 - Temporality
   - Add academical Year model
 - Models

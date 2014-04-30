@@ -4,6 +4,7 @@ class StudentProgram < ActiveRecord::Base
   belongs_to :program
   has_many :years, dependent: :destroy
   has_many :validations, dependent: :destroy
+  has_and_belongs_to_many :p_modules
 
   def check_constraints
     c = ConstraintsChecker::Catalog.new
