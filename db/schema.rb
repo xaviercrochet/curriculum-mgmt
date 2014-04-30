@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 20140430161530) do
     t.integer  "student_program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "passed"
+    t.boolean  "passed",             default: true
   end
 
   add_index "years", ["student_program_id"], name: "index_years_on_student_program_id", using: :btree
