@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140429092517) do
+ActiveRecord::Schema.define(version: 20140430091944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 20140429092517) do
     t.integer  "student_program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "passed"
   end
 
   add_index "years", ["student_program_id"], name: "index_years_on_student_program_id", using: :btree
