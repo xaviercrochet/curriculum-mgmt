@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430160140) do
+ActiveRecord::Schema.define(version: 20140430161530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20140430160140) do
   create_table "catalogs", force: true do |t|
     t.string   "faculty"
     t.string   "department"
-    t.string   "ss_filename"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "main",                     default: false
