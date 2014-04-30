@@ -37,8 +37,13 @@ class Catalog < ActiveRecord::Base
 		if ! graph.nil?
 			parser = GraphParser::Parser.new(graph)
 			build(parser)
+			# filename = URI.escape("http://s3.amazonaws.com/curriculum_mgmt/spreadsheets/" + self.id.to_s + "/data.xls")
+			# parser = XlsParser::XlsWriter.new(filename)
+			# create_spreadsheets(parser)
 		end
 	end
+
+
 
 	def parse_ss
 		spreadsheet = open(self.spreadsheet_url)
