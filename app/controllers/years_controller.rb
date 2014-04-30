@@ -1,4 +1,7 @@
 class YearsController < ApplicationController
+
+  after_action :record_history
+
   def new
     @student_program = StudentProgram.find(params[:student_program_id])
     @year = Year.new
@@ -35,14 +38,12 @@ class YearsController < ApplicationController
   def show
     @year = Year.find(params[:id])
     @back = back
-    record_history
   end
 
   def index
     @student_program = StudentProgram.find(params[:student_program_id])
     @years = @student_program.years
     @back = back
-    record_history
   end
 
 private
@@ -53,7 +54,8 @@ private
   end
 
   def back
-    session[:history].pop
+    session[:history].pop unless session.nil?
+    root_path if session.nil?
   end
 
 end

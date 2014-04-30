@@ -1,9 +1,9 @@
 class ProgramsController < ApplicationController
-  
+  after_action :record_history
+
   def index
     @catalog = Catalog.find(params[:catalog_id])
     @programs = @catalog.programs
-    record_history
   end
 
   def destroy
@@ -41,7 +41,6 @@ class ProgramsController < ApplicationController
     @program = Program.find(params[:id])
     @catalog = @program.catalog
     @back = back
-    record_history
   end
 
 private
@@ -52,6 +51,7 @@ private
   end
 
   def back
-    session[:history].pop
+    session[:history].pop unless session.nil?
+    root_path if session.nil?
   end
 end

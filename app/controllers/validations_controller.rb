@@ -1,7 +1,7 @@
 class ValidationsController < ApplicationController
+  after_action :record_history
   def index
     @validations = Validation.all
-    record_history
   end
 
   def show
@@ -29,6 +29,7 @@ private
   end
 
   def back
-    session[:history].pop
+    session[:history].pop unless session.nil?
+    root_path if session.nil?
   end
 end

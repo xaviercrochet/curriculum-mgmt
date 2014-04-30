@@ -1,9 +1,9 @@
 class PModulesController < ApplicationController
+  after_action :record_history
 
   def index
     @parent = context
   	@p_modules = @parent.p_modules.where(parent_id: nil)
-    record_history
 	end
 
   def show
@@ -38,6 +38,7 @@ private
   end
 
   def back
-    session[:history].pop
+    session[:history].pop unless session.nil?
+    root_path if session.nil?
   end
 end

@@ -1,4 +1,6 @@
 class StudentProgramsController < ApplicationController
+  after_action :record_history
+
   def new
     @catalog = Catalog.last #Remplace by Catalog.MAIN
     @student_program = StudentProgram.new
@@ -8,14 +10,12 @@ class StudentProgramsController < ApplicationController
     @program = Program.find(params[:student_program][:program_id])
     @student_program = @program.student_programs.create
     redirect_to @student_program
-    record_history
   end
 
   def configure
     @student_program = StudentProgram.find(params[:student_program_id])
     @years = @student_program.years
     @back = back
-    record_history
   end
 
   def destroy
@@ -34,20 +34,17 @@ class StudentProgramsController < ApplicationController
     params[:optional_modules][:ids].each do |id|
       @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
     end
-    record_history
     redirect_to student_program_student_program_configure_path(@student_program)
   end
 
   def show
     @student_program = StudentProgram.find(params[:id])
     @back = back
-    record_history
   end
 
   def index
     @student_programs = StudentProgram.all
     @back = back
-    record_history
   end
 
   def check
@@ -56,7 +53,6 @@ class StudentProgramsController < ApplicationController
     @prerequisites = Course.find(@logs[:"prerequisites_missing"])
     @corequisites = Course.find(@logs[:corequisites_missing])
     @back = back
-    record_history
   end
 
   def new_validation
@@ -74,7 +70,8 @@ private
   end
 
   def back
-    session[:history].pop
+    session[:history].pop unless session.nil?
+    root_path if session.nil?
   end
 
 end
