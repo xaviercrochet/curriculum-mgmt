@@ -17,13 +17,8 @@ class CatalogsController < ApplicationController
 	end
 
 	def create
-
-		# @catalog = Catalog.new(catalog_params)
-		# @catalog.filename = "seeds/"+params[:catalog][:faculty]+'-'+params[:catalog][:department]+'-'+Time.now.to_formatted_s(:number)+'-catalog_seed.xgml' unless params[:catalog][:data].nil?
-		# @catalog.save
 		@catalog = Catalog.create(catalog_params)
 		@catalog.parse
-		# @catalog.upload(params[:catalog])
 		redirect_to @catalog
 
 	end
@@ -40,7 +35,8 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.find(params[:catalog_id])
 		if ! params[:catalog].nil?
 			@catalog.update(catalog_params)
-			@catalog.upload_spreadsheet(params[:catalog])
+			# @catalog.upload_spreadsheet(params[:catalog])
+			@catalog.parse_ss
 		end
 		redirect_to @catalog
 	end

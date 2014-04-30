@@ -46,8 +46,18 @@ class Catalog < ActiveRecord::Base
 
 	def parse
 		graph = open(self.graph_url)
-		parser = GraphParser::Parser.new(graph)
-		build(parser)
+		if ! graph.nil?
+			parser = GraphParser::Parser.new(graph)
+			build(parser)
+		end
+	end
+
+	def parse_ss
+		spreadsheet = open(self.spreadsheet_url)
+		if ! spreadsheet.nil?
+			parser = XlsParser::XlsReader.new(spreadsheet)
+			parse_spreadsheets(parser)
+		end
 	end
 
 	def upload_spreadsheet(data)
@@ -66,8 +76,7 @@ class Catalog < ActiveRecord::Base
 
 	end
 	
-	def parse_spreadsheets
-		parser = XlsParser::XlsReader.new(self.ss_filename)
+	def parse_spreadsheets(parser)
 		parse_spreadsheet(Course, "SIGLE", parser)
 		parse_spreadsheet(PModule, "NAME", parser)
 		parse_spreadsheet(Program, "NAME", parser)
@@ -98,6 +107,10 @@ class Catalog < ActiveRecord::Base
 		URI.escape("http://s3.amazonaws.com/curriculum_mgmt/graphes/"+self.id.to_s + "/" + self.graph_file_name)
 	end
 
+	def spreadsheet_url
+		URI.escape("http://s3.amazonaws.com/curriculum_mgmt/spreadsheets/" + self.id.to_s + "/" +self.spreadsheet_file_name)
+	end
+
 	
 
 	
@@ -106,8 +119,7 @@ class Catalog < ActiveRecord::Base
 
 
 
-	def spread_sheet_url
-	end
+
 
 	def build(parser)
 		parser.catalog.programs.each do |p|
