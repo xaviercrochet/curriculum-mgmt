@@ -8,14 +8,6 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.new
 	end
 
-
-
-	def download
-		@catalog = Catalog.find(params[:catalog_id])
-		@catalog.create_doc
-		send_file @catalog.ss_filename, :type => 'application/vnd.ms-excel', :filename => @catalog.ss_filename
-	end
-
 	def create
 		@catalog = Catalog.create(catalog_params)
 		@catalog.parse
@@ -35,7 +27,6 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.find(params[:catalog_id])
 		if ! params[:catalog].nil?
 			@catalog.update(catalog_params)
-			# @catalog.upload_spreadsheet(params[:catalog])
 			@catalog.parse_ss
 		end
 		redirect_to @catalog

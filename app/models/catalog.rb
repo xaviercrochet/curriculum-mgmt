@@ -32,18 +32,6 @@ class Catalog < ActiveRecord::Base
  		end
 	end
 
-
-	def upload(data)
-		if data[:data]
-			uploaded_io = data[:data]
-			File.open(Rails.root.join('', '', self.filename), 'wb') do |file|
-				file.write(uploaded_io.read)
-			end
-			parser = GraphParser::Parser.new(self.filename)
-			build(parser)
-		end
-	end
-
 	def parse
 		graph = open(self.graph_url)
 		if ! graph.nil?
@@ -60,22 +48,7 @@ class Catalog < ActiveRecord::Base
 		end
 	end
 
-	def upload_spreadsheet(data)
-		if !self.ss_filename.nil?
-			File.delete(self.ss_filename) if File.exists?(self.ss_filename)
-		end
-		self.ss_filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
-		self.save 
-		if data[:data]
-			uploaded_io = data[:data]
-			File.open(Rails.root.join('', '', self.ss_filename), 'wb') do |file|
-				file.write(uploaded_io.read)
-			end
-			parse_spreadsheets
-		end
-
-	end
-	
+		
 	def parse_spreadsheets(parser)
 		parse_spreadsheet(Course, "SIGLE", parser)
 		parse_spreadsheet(PModule, "NAME", parser)

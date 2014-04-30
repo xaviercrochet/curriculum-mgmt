@@ -17,7 +17,6 @@ CurriculumMgmt::Application.routes.draw do
   end
 
   resources :catalogs, shallow: true do
-    get :download
     patch :upload
     resources :courses
     resources :p_modules, shallow: true do
