@@ -162,7 +162,9 @@ class Catalog < ActiveRecord::Base
 
 	def build_constraint_set(constraint_set)
 		source_ids = []
+		p "building constraint_set sources"
 		constraint_set.sources.each do |source|
+			p "source found!"
 			source_ids << source.real_id
 		end
 
