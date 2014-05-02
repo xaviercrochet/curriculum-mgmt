@@ -18,11 +18,11 @@ class Constraint < ActiveRecord::Base
   }
 
 
-  def self.create_constraint(set_type, type, source, destination)
+  def self.create_constraint(set_type, type, sources, destination)
 		 
 		constraint = destination.constraints.create()
 		constraint.constraint_type = type
-		constraint.courses << source
+		constraint.courses << sources
 		constraint.set_type = set_type
 		constraint.save
 	end
@@ -36,9 +36,7 @@ class Constraint < ActiveRecord::Base
 		type = ConstraintType.create_type(type, sources.first.catalog) 
 
 		destinations.each do |course_dst|
-			sources.each do |course_src|
-				Constraint.create_constraint(set_type, type, course_src, course_dst)
-			end
+		  Constraint.create_constraint(set_type, type, sources, course_dst)
 		end
 	end
 
