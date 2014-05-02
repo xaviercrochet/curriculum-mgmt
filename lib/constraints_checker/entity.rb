@@ -34,7 +34,6 @@ module ConstraintsChecker
 		end
 
 		def search(children_id, children_type)
-			p root.to_s
 			root = find_root
 			root.find_children(children_id, children_type)
 		end
@@ -61,6 +60,7 @@ module ConstraintsChecker
 		end
 
 		def check
+			p "checking ... " + self.name
 			logs = []
 			@constraints.each do |c|
 				if c.check != true
@@ -89,11 +89,16 @@ module ConstraintsChecker
 	private		
 		
 		def check_childrens_constraints
+			p "checking children constraints"
+			p "children size : " + @childrens.size.to_s
+			p self.name
+			p self.id.to_s
 			logs = []
-			@childrens.each do |children|
-				if children.constraints.size > 0
-					logs << children.check
-				end
+			self.childrens.each do |children|
+				# if children.constraints.size > 0
+				# 	logs << children.check
+				# end
+				logs << children.check
 			end
 			return logs
 		end

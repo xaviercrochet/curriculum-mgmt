@@ -1,57 +1,48 @@
 require_relative 'entity'
+require_relative 'entities/p_module'
+require_relative 'entities/course'
 module ConstraintsChecker
   class Catalog < Entity
-    attr_accessor :courses
-    attr_accessor :p_modules
-    attr_accessor :sub_modules
     attr_accessor :logs
 
     def initialize(properties)
       super(properties)
-      self.courses = {}
-      self.p_modules = {}
-      self.sub_modules = {}
-      self.logs = {or_corequisites_missing: [], prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passed: []}
-    end
-
-    def find_p_module(id)
-      p "searching course <"+id.to_s+">"
-      if self.p_modules[id].nil?
-        p "PModule not found :-/"
-      end
-      self.p_modules[id]
-    end
-
-    def add_course(course)
-      self.courses[course.id] = course
-      course.parent = self
-    end
-
-    def add_p_module(p_module_id)
-      self.p_modules[p_module_id]
+      self.logs = {or_corequisites_missing: [],xor_corequisites_missing: [], or_prerequisites_missing: [], xor_prerequisites_missing: [],  prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passed: []}
     end
 
     def find_course(id)
-      p "seach course <"+id.to_s+">"
-      if self.courses[id].nil?
-        p "Course not found :-/"
-      end
-      self.courses[id]
+      self.find_children(id, ConstraintsChecker::Entities::Course)
     end
+
+    def find_p_module(id)
+      self.find_children(id, ConstraintsChecker::Entities::PModule)
+    end
+
 
     def find_root
       self
     end
 
-    def check
-      logs = @logs
-      courses.each do |key, value|
-        if ! value.nil?
-          logs = build_logs(logs, value.check) 
+    def check_constraints
+      results = check
+      results.each do |result|
+        result.each do |key, value|
+          @logs[key] += value
         end
       end
-      return logs
+      return @logs
     end
+
+    # def check
+    #   p "catalog check"
+    #   logs = @logs
+    #   courses.each do |key, value|
+    #     if ! value.nil?
+    #       logs = build_logs(logs, value.check) 
+    #     end
+    #   end
+    #   return logs
+    # end
 
   private
     def build_logs(logs, new_data)

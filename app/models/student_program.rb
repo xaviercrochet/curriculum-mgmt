@@ -7,13 +7,24 @@ class StudentProgram < ActiveRecord::Base
   has_and_belongs_to_many :p_modules
 
   def check_constraints
-    c = ConstraintsChecker::Catalog.new(id: self.id)
+    c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
+    self.p_modules.each do |m|
+      c.add_children(m.get_p_module_object)
+    end
+    courses = []
     self.years.each do |year|
-      year.get_course_objects.each do |course|
-        c.add_course(course)
+      courses = courses + year.get_course_objects
+    end
+
+    courses.each do |course|
+      p_module = c.find_p_module(course.parent_id)
+      if p_module.nil?
+        c.add_children(course)
+      else
+        p_module.add_children(course)
       end
     end
-    return c.check
+    return c.check_constraints
   end
 
   def is_p_module_present?(p_module)

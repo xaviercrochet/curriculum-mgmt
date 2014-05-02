@@ -15,6 +15,17 @@ module ConstraintsChecker
         @course = course
         @target_ids = target_ids
       end
+
+      def find_dependencies
+        results = []
+        @target_ids.each do |id|
+          p "result : "+@course.find_course(id).to_s
+          if @course.find_course(id).nil?
+            results << id
+          end
+        end
+        return results
+      end
     end
 
     class CorequisiteSet < ConstraintSet
@@ -25,16 +36,25 @@ module ConstraintsChecker
 
     class PrerequisiteSet < ConstraintSet
       def initialize(set_type, course, target_ids)
-        super(set_type, "PREREQUISITE", course.target_ids)
+        super(set_type, "PREREQUISITE", course, target_ids)
       end
     end
 
     class OrPrerequisite < PrerequisiteSet
       def initialize(course, target_ids)
+        p "YIHA"
         super("OR", course, target_ids)
       end
 
       def check
+        logs = {or_prerequisites_missing: []}
+        results = find_dependencies
+        results.each do |id|
+          logs[:or_prerequisites_missing] << id
+        end
+
+        logs = true if logs[:or_prerequisites_missing].size > 0
+        return logs
       end
     end
 
@@ -45,6 +65,14 @@ module ConstraintsChecker
       end
 
       def check
+        logs = {xor_prerequisites_missing: []}
+        result = find_dependencies
+        result.each do |id|
+          logs[:xor_prerequisites_missing] << id
+        end
+
+        logs = true if logs[:xor_prerequisites_missing].size == 1
+        return logs
       end
     end
 
@@ -55,14 +83,12 @@ module ConstraintsChecker
       end
 
       def check
+        p "or corequisite check"
         logs = {or_corequisites_missing: []}
-        results = []
-        @target_ids.each do |id|
-          if @course.find_course(id).nil?
-            logs[:or_corequisites_missing] << id
-          end
+        results = find_dependencies
+        results.each do |id|
+          logs[:or_corequisites_missing] << id
         end
-        p logs
         logs = true if logs[:or_corequisites_missing].size ==  0
         return logs
       end
@@ -75,14 +101,12 @@ module ConstraintsChecker
       end
 
       def check
-        logs = {or_corequisites_missing: []}
-        results = []
-        @target_ids.each do |id|
-          if @course.find_course(id).nil?
-            logs[:or_corequisites_missing] << id
-          end
+        logs = {xor_corequisites_missing: []}
+        results = find_dependencies
+        @results.each do |id|
+          logs[:xor_corequisites_missing] << id
         end
-        logs = true unless ! logs[:or_corequisites_missing].size ==  1
+        logs = true if logs[:or_corequisites_missing].size ==  1
         return logs
       end
     end

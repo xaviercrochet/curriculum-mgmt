@@ -1,3 +1,4 @@
+require 'constraints_checker/entities/p_module'
 
 class PModule < ActiveRecord::Base
   belongs_to :catalog
@@ -69,6 +70,11 @@ class PModule < ActiveRecord::Base
 			self.p_module_object.add_constraint(c)
 		end
 		self.p_module_object
+	end
+
+	def get_p_module_object
+		p self.name
+		ConstraintsChecker::Entities::PModule.new(id: self.id, name: self.name)
 	end
 
 	def name

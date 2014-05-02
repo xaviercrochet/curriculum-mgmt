@@ -1,4 +1,5 @@
 require 'constraints_checker/constraints/binary_constraint'
+require 'constraints_checker/constraints/constraint_set'
 
 class Constraint < ActiveRecord::Base
   belongs_to :constraint_type
@@ -51,30 +52,62 @@ class Constraint < ActiveRecord::Base
 
   def get_constraint_object(course)
     constraint = nil
-    if self.courses.count == 1
+    case self.set_type
+    when "BINARY"
       if self.corequisite?
         constraint = ConstraintsChecker::Constraints::Corequisite.new(course, self.courses.first.id)
       elsif self.prerequisite?
         constraint = ConstraintsChecker::Constraints::Prerequisite.new(course, self.courses.first.id)
       end
+    when "X"
+      constraint = get_x_constraint_set_object(course)
+    when "OR"
+      constraint = get_xor_constraint_set_object(course)
+    end
+    return constraint
+  end
+private
+
+  def get_target_ids
+    p "Getting target ids"
+    target_ids = []
+    self.courses.each do |course|
+      target_ids << course.id
+    end
+    p target_ids
+    return target_ids
+  end
+
+  def get_x_constraint_set_object(course)
+    constraint = nil
+    target_ids = get_target_ids
+    if self.corequisite?
+      constraint = ConstraintsChecker::Constraints::XCorequisite.new(course, target_ids)
+    elsif self.prerequisite?
+      constraint = ConstraintsChecker::Constraints::XPrerequisite.new(course, target_ids)
     end
     return constraint
   end
 
-  def get_constraint_set_object(course)
-    constraint_set = nil
-    self.courses.each do |c|
+  def get_xor_constraint_set_object(course)
+    constraint = nil
+    target_ids = get_target_ids
+    if self.corequisite?
+      constraint = ConstraintsChecker::Constraints::XirCorequisite.new(course, target_ids)
+    elsif self.prerequisite?
+      constraint = ConstraintsChecker::Constraints::XorPrerequisite.new(course, target_ids)
     end
-    return constraint_set
+    return constraint
   end
 
-	def to_object(target_object)
-		if self.constraint_type.name.eql? "PREREQUISITE"
-			ConstraintsChecker::Constraints::Prerequisite.new(self.entity.id, target_object)
-		elsif self.constraint_type.name.eql? "COREQUISITE"
-			ConstraintsChecker::Constraints::Corequisite.new(self.entity.id, target_object)
-		end
-	end	
-
+  def get_binary_constraint_object(course)
+    constraint = nil
+    if self.corequisite?
+      constraint = ConstraintsChecker::Constraints::Corequisite.new(course, self.courses.first.id)
+    elsif self.prerequisite?
+      constraint = ConstraintsChecker::Constraints::Prerequisite.new(course, self.courses.first.id)
+    end
+    return constraint
+  end
 
 end
