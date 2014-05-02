@@ -1,5 +1,4 @@
 class ValidationsController < ApplicationController
-  after_action :record_history
   def index
     @validations = Validation.all
   end

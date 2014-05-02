@@ -1,15 +1,16 @@
 class PModulesController < ApplicationController
-  after_action :record_history
 
   def index
     @parent = context
   	@p_modules = @parent.p_modules.where(parent_id: nil)
+    record_history
 	end
 
   def show
   	@p_module = PModule.find(params[:id])
     @catalog = @p_module.catalog
     @back = back
+    record_history
   end
 
   def destroy

@@ -1,5 +1,5 @@
 class StudentProgramsController < ApplicationController
-  after_action :record_history
+  before_filter :record_history
 
   def new
     @catalog = Catalog.last #Remplace by Catalog.MAIN
@@ -40,12 +40,13 @@ class StudentProgramsController < ApplicationController
 
   def show
     @student_program = StudentProgram.find(params[:id])
-    @back = back
   end
 
   def index
     @student_programs = StudentProgram.all
+    
     @back = back
+    record_history
   end
 
   def check
@@ -53,7 +54,7 @@ class StudentProgramsController < ApplicationController
     @logs = @student_program.check_constraints
     @prerequisites = Course.find(@logs[:"prerequisites_missing"])
     @corequisites = Course.find(@logs[:corequisites_missing])
-    @back = back
+    redirect_to @student_program
   end
 
   def new_validation

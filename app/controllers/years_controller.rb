@@ -1,6 +1,5 @@
 class YearsController < ApplicationController
 
-  after_action :record_history
 
   def new
     @student_program = StudentProgram.find(params[:student_program_id])
@@ -38,13 +37,12 @@ class YearsController < ApplicationController
 
   def show
     @year = Year.find(params[:id])
-    @back = back
+    @student_program = @year.student_program
   end
 
   def index
     @student_program = StudentProgram.find(params[:student_program_id])
     @years = @student_program.years
-    @back = back
   end
 
 private

@@ -1,5 +1,5 @@
 class ProgramsController < ApplicationController
-  after_action :record_history
+  before_filter :record_history
 
   def index
     @catalog = Catalog.find(params[:catalog_id])

@@ -1,5 +1,4 @@
 class CoursesController < ApplicationController
-  after_action :record_history
 
  def destroy
     @course = Course.find(params[:id])
@@ -12,11 +11,13 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @catalog = @course.catalog
     @back = back
+    record_history
   end
 
   def index
     @context = context
     @courses = @context.courses
+    record_history
   end
 
 private
