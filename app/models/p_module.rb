@@ -14,7 +14,7 @@ class PModule < ActiveRecord::Base
 		catalog.p_modules.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value).first
 	end
 
-	def mandatory?
+	def mandatory
 		p = self.properties.where(p_type: "OBLIGATOIRE").first
 		if p.nil? 
 			return false
@@ -28,6 +28,23 @@ class PModule < ActiveRecord::Base
 	def self.header
 		return ["NAME", "CREDITS", "MIN", "MAX", "OBLIGATOIRE"]
 	end
+
+	def credits
+		get_property("CREDITS").to_i
+	end	
+
+	def min
+		get_property("MIN").to_i
+	end	
+
+	def max
+		get_property("MAX").to_i
+	end
+
+	def mandatory
+		get_property("OBLIGATOIRE").to_s
+	end
+
 
 
 	def update_properties(properties)
@@ -136,4 +153,13 @@ class PModule < ActiveRecord::Base
     end
     props
   end
+private
+	def get_property(property_type)
+		p = self.properties.where(p_type: property_type).first
+		if p.nil? 
+			return "NONE"
+		else
+			return p.value
+		end
+	end
 end

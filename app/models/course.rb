@@ -29,39 +29,19 @@ class Course < ActiveRecord::Base
   end
 
   def name
-    p = self.properties.where(:p_type => 'SIGLE').first
-    if p.nil?
-      self.properties.first.value
-    else
-      p.value
-    end
+    get_property("SIGLE")
   end
 
   def credits
-    c = self.properties.where(:p_type => 'CREDITS').first
-    if c.nil?
-      'NONE'
-    else
-      c.value
-    end
+    get_property("CREDITS")
   end
 
   def semester
-    c = self.properties.where(:p_type => 'SEMESTRE').first
-    if c.nil?
-      'NONE'
-    else
-      c.value
-    end
+    get_property("SEMESTRE")
   end
 
   def mandatory
-    c = self.properties.where(:p_type => 'OBLIGATOIRE').first
-    if c.nil?
-      'NON'
-    else
-      c.value
-    end
+    get_property("OBLIGATOIRE")
   end
 
 
@@ -108,5 +88,15 @@ class Course < ActiveRecord::Base
     {
       :name => self.name
     }
+  end
+
+private
+  def get_property(property_type)
+    p = self.properties.where(p_type: property_type).first
+    if p.nil? 
+      return "NONE"
+    else
+      return p.value
+    end
   end 
 end

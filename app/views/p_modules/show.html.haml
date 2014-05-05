@@ -8,14 +8,46 @@
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la page précédente
     .panel-body
-      %ul.nav.nav-pills.nav-stacked
-        %li
-          = link_to p_module_sub_modules_path(@p_module) do
-            = content_tag(:label, "Modules")
-            %span.badge.pull-right
-              = @p_module.sub_modules.count
-        %li
-          = link_to p_module_courses_path(@p_module) do
-            = content_tag(:label, "Cours")
-            %span.badge.pull-right
-              = @p_module.courses.count
+      %table.table-bordered.table-centered.text-center
+        %thead
+          %tr
+            %th NOM
+            %th CREDITS
+            %th MIN
+            %th MAX
+            %th OBLIGATOIRE
+        %tbody
+          %tr
+            %td
+              = @p_module.name
+            %td
+              = @p_module.credits
+            %td
+              = @p_module.min
+            %td
+              = @p_module.max
+            %td
+              = @p_module.mandatory
+
+      %br
+      #menu.panel-group
+        .panel.panel-default
+          .panel-heading
+            .text-heading.text-center
+              %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#collapseMenu"}
+                MENU
+          #collapseMenu.panel-collapse.collapse
+            .panel-body
+              
+
+              %ul.nav.nav-pills.nav-stacked
+                %li
+                  = link_to p_module_sub_modules_path(@p_module) do
+                    = content_tag(:label, "Modules")
+                    %span.badge.pull-right
+                      = @p_module.sub_modules.count
+                %li
+                  = link_to p_module_courses_path(@p_module) do
+                    = content_tag(:label, "Cours")
+                    %span.badge.pull-right
+                      = @p_module.courses.count
