@@ -67,14 +67,15 @@ class Program < ActiveRecord::Base
 	end
 
 	def name
-		name = "NONE"
-		p = self.properties.where(:p_type => 'NAME').first
-		if p.nil?
-			name = self.properties.first.value unless self.properties.count == 0
-		else
-			name = p.value
-		end
-		return name
+		get_property("NAME")
+	end
+
+	def max
+		get_property("MAX")
+	end
+
+	def min
+		get_property("MIN")
 	end
 
 	def has_modules?
@@ -122,5 +123,13 @@ class Program < ActiveRecord::Base
     end
     props
   end
-
+private
+	def get_property(property_type)
+    p = self.properties.where(p_type: property_type).first
+    if p.nil? 
+      return "NONE"
+    else
+      return p.value
+    end
+  end 
 end

@@ -8,14 +8,39 @@
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la liste des catalogues
     .panel-body
-      %ul.nav.nav-pills.nav-stacked
-        %li
-          = link_to program_p_modules_path(@program) do
-            = content_tag(:label, "Modules")
-            %span.badge.pull-right
-              = @program.p_modules.count
-        %li
-          = link_to program_courses_path(@program) do
-            = content_tag(:label, "Cours")
-            %span.badge.pull-right
-              = @program.courses.count
+      %table.table-bordered.table-centered.text-center
+        %thead
+          %tr
+            %th NOM
+            %th MIN
+            %th MAX
+        %tbody
+          %tr
+            %td
+              = @program.name
+            %td
+              = @program.min
+            %td
+              = @program.max
+      %br
+      #menu.panel-group
+        .panel.panel-default
+          .panel-heading
+            .text-heading.text-center
+              %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#collapseMenu"}
+                MENU
+          #collapseMenu.panel-collapse.collapse
+            .panel-body
+              
+
+              %ul.nav.nav-pills.nav-stacked
+                %li
+                  = link_to p_module_sub_modules_path(@program) do
+                    = content_tag(:label, "Modules")
+                    %span.badge.pull-right
+                      = @program.p_modules.without_parent.count
+                %li
+                  = link_to p_module_courses_path(@program) do
+                    = content_tag(:label, "Cours")
+                    %span.badge.pull-right
+                      = @program.courses.count
