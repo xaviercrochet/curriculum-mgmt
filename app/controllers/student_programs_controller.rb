@@ -54,7 +54,6 @@ class StudentProgramsController < ApplicationController
     @logs = @student_program.check_constraints
     @prerequisites = Course.find(@logs[:"prerequisites_missing"])
     @corequisites = Course.find(@logs[:corequisites_missing])
-    redirect_to @student_program
   end
 
   def new_validation
