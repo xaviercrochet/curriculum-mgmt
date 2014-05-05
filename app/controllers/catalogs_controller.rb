@@ -12,7 +12,6 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.create(catalog_params)
 		@catalog.parse
 		redirect_to @catalog
-
 	end
 
 	def show

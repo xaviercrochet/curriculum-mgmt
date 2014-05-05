@@ -47,7 +47,7 @@
 					= link_to catalog_p_modules_path(@catalog) do
 						= content_tag(:label, "Modules")
 						%span.badge.pull-right
-							= @catalog.p_modules.count
+							= @catalog.p_modules.wihtout_parent.count
 				%li
 					= link_to catalog_courses_path(@catalog) do
 						= content_tag(:label, "Cours")

@@ -51,7 +51,7 @@ module GraphParser
 
     def get_edge_type(edge)
       edge.children.each do |c|
-        if c.key?("key") and check_attributes(c.values, 0, "d9")
+        if c.key?("key") and c.children.size > 0
           node = get_node_from_name(c, "PolyLineEdge")
           node = get_node_from_name(node, "Arrows")
           if node.values[1].eql? "standard"
@@ -95,7 +95,7 @@ module GraphParser
             program.node = node
             @catalog.add_program(program)
             node.children.each do |c|
-              if c.key?("key") and check_attributes(c.values, 0, "d6")
+              if c.key?("key") and c.children.size > 0
                 program.name = get_name_for_group(c)
               else
                 parse_entities(program, c)
@@ -121,7 +121,7 @@ module GraphParser
     def parse_sub_graph(parent, node)
       id = node.values[0] unless ! node.key?("id")
       node.children.each do |c|
-        if c.key?("key") and check_attributes(c.values, 0, "d6")
+        if c.key?("key") and c.children.size > 0
           if get_node_from_name(c, "ShapeNode")
             parse_course(parent, c, id)
           elsif get_node_from_name(c, "GenericNode")
@@ -153,7 +153,7 @@ module GraphParser
       p_module = nil
       node.children.each do |c|
 
-        if c.key?("key") and check_attributes(c.values, 0, "d6")
+        if c.key?("key") and c.children.size > 0
           p_module = GraphParser::Entities::PModule.new(id, get_name_for_group(c))
           p_module.node = c
           parent.add_p_module(p_module)
@@ -165,7 +165,7 @@ module GraphParser
 
     def find_graph_root(xml_file)
       xml_file.root.children.each do |c|
-        if c.key?("edgedefault") and c.key?("id") 
+        if c.key?("edgedefault") and c.key?("id")
           if check_attributes(c.values, 1, "G")
             return c
           end

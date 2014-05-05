@@ -20,9 +20,6 @@ class Course < ActiveRecord::Base
   	end
   end
 
-  def self.first_semester
-  end
-
   def self.default_scope
     self.includes(:properties)
   end
