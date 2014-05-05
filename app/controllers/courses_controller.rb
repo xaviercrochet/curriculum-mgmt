@@ -16,6 +16,7 @@ class CoursesController < ApplicationController
 
   def index
     @context = context
+    @header = Course.header
     @courses = @context.courses
     record_history
   end

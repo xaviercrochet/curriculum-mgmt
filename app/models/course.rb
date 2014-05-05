@@ -46,6 +46,25 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def semester
+    c = self.properties.where(:p_type => 'SEMESTRE').first
+    if c.nil?
+      'NONE'
+    else
+      c.value
+    end
+  end
+
+  def mandatory
+    c = self.properties.where(:p_type => 'OBLIGATOIRE').first
+    if c.nil?
+      'NON'
+    else
+      c.value
+    end
+  end
+
+
   def self.header
     return ["SIGLE", "CREDITS", "SEMESTRE", "OBLIGATOIRE"]
   end

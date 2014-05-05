@@ -11,6 +11,25 @@
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la page précédente
     .panel-body.text-center
+      %table.table-bordered.center-table.text-center
+        %thead
+          %tr
+            %th SIGLE
+            %th CREDITS
+            %th SEMESTRE
+            %th OBLIGATOIRE
+        %tbody
+          %tr
+            %td
+              = @course.name
+            %td
+              = @course.credits
+            %td
+              = @course.semester
+            %td
+              = @course.mandatory
+      %br
+
       #main.panel-group
         .panel.panel-default
           .panel-heading
