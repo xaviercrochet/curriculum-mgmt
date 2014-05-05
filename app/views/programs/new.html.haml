@@ -1,10 +1,27 @@
-%h1 Nouveau Programme
-= form_for [@catalog, @program] do |f|
-  = f.fields_for :property do |builder|
-    = render 'property_fields', f: builder
-  = f.fields_for :p_modules do |builder|
-    = render 'programs/p_module/p_modules', f: builder, p_modules: @p_modules
-  = f.fields_for :courses do |builder|
-    = render 'programs/course/courses', f: builder, courses: @catalog.courses.without_parent
-  %p
-    = f.submit
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading.text-center
+      %h4 Nouveau Programme
+    .panel-body
+      .form-horizontal
+        = form_for [@catalog, @program] do |f|
+          = f.fields_for :property do |builder|
+            = render 'property_fields', f: builder
+          %ul.nav.nav-tabs
+            %li.active
+              %a{"data-toggle" => "tab", :href => "#modules"} MODULES
+            %li.pull-right
+              %a{"data-toggle" => "tab", :href => "#courses"} COURS
+          .tab-content
+            #modules.tab-pane.active
+              = f.fields_for :p_modules do |builder|
+                = render 'programs/p_module/p_modules', f: builder, p_modules: @p_modules
+            #courses.tab-pane
+              = f.fields_for :courses do |builder|
+                = render 'programs/course/courses', f: builder, courses: @catalog.courses.without_parent
+          %p
+            = f.submit "Créer le programme", class:"btn btn-primary btn-lg btn-block"
+
+
+
+          

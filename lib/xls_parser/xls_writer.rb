@@ -14,11 +14,12 @@ module XlsParser
 			
 		end
 
-		def create_spreadsheet(collection, sheet_name)
-			sheet = @book.create_worksheet :name => sheet_name.to_s.upcase
+		def create_spreadsheet(collection_header, collection, sheet_name)
+			sheet = @book.create_worksheet(name: sheet_name.to_s.upcase)
 			i = 1
 			header = sheet.row(0)
-			header.default_format = Spreadsheet::Format.new :weight => :bold
+			header.default_format = Spreadsheet::Format.new(weight: :bold)
+			header = create_header(header, collection_header)
 			collection.each do |c|
 				row = sheet.row(i)
 				write_properties(c, row, header)
@@ -47,14 +48,22 @@ module XlsParser
 
 	private
 
+		def create_header(header, data)
+			data.each do |d|
+				header.push(d)
+			end
+			header
+		end
+
+
 		def write_properties(properties, row, header)
 			properties.each do |key, value|
-				row[build_header(key, header)] = value
+				row[update_header(key, header)] = value
 			end
 		end
 
 		#If Property Type doesn't exist, insert it.
-		def build_header(property_type, header)
+		def update_header(property_type, header)
 			i = 0
 			header.each do |element|
 				

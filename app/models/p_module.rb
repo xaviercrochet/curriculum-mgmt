@@ -15,14 +15,18 @@ class PModule < ActiveRecord::Base
 	end
 
 	def mandatory?
-		p = self.properties.where(p_type: "MANDATORY").first
+		p = self.properties.where(p_type: "OBLIGATOIRE").first
 		if p.nil? 
 			return false
-		elsif p.value.eql? 'YES'
+		elsif p.value.eql? 'OUI'
 			return true
 		else
 			return false
 		end
+	end
+
+	def self.header
+		return ["NAME", "CREDITS", "MIN", "MAX", "OBLIGATOIRE"]
 	end
 
 

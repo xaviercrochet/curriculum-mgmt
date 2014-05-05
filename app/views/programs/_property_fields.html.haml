@@ -1,6 +1,9 @@
-%p
-  = f.label :name, "Nom"
-  = f.text_field :name
-%p
-  = f.label :credits, "Crédits"
-  = f.text_field :credits
+.form-group
+  .col-md-2
+    = f.label :name, "NOM", class: 'control-label'
+  .col-md-4
+    = f.text_field :name, class: 'form-control'
+  .col-md-2
+    = f.label :credits, "CRÉDITS", class: 'control-label'
+  .col-md-4
+    = f.text_field :credits, class: 'form-control'

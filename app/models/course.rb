@@ -46,6 +46,10 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def self.header
+    return ["SIGLE", "CREDITS", "SEMESTRE", "OBLIGATOIRE"]
+  end
+
   def self.find_by_property(property_type, property_value, catalog)
     catalog.courses.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value.to_s).first
   end

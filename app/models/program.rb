@@ -22,6 +22,10 @@ class Program < ActiveRecord::Base
 		return modules
 	end
 
+	def self.header
+		return ["NAME", "MIN", "MAX"]
+	end
+
 	def self.default_scope
     self.includes(:p_modules)
   end
