@@ -35,5 +35,10 @@ body {
   float: none !important;
 }
 
+@media (min-width:9999px) {
+    .navbar-collapse {
+        width: 100%;
+    }
+}
 
 
