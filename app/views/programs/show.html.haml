@@ -40,7 +40,7 @@
                     %span.badge.pull-right
                       = @program.p_modules.without_parent.count
                 %li
-                  = link_to p_module_courses_path(@program) do
+                  = link_to program_courses_path(@program) do
                     = content_tag(:label, "Cours")
                     %span.badge.pull-right
                       = @program.courses.count
