@@ -14,11 +14,8 @@ class PModule < ActiveRecord::Base
 		catalog.p_modules.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value).first
 	end
 
-	def mandatory
-		p = self.properties.where(p_type: "OBLIGATOIRE").first
-		if p.nil? 
-			return false
-		elsif p.value.eql? 'OUI'
+	def mandatory?
+		if mandatory.eql? "OUI"
 			return true
 		else
 			return false
