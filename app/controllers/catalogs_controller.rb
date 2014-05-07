@@ -10,8 +10,12 @@ class CatalogsController < ApplicationController
 
 	def create
 		@catalog = Catalog.create(catalog_params)
-		@catalog.parse
-		redirect_to @catalog
+		if @catalog.errors.any?
+			redirect_to catalogs_path
+		else	
+			@catalog.parse
+			redirect_to @catalog
+		end
 	end
 
 	def show
