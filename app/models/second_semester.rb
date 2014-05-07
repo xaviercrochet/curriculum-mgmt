@@ -1,0 +1,2 @@
+class SecondSemester < Semester
+end

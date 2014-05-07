@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430161530) do
+ActiveRecord::Schema.define(version: 20140507165953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,11 @@ ActiveRecord::Schema.define(version: 20140430161530) do
   add_index "courses_semesters", ["course_id"], name: "index_courses_semesters_on_course_id", using: :btree
   add_index "courses_semesters", ["semester_id"], name: "index_courses_semesters_on_semester_id", using: :btree
 
+  create_table "first_semesters", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "p_modules", force: true do |t|
     t.integer  "catalog_id"
     t.datetime "created_at"
@@ -128,11 +133,16 @@ ActiveRecord::Schema.define(version: 20140430161530) do
     t.boolean  "primary",     default: false
   end
 
-  create_table "semesters", force: true do |t|
-    t.integer  "year_id"
-    t.integer  "slot"
+  create_table "second_semesters", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "semesters", force: true do |t|
+    t.integer  "year_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type"
   end
 
   add_index "semesters", ["year_id"], name: "index_semesters_on_year_id", using: :btree

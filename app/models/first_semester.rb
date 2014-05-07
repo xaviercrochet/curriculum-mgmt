@@ -1,0 +1,2 @@
+class FirstSemester < Semester
+end
