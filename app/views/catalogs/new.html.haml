@@ -5,6 +5,7 @@
 		.panel-body
 			.form-horizontal
 				= form_for @catalog do |f|
+					= render 'error_messages', object: f.object
 					.form-group
 						.col-md-3
 							= f.label :faculté, class: 'control-label'

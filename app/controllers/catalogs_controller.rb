@@ -11,7 +11,7 @@ class CatalogsController < ApplicationController
 	def create
 		@catalog = Catalog.create(catalog_params)
 		if @catalog.errors.any?
-			redirect_to catalogs_path
+			render action: :new
 		else	
 			@catalog.parse
 			redirect_to @catalog
