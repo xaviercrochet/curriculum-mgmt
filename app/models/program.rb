@@ -45,10 +45,33 @@ class Program < ActiveRecord::Base
 		return modules
 	end
 
+	def first_semester_courses
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
+		result = prgrm.courses.first_semester
+		prgrm.p_modules.each do |pm|
+			result = result +  pm.courses.first_semester
+			pm.sub_modules.each do |sm|
+				result = result +  sm.courses.first_semester
+			end
+		end
+		return result
+	end
+
+	def second_semester_courses
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
+		result = prgrm.courses.second_semester
+		prgrm.p_modules.each do |pm|
+			result = result +  pm.courses.second_semester
+			pm.sub_modules.each do |sm|
+				result = result +  sm.courses.second_semester
+			end
+		end
+		return result
+	end
+
 	def all_courses
 		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
-		result = []
-		result = result +  prgrm.courses
+		result = prgrm.courses
 		prgrm.p_modules.each do |pm|
 			result = result +  pm.courses
 			pm.sub_modules.each do |sm|

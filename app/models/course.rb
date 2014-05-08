@@ -9,7 +9,8 @@ class Course < ActiveRecord::Base
   has_many :constraints, dependent: :destroy
 
   scope :without_parent, -> {where(p_module_id: nil)}
-
+  scope :first_semester, -> {where("properties.p_type" => "SEMESTRE", "properties.value" =>  "1")}
+  scope :second_semester, -> {where("properties.p_type" => "SEMESTRE", "properties.value" =>  "2")}
   def build(properties)
   	p "Building course properties ..."
   	properties.each do |key, value|
