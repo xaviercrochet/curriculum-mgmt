@@ -1,7 +1,7 @@
 - if object.errors.any?
   .text-center
     %h4 Votre catalogue n'a pas été créé
-  - @catalog.errors.full_messages.each do |msg|
+  - object.errors.full_messages.each do |msg|
     .alert.alert-danger.alert-dismissable
       %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
       = msg

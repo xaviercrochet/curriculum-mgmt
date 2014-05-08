@@ -5,13 +5,20 @@ class Program < ActiveRecord::Base
 	has_and_belongs_to_many :p_modules
 	has_and_belongs_to_many :courses
 
+	accepts_nested_attributes_for :properties
+	validates_associated :properties
+
 
 	def self.find_by_property(property_type, property_value, catalog)
-		catalog.programs.includes(:properties).where('property.p_type' => propertyy_type, 'property.p_value' => property_value).first
+		catalog.programs.includes(:properties).where('property.p_type' => property_type, 'property.p_value' => property_value).first
 	end
 
 	def self.page_name
 		"PROGRAMMES"
+	end
+
+	def credits
+		get_property("CREDITS")
 	end
 
 	def mandatory_modules
@@ -23,7 +30,7 @@ class Program < ActiveRecord::Base
 	end
 
 	def self.header
-		return ["NAME", "MIN", "MAX"]
+		return ["NAME", "MIN", "MAX", "CREDITS"]
 	end
 
 	def self.default_scope
@@ -67,7 +74,11 @@ class Program < ActiveRecord::Base
 	end
 
 	def name
-		get_property("NAME")
+		name = 	get_property("NAME")
+		if name.eql? ""
+			name = "NONE"
+		end
+		return name
 	end
 
 	def max

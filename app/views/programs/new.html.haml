@@ -5,8 +5,10 @@
     .panel-body
       .form-horizontal
         = form_for [@catalog, @program] do |f|
-          = f.fields_for :property do |builder|
-            = render 'property_fields', f: builder
+          = render 'error_messages', object: f.object
+          .form-group
+            = f.fields_for :properties do |builder|
+              = render 'property_field', f: builder, type: @properties_type.pop
           %ul.nav.nav-tabs
             %li.active
               %a{"data-toggle" => "tab", :href => "#modules"} MODULES
@@ -15,7 +17,7 @@
           .tab-content
             #modules.tab-pane.active
               = f.fields_for :p_modules do |builder|
-                = render 'programs/p_module/p_modules', f: builder, p_modules: @p_modules
+                = render 'programs/p_module/p_modules', f: builder, p_modules: @catalog.p_modules.without_parent
             #courses.tab-pane
               = f.fields_for :courses do |builder|
                 = render 'programs/course/courses', f: builder, courses: @catalog.courses.without_parent

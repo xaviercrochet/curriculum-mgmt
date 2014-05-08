@@ -6,6 +6,7 @@ class ProgramsController < ApplicationController
     @programs = @catalog.programs
   end
 
+
   def destroy
     @program = Program.find(params[:id])
     @catalog = @program.catalog
@@ -20,21 +21,26 @@ class ProgramsController < ApplicationController
     2.times do
       property = @program.properties.build
     end
+    @properties_type = ["credits", "name"]
   end
   
   def create
+    @properties_type = ["credits", "name"]
     @catalog = Catalog.find(params[:catalog_id])
-    @program = @catalog.programs.create
-    @program.properties.create(p_type: "NAME", value: params[:program][:property][:name])
-    @program.properties.create(p_type: "CREDITS", value: params[:program][:property][:credits])
-    params[:program][:p_modules][:ids].each do |value|
-      @program.p_modules << PModule.find(value.to_i) unless value.eql? "0"
+    @program = @catalog.programs.create(program_params)
+    p @program.errors
+    p @program.errors.any?
+    if @program.errors.any? 
+      render action: :new
+    else
+      params[:program][:p_modules][:ids].each do |value|
+        @program.p_modules << PModule.find(value.to_i) unless value.eql? "0"
+      end
+      params[:program][:courses][:ids].each do |value|
+        @program.courses << Course.find(value.to_i) unless value.eql? "0"
+      end
+      redirect_to @program
     end
-    params[:program][:courses][:ids].each do |value|
-      @program.courses << Course.find(value.to_i) unless value.eql? "0"
-    end
-    p params.inspect
-    redirect_to @program
   end
 
   def show
@@ -44,6 +50,11 @@ class ProgramsController < ApplicationController
   end
 
 private
+
+  def program_params
+    params.require(:program).permit(properties_attributes: [:p_type, :value])
+  end
+
   def record_history
     session[:history] ||= []
     session[:history].push request.url
