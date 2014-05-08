@@ -35,7 +35,7 @@
 
               %ul.nav.nav-pills.nav-stacked
                 %li
-                  = link_to p_module_sub_modules_path(@program) do
+                  = link_to program_p_modules_path(@program) do
                     = content_tag(:label, "Modules")
                     %span.badge.pull-right
                       = @program.p_modules.without_parent.count
