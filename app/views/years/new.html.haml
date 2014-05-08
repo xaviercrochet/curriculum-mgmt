@@ -12,10 +12,10 @@
               %a{"data-toggle" => "tab", :href => "#second_semester"} Second Quadri
           .tab-content
             #first_semester.tab-pane.active
-              = fields_for :q1 do |builder|
+              = fields_for :first_semester do |builder|
                 = render 'years/new/courses', f: builder, courses: @student_program.program.all_courses
             #second_semester.tab-pane
-              = fields_for :q2 do |builder|
+              = fields_for :second_semester do |builder|
                 = render 'years/new/courses', f: builder, courses: @student_program.program.all_courses
           
           %p
