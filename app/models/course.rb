@@ -1,16 +1,19 @@
 require 'constraints_checker/entities/course'
 
 class Course < ActiveRecord::Base
-  #default_scope includes(:properties) deprecated!
   has_and_belongs_to_many :programs
   belongs_to :p_module
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :constraints, dependent: :destroy
 
-  scope :without_parent, -> {where(p_module_id: nil)}
-  scope :first_semester, -> {where("properties.p_type" => "SEMESTRE", "properties.value" =>  "1")}
-  scope :second_semester, -> {where("properties.p_type" => "SEMESTRE", "properties.value" =>  "2")}
+  scope :without_parent, where(p_module_id: nil)
+  scope :first_semester, -> {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" =>  "1")}
+  scope :second_semester, -> {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" =>  "2")}
+  scope :no_semester,->  {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" => "NONE")}
+  scope :mandatory, -> {joins(:properties).where("properties.p_type" => "OBLIGATOIRE", "properties.value" => "OUI")}
+  scope :optional, -> {joins(:properties).where("properties.p_type" => "OBLIGATOIRE", "properties.value" => "NON")}
+  
   def build(properties)
   	p "Building course properties ..."
   	properties.each do |key, value|
@@ -20,10 +23,7 @@ class Course < ActiveRecord::Base
   		@p.save
   	end
   end
-
-  def self.default_scope
-    self.includes(:properties)
-  end
+  
 
   def self.page_name
     "COURS"

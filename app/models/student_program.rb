@@ -31,6 +31,22 @@ class StudentProgram < ActiveRecord::Base
     self.p_modules.where(id: p_module.id).count > 0
   end
 
+  def first_semester_mandatory_courses
+    self.program.first_semester_mandatory_courses
+  end
+
+  def second_semester_mandatory_courses
+    self.program.second_semester_mandatory_courses
+  end
+
+  def first_semester_optional_courses
+    self.program.first_semester_optional_courses
+  end
+
+  def second_semester_optional_courses
+    self.program.second_semester_optional_courses
+  end
+
 
   def validation_request_already_sent
     self.validations.count > 0

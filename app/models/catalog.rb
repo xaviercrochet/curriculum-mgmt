@@ -143,18 +143,17 @@ class Catalog < ActiveRecord::Base
 	def build_course(course, program, p_module)
 		c = self.courses.create
 		c.properties.create(p_type: "SIGLE", value: course.name)
+		c.properties.create(p_type: "OBLIGATOIRE", value: "NON")
+		c.properties.create(p_type: "SEMESTRE", value: "NONE")
 		course.real_id = c.id
 		program.courses << c unless program.nil?
 		p_module.courses << c unless p_module.nil?
-		if ! p_module.parent.nil?
-			c.properties.create(p_type: "OBLIGATOIRE", value: "OUI")
-		end unless p_module.nil?
 	end
 
 	def build_p_module(p_module, program, parent)
 		m = self.p_modules.create
 		m.properties.create(p_type: "NAME", value: p_module.name)
-		program.p_modules << m
+		program.p_modules << m unless ! parent.nil?
 		parent.sub_modules << m unless parent.nil?
 		p_module.p_modules.each do |pm|
 			build_p_module(pm, program, m)

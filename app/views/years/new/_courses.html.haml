@@ -1,4 +1,18 @@
-%h4 Cours
-- courses.each do |course|
-  %p 
-    = render 'years/new/course', f: f, course: course
+.panel.panel-default
+  .panel-heading
+    Cours
+  .panel-body
+    %ul.nav.nav-tabs
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#mandatory"} Obligatoires
+      %li.pull-right
+        %a{"data-toggle" => "tab", :href => "#optional"} Optionnels
+    .tab-content
+      #mandatory.tab-pane.active
+        - courses.each do |course|
+          - if course.mandatory
+            = render 'years/new/course', f: f, course: course
+      #optional.tab-pane
+        - courses.each do |course|
+          - if ! course.mandatory
+            = render 'years/new/course', f: f, course: course

@@ -33,9 +33,7 @@ class Program < ActiveRecord::Base
 		return ["NAME", "MIN", "MAX", "CREDITS"]
 	end
 
-	def self.default_scope
-    self.includes(:p_modules)
-  end
+
 
 	def optional_modules
 		modules = []
@@ -47,11 +45,11 @@ class Program < ActiveRecord::Base
 
 	def first_semester_courses
 		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
-		result = prgrm.courses.first_semester
-		prgrm.p_modules.each do |pm|
-			result = result +  pm.courses.first_semester
+		result = self.courses.first_semester
+		self.p_modules.each do |pm|
+			result += pm.courses.first_semester
 			pm.sub_modules.each do |sm|
-				result = result +  sm.courses.first_semester
+				result +=  sm.courses.first_semester
 			end
 		end
 		return result
@@ -69,13 +67,38 @@ class Program < ActiveRecord::Base
 		return result
 	end
 
-	def all_courses
+	def first_semester_optional_courses
 		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
-		result = prgrm.courses
+		result = prgrm.courses.first_semester.optional
 		prgrm.p_modules.each do |pm|
-			result = result +  pm.courses
+			result = result +  pm.courses.first_semester.optional
 			pm.sub_modules.each do |sm|
-				result = result +  sm.courses
+				result = result +  sm.courses.first_semester.optional
+			end
+		end
+		return result
+	end
+
+	def second_semester_optional_courses
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
+		result = prgrm.courses.second_semester.mandatory
+		prgrm.p_modules.each do |pm|
+			result = result +  pm.courses.second_semester.optional
+			pm.sub_modules.each do |sm|
+				result = result +  sm.courses.second_semester.optional
+			end
+		end
+		return result
+	end
+
+	def all_courses
+		p "COUCOU"
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
+		result = self.courses
+		self.p_modules.each do |pm|
+			result += pm.courses
+			pm.sub_modules.each do |sm|
+				result +=  sm.courses
 			end
 		end
 		return result
