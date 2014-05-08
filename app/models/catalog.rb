@@ -146,6 +146,9 @@ class Catalog < ActiveRecord::Base
 		course.real_id = c.id
 		program.courses << c unless program.nil?
 		p_module.courses << c unless p_module.nil?
+		if ! p_module.parent.nil?
+			c.properties.create(p_type: "OBLIGATOIRE", value: "OUI")
+		end unless p_module.nil?
 	end
 
 	def build_p_module(p_module, program, parent)
