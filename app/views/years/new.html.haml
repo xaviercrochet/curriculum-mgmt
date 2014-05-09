@@ -12,13 +12,10 @@
               %a{"data-toggle" => "tab", :href => "#second_semester"} Second Quadri
           .tab-content
             #first_semester.tab-pane.active
-              - mandatories = 
               = fields_for :first_semester do |builder|
-                
-                = render 'years/new/courses', f: builder, courses: @student_program.program.first_semester_courses
+                = render 'years/new/courses', f: builder, courses: @student_program.first_semester_available_courses, div: "first"
             #second_semester.tab-pane
               = fields_for :second_semester do |builder|
-                = render 'years/new/courses', f: builder, courses: @student_program.program.second_semester_courses
-          
+                = render 'years/new/courses', f: builder, courses: @student_program.second_semester_available_courses, div: "second"
           %p
             = f.submit "Ajouter l'année", class: "btn btn-primary btn-lg btn-block"

@@ -4,15 +4,15 @@
   .panel-body
     %ul.nav.nav-tabs
       %li.active
-        %a{"data-toggle" => "tab", :href => "#mandatory"+div} Obligatoires
+        %a{"data-toggle" => "tab", :href => "#mandatory"} Obligatoires
       %li.pull-right
-        %a{"data-toggle" => "tab", :href => "#optional"+div} Optionnels
+        %a{"data-toggle" => "tab", :href => "#optional"} Optionnels
     .tab-content
-      .tab-pane.active{:id => "mandatory"+div}
+      #mandatory.tab-pane.active
         - courses.each do |course|
           - if course.mandatory?
             = render 'years/new/course', f: f, course: course
-      .tab-pane{:id => "optional"+div}
+      #optional.tab-pane
         - courses.each do |course|
           - if ! course.mandatory?
             = render 'years/new/course', f: f, course: course

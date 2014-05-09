@@ -1,7 +1,7 @@
 class Year < ActiveRecord::Base
   belongs_to :student_program
-  has_one :first_semester
-  has_one :second_semester
+  has_one :first_semester, dependent: :destroy
+  has_one :second_semester, dependent: :destroy
 
   def passed?
     self.passed
@@ -9,8 +9,8 @@ class Year < ActiveRecord::Base
 
   def get_course_objects
     courses = []
-    courses = courses + self.first_semester.get_courses_objects unless  self.first_semester.nil?
-    courses = courses + self.second_semester.get_courses_objects unless self.second_semester.nil?
+    courses = courses + self.first_semester.get_courses_objects(self.passed) unless  self.first_semester.nil?
+    courses = courses + self.second_semester.get_courses_objects(self.passed) unless self.second_semester.nil?
     return courses
   end
 

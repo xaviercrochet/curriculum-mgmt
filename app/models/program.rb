@@ -44,9 +44,9 @@ class Program < ActiveRecord::Base
 	end
 
 	def first_semester_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
-		result = self.courses.first_semester
-		self.p_modules.each do |pm|
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
+		result = prgrm.courses.first_semester
+		prgrm.p_modules.each do |pm|
 			result += pm.courses.first_semester
 			pm.sub_modules.each do |sm|
 				result +=  sm.courses.first_semester
@@ -56,12 +56,12 @@ class Program < ActiveRecord::Base
 	end
 
 	def second_semester_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
 		result = prgrm.courses.second_semester
 		prgrm.p_modules.each do |pm|
-			result = result +  pm.courses.second_semester
+			result +=  pm.courses.second_semester
 			pm.sub_modules.each do |sm|
-				result = result +  sm.courses.second_semester
+				result +=  sm.courses.second_semester
 			end
 		end
 		return result
@@ -92,7 +92,6 @@ class Program < ActiveRecord::Base
 	end
 
 	def all_courses
-		p "COUCOU"
 		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
 		result = self.courses
 		self.p_modules.each do |pm|

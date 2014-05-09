@@ -27,6 +27,25 @@ class StudentProgram < ActiveRecord::Base
     return c.check_constraints
   end
 
+  def first_semester_available_courses
+    courses = self.program.first_semester_courses
+    self.years.each do |year|
+      courses -= year.first_semester.courses
+      courses -= year.second_semester.courses
+    end
+    return courses
+  end
+
+  def second_semester_available_courses
+    courses = self.program.second_semester_courses
+    p "COUCOU"  + courses.size.to_s
+    self.years.each do |year|
+      courses -= year.first_semester.courses
+      courses -= year.second_semester.courses
+    end
+    return courses
+  end
+
   def is_p_module_present?(p_module)
     self.p_modules.where(id: p_module.id).count > 0
   end

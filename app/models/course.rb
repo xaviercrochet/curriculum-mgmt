@@ -42,7 +42,15 @@ class Course < ActiveRecord::Base
   end
 
   def mandatory
-    return "NON" unless get_property("OBLIGATOIRE").eql? "OUI"
+    if get_property("OBLIGATOIRE").eql? "OUI"
+      return "OUI"
+    else
+      return "NON"
+    end
+  end
+
+  def mandatory?
+    return mandatory.eql? "OUI"
   end
 
 
