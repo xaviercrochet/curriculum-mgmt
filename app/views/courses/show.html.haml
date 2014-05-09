@@ -39,51 +39,15 @@
           #collapseMain.panel-collapse.collapse
             .panel-body
               #accordion.panel-group
-                .panel.panel-default
-                  .panel-heading
-                    .text-center
-                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne"}
-                        Corequis
-                  #collapseOne.panel-collapse.collapse
-                    .panel-body
-                      = render 'constraints', constraints: @course.constraints.binary.corequisites
-                .panel.panel-default
-                  .panel-heading
-                    .text-center
-                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTwo"}
-                        Prérequis
-                  #collapseTwo.panel-collapse.collapse
-                    .panel-body
-                      = render 'constraints', constraints: @course.constraints.binary.prerequisites
-                .panel.panel-default
-                  .panel-heading
-                    .text-center
-                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseTree"}
-                        Prérequis disjonctifs (OR)
-                  #collapseTree.panel-collapse.collapse
-                    .panel-body
-                      = render 'constraints', constraints: @course.constraints.o_r.prerequisites
-                .panel.panel-default
-                  .panel-heading
-                    .text-center
-                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseFour"}
-                        Corequis disjonctifs (OR)
-                  #collapseFour.panel-collapse.collapse
-                    .panel-body
-                      = render 'constraints', constraints: @course.constraints.o_r.corequisites
-                .panel.panel-default
-                  .panel-heading
-                    .text-center
-                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseFive"}
-                        Prérequis disjonctifs exclusifs (X-OR)
-                  #collapseFive.panel-collapse.collapse
-                    .panel-body
-                      = render 'constraints', constraints: @course.constraints.xor.prerequisites
-                .panel.panel-default
-                  .panel-heading
-                    .text-center
-                      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseSix"}
-                        Corequis disjonctifs exclusifs (X-OR)
-                  #collapseSix.panel-collapse.collapse
-                    .panel-body
-                      = render 'constraints', constraints: @course.constraints.xor.corequisites
+                - if @course.constraints.binary.corequisites.size > 0
+                  = render @course.constraints.binary.corequisites, name: "Corequis", div: "collapseOne"
+                - if @course.constraints.binary.prerequisites.size > 0
+                  = render 'constraints', constraints: @course.constraints.binary.prerequisites, name: "Prerequis", div: "collapseTwo"
+                - if @course.constraints.o_r.prerequisites.size > 0
+                  = render 'constraints', constraints: @course.constraints.o_r.prerequisites, name: "Prérequis disjonctifs (OR)", div: "collapseTree"
+                - if @course.constraints.o_r.corequisites.size > 0
+                  = render 'constraints', constraints: @course.constraints.o_r.corequisites, name: "Corequis disjonctif (OR)", div: "collapseFour"
+                - if @course.constraints.xor.prerequisites.size > 0
+                  = render 'constraints', constraints: @course.constraints.xor.prerequisites, name: "Prérequis disjonctifs exclusifs (XOR)", div: "collapseFive"
+                - if @course.constraints.xor.corequisites.size > 0
+                  = render 'constraints', constraints: @course.constraints.xor.corequisites, name: "Corequis disjonctifs exclusif (XOR)", div: "collapseSix"
