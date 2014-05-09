@@ -33,7 +33,7 @@ module ConstraintsChecker
 
       def check
         if ! target.check_min(self.value)
-          return {to_few_credits: self.target.id}
+          return {to_few_credits: [self.target.id]}
         else
           return true
         end
@@ -48,7 +48,7 @@ module ConstraintsChecker
 
       def check
         if ! target.check_max(self.value)
-          return {to_many_credits: self.target.id}
+          return {to_many_credits: [self.target.id]}
         else
           return true
         end

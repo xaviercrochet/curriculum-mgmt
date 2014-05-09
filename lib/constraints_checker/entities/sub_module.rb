@@ -9,22 +9,6 @@ module constraints_checker
         self.courses = courses 
         self.p_module = p_module
       end
-
-      def count_credits
-        credits = 0
-        self.courses.each do |c|
-          credits = credits + c.credits.to_i unless c.credits.eql? 'NONE'
-        end
-        credits
-      end
-
-      def check_min(value)
-        count_credits >= value
-      end
-
-      def check_max(value)
-        count_credits <= value
-      end
     end
   end
 end

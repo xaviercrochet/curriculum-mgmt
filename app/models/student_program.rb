@@ -9,7 +9,7 @@ class StudentProgram < ActiveRecord::Base
   def check_constraints
     c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
     self.p_modules.each do |m|
-      c.add_children(m.get_p_module_object)
+      c.add_children(m.get_p_module_object(false))
     end
     courses = []
     self.years.each do |year|
@@ -38,7 +38,6 @@ class StudentProgram < ActiveRecord::Base
 
   def second_semester_available_courses
     courses = self.program.second_semester_courses
-    p "COUCOU"  + courses.size.to_s
     self.years.each do |year|
       courses -= year.first_semester.courses
       courses -= year.second_semester.courses

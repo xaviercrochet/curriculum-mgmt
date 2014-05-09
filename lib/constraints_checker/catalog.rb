@@ -7,7 +7,17 @@ module ConstraintsChecker
 
     def initialize(properties)
       super(properties)
-      self.logs = {or_corequisites_missing: [],xor_corequisites_missing: [], or_prerequisites_missing: [], xor_prerequisites_missing: [],  prerequisites_missing: [], corequisites_missing: [], prerequisites_not_passed: []}
+      self.logs = {
+        or_corequisites_missing: [],
+        xor_corequisites_missing: [], 
+        or_prerequisites_missing: [], 
+        xor_prerequisites_missing: [],  
+        prerequisites_missing: [], 
+        corequisites_missing: [], 
+        prerequisites_not_passed: [],
+        to_few_credits: [],
+        to_many_credits: [],
+      }
     end
 
     def find_course(id)

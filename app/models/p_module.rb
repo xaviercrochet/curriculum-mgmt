@@ -1,4 +1,5 @@
 require 'constraints_checker/entities/p_module'
+require 'constraints_checker/constraints/property_constraint'
 
 class PModule < ActiveRecord::Base
   belongs_to :catalog
@@ -31,11 +32,19 @@ class PModule < ActiveRecord::Base
 	end	
 
 	def min
-		get_property("MIN").to_i
+		result = get_property("MIN")
+		if result.eql? "NONE"
+			result = 0
+		end
+		return result.to_i
 	end	
 
 	def max
-		get_property("MAX").to_i
+		result = get_property("MAX")
+		if result.eql? "NONE"
+			result = 99
+		end
+		return result.to_i
 	end
 
 	def mandatory
@@ -80,19 +89,14 @@ class PModule < ActiveRecord::Base
 		"MODULES"
 	end
 
-
-	def to_object(catalog_object)
-		self.p_module_object = ConstraintsChecker::Entities::PModule.new(self.id, self.name, catalog_object)
-		contraints = self.constraints(self.p_module_object)
-		constraints.each do |c|
-			self.p_module_object.add_constraint(c)
+	def get_p_module_object(mandatoryy)
+		p_module = ConstraintsChecker::Entities::PModule.new(id: self.id, name: self.name)
+		p_module.add_constraint(ConstraintsChecker::Constraints::Min.new(p_module, self.min))-
+		p_module.add_constraint(ConstraintsChecker::Constraints::Max.new(p_module, self.max))
+		self.sub_modules.each do |m|
+			p_module.add_children(m.get_p_module_object(true))
 		end
-		self.p_module_object
-	end
-
-	def get_p_module_object
-		p self.name
-		ConstraintsChecker::Entities::PModule.new(id: self.id, name: self.name)
+		return p_module
 	end
 
 	def name
