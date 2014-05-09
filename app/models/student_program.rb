@@ -1,4 +1,5 @@
 require 'constraints_checker/catalog'
+require 'constraints_checker/constraints/property_constraint'
 
 class StudentProgram < ActiveRecord::Base
   belongs_to :program
@@ -8,22 +9,32 @@ class StudentProgram < ActiveRecord::Base
 
   def check_constraints
     c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
+    c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
+    c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
+    
+
+
     self.p_modules.each do |m|
       c.add_children(m.get_p_module_object(false))
     end
+    
     courses = []
+    
     self.years.each do |year|
       courses = courses + year.get_course_objects
     end
 
     courses.each do |course|
       p_module = c.find_p_module(course.parent_id)
+      
       if p_module.nil?
         c.add_children(course)
+      
       else
         p_module.add_children(course)
       end
     end
+    
     return c.check_constraints
   end
 

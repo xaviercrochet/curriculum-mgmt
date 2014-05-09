@@ -1,3 +1,5 @@
+require 'constraints_checker/constraints/property_constraint'
+
 class Program < ActiveRecord::Base
 	has_many :properties, as: :entity, dependent: :destroy
 	belongs_to :catalog
@@ -126,12 +128,20 @@ class Program < ActiveRecord::Base
 		return name
 	end
 
-	def max
-		get_property("MAX")
+	def min
+		result = get_property("MIN")
+		if result.eql? "NONE"
+			result = 0
+		end
+		return result.to_i
 	end
 
-	def min
-		get_property("MIN")
+	def max
+		result = get_property("MAX")
+		if result.eql? "NONE"
+			result = 99999
+		end
+		return result.to_i
 	end
 
 	def has_modules?
