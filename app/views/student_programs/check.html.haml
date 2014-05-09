@@ -10,8 +10,15 @@
         %a{"data-toggle" => "tab", :href => "#pre"} Prérequis Manquants
       %li
         %a{"data-toggle" => "tab", :href => "#co"} Corequis Manquants
+      %li
+        %a{"data-toggle" => "tab", :href => "#mandatory"} Cours Obligatoires Manquants
+      %li
+        %a{"data-toggle" => "tab", :href => "#other"} Autres Contraintes
     .tab-content
       #pre.tab-pane.active
         = render "courses", courses: @prerequisites
       #co.tab-pane
         = render "courses", courses: @corequisites
+      #mandatory.tab-pane
+        = render "courses", courses: @mandatories
+      #other.tab-pane
