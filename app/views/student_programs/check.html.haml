@@ -13,7 +13,9 @@
       %li
         %a{"data-toggle" => "tab", :href => "#mandatory"} Cours Obligatoires Manquants
       %li
-        %a{"data-toggle" => "tab", :href => "#other"} Autres Contraintes
+        %a{"data-toggle" => "tab", :href => "#or_co"} Corequis Disjonctifs
+      %li
+        %a{"data-toggle" => "tab", :href => "#or_pre"} Prerequis Disjonctifs
     .tab-content
       #pre.tab-pane.active
         = render "courses", courses: @prerequisites
@@ -21,4 +23,17 @@
         = render "courses", courses: @corequisites
       #mandatory.tab-pane
         = render "courses", courses: @mandatories
-      #other.tab-pane
+      #or_co.tab-pane
+        - @or_corequisites.each do |o|
+          .panel.panel-default
+            .panel-heading
+              Il vous manque un des corequis suivants
+            .panel-body
+              = render "courses",courses: o
+      #or_pre.tab-pane
+        - @or_prerequisites.each do |o|
+          .panel.panel-default
+            .panel-heading
+              Il vous manque un des prerequis suivants
+            .panel-body
+              = render "courses", courses: o

@@ -16,10 +16,9 @@ module ConstraintsChecker
         @target_ids = target_ids
       end
 
-      def find_dependencies
+      def find_missing_dependencies
         results = []
         @target_ids.each do |id|
-          p "result : "+@course.find_course(id).to_s
           if @course.find_course(id).nil?
             results << id
           end
@@ -42,19 +41,16 @@ module ConstraintsChecker
 
     class OrPrerequisite < PrerequisiteSet
       def initialize(course, target_ids)
-        p "YIHA"
         super("OR", course, target_ids)
       end
 
       def check
-        logs = {or_prerequisites_missing: []}
-        results = find_dependencies
-        results.each do |id|
-          logs[:or_prerequisites_missing] << id
+        results = find_missing_dependencies
+        if results.size < target_ids.size
+          return true
+        else
+          return {or_prerequisites_missing:[results]}
         end
-
-        logs = true if logs[:or_prerequisites_missing].size > 0
-        return logs
       end
     end
 
@@ -66,7 +62,7 @@ module ConstraintsChecker
 
       def check
         logs = {xor_prerequisites_missing: []}
-        result = find_dependencies
+        result = find_missing_dependencies
         result.each do |id|
           logs[:xor_prerequisites_missing] << id
         end
@@ -83,14 +79,12 @@ module ConstraintsChecker
       end
 
       def check
-        p "or corequisite check"
-        logs = {or_corequisites_missing: []}
-        results = find_dependencies
-        results.each do |id|
-          logs[:or_corequisites_missing] << id
+        results = find_missing_dependencies
+        if results.size < target_ids.size
+          return true
+        else
+          return {or_corequisites_missing:[results]}
         end
-        logs = true if logs[:or_corequisites_missing].size ==  0
-        return logs
       end
     end
 
@@ -102,7 +96,7 @@ module ConstraintsChecker
 
       def check
         logs = {xor_corequisites_missing: []}
-        results = find_dependencies
+        results = find_missing_dependencies
         @results.each do |id|
           logs[:xor_corequisites_missing] << id
         end

@@ -45,6 +45,7 @@ module ConstraintsChecker
             @logs[key] = @logs[key].merge(value)
           else
             @logs[key] += value
+            @logs[key] += value
           end
         end
       end
