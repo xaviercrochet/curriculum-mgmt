@@ -16,11 +16,7 @@ class PModule < ActiveRecord::Base
 	end
 
 	def mandatory?
-		if mandatory.eql? "OUI"
-			return true
-		else
-			return false
-		end
+		return mandatory.eql? "OUI"
 	end
 
 	def self.header

@@ -77,7 +77,7 @@ class Course < ActiveRecord::Base
   end
 
   def get_course_object(passed)
-    course = ConstraintsChecker::Entities::Course.new(name: self.name, id: self.id, passed: passed, parent_id: self.p_module_id, credits: self.credits)
+    course = ConstraintsChecker::Entities::Course.new(name: self.name, id: self.id, passed: passed, parent_id: self.p_module_id, credits: self.credits, mandatory: self.mandatory?)
     self.constraints.each do |c|
       course.add_constraint(c.get_constraint_object(course))
     end

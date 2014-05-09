@@ -17,7 +17,8 @@ module ConstraintsChecker
         prerequisites_not_passed: [],
         to_few_credits: [],
         to_many_credits: [],
-        courses_missing_in_module: {}
+        courses_missing_in_module: {},
+        mandatory_courses_missing: []
       }
     end
 

@@ -12,10 +12,14 @@ class StudentProgram < ActiveRecord::Base
     c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
     c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
     
+    mandatories = program.mandatory_courses
 
+    mandatories.each do |m|
+      c.add_constraint(ConstraintsChecker::Constraints::MandatoryCourse.new(c, m.id))
+    end
 
     self.p_modules.each do |m|
-      c.add_children(m.get_p_module_object(false))
+      c.add_children(m.get_p_module_object(m.mandatory?))
     end
     
     courses = []

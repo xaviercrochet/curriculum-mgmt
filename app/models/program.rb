@@ -93,10 +93,22 @@ class Program < ActiveRecord::Base
 		return result
 	end
 
+	def mandatory_courses
+		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
+		result = self.courses.mandatory
+		prgrm.p_modules.each do |pm|
+			result += pm.courses.mandatory
+			pm.sub_modules.each do |sm|
+				result +=  sm.courses.mandatory
+			end
+		end
+		return result
+	end
+
 	def all_courses
 		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
 		result = self.courses
-		self.p_modules.each do |pm|
+		prgrm.p_modules.each do |pm|
 			result += pm.courses
 			pm.sub_modules.each do |sm|
 				result +=  sm.courses

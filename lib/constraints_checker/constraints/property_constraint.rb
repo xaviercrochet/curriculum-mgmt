@@ -74,5 +74,24 @@ module ConstraintsChecker
         return {courses_missing_in_module: {self.target.id => missing_ids}}
       end
     end
+
+    class MandatoryCourse < PropertyConstraint
+
+      attr_accessor :course_id
+
+      def initialize(catalog, course_id)
+        super(catalog, 'MANDATORY', true)
+        self.course_id = course_id
+      end
+
+      def check
+        result = target.find_course(course_id)
+        if result.nil?
+          return {mandatory_courses_missing: [course_id]}
+        else
+          return true
+        end
+      end
+    end
   end
 end
