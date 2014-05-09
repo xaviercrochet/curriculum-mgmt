@@ -25,12 +25,6 @@ module ConstraintsChecker
       end
     end
 
-    class Mandatory < Constraint
-      def initialize(target, property, value)
-        super(target, property, value)
-      end
-    end
-
     class Min < PropertyConstraint
 
       def initialize(target, value)
