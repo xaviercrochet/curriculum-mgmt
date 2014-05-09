@@ -53,7 +53,8 @@ class StudentProgramsController < ApplicationController
     @student_program = StudentProgram.find(params[:student_program_id])
     @logs = @student_program.check_constraints
     @prerequisites = Course.find(@logs[:"prerequisites_missing"])
-    p @logs
+
+    #TODO => Move all the logic to the model
     mandatories_id = []
     mandatories_id  += @logs[:mandatory_courses_missing]
     @logs[:courses_missing_in_module].each do |key, value|
@@ -70,6 +71,18 @@ class StudentProgramsController < ApplicationController
     @logs[:or_prerequisites_missing].each do |o|
       @or_prerequisites << Course.find(o)
     end
+
+    @xor_corequisites = []
+    @logs[:xor_corequisites_missing].each do |o|
+      @xor_corequisites << Course.find(o)
+    end
+
+    @xor_prerequisites = []
+    @logs[:xor_prerequisites_missing].each do |o|
+      @xor_prerequisites << Course.find(o)
+    end
+
+
   end
 
   def new_validation

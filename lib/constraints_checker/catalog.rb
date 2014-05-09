@@ -45,23 +45,11 @@ module ConstraintsChecker
             @logs[key] = @logs[key].merge(value)
           else
             @logs[key] += value
-            @logs[key] += value
           end
         end
       end
       return @logs
     end
-
-    # def check
-    #   p "catalog check"
-    #   logs = @logs
-    #   courses.each do |key, value|
-    #     if ! value.nil?
-    #       logs = build_logs(logs, value.check) 
-    #     end
-    #   end
-    #   return logs
-    # end
 
   private
     def build_logs(logs, new_data)

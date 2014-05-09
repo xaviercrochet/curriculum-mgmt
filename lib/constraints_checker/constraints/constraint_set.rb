@@ -63,12 +63,11 @@ module ConstraintsChecker
       def check
         logs = {xor_prerequisites_missing: []}
         result = find_missing_dependencies
-        result.each do |id|
-          logs[:xor_prerequisites_missing] << id
+        if result.size == target_ids.size - 1
+          return true
+        else
+          return {xor_prerequisites_missing: [target_ids]}
         end
-
-        logs = true if logs[:xor_prerequisites_missing].size == 1
-        return logs
       end
     end
 
@@ -96,12 +95,12 @@ module ConstraintsChecker
 
       def check
         logs = {xor_corequisites_missing: []}
-        results = find_missing_dependencies
-        @results.each do |id|
-          logs[:xor_corequisites_missing] << id
+        result = find_missing_dependencies
+        if result.size == target_ids.size - 1
+          return true
+        else
+          return {xor_corequisites_missing: [target_ids]}
         end
-        logs = true if logs[:or_corequisites_missing].size ==  1
-        return logs
       end
     end
   end

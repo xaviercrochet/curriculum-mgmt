@@ -13,9 +13,14 @@
       %li
         %a{"data-toggle" => "tab", :href => "#mandatory"} Cours Obligatoires Manquants
       %li
-        %a{"data-toggle" => "tab", :href => "#or_co"} Corequis Disjonctifs
+        %a{"data-toggle" => "tab", :href => "#or_co"} Corequis Disjonctifs (OR)
       %li
-        %a{"data-toggle" => "tab", :href => "#or_pre"} Prerequis Disjonctifs
+        %a{"data-toggle" => "tab", :href => "#or_pre"} Prerequis Disjonctifs (Or)
+      %li
+        %a{"data-toggle" => "tab", :href => "#xor_co"} Corequis Disjonctifs Exclusif (XOR)
+      %li
+        %a{"data-toggle" => "tab", :href => "#xor_pre"} Prerequis Disjonctifs Exclusif (XOR)
+
     .tab-content
       #pre.tab-pane.active
         = render "courses", courses: @prerequisites
@@ -35,5 +40,19 @@
           .panel.panel-default
             .panel-heading
               Il vous manque un des prerequis suivants
+            .panel-body
+              = render "courses", courses: o
+      #xor_pre.tab-pane
+        - @xor_prerequisites.each do |o|
+          .panel.panel-default
+            .panel-heading
+              Vous ne pouvez choisir qu'un seul des prérequis suivants
+            .panel-body
+              = render "courses", courses: o
+      #xor_co.tab-pane
+        - @xor_corequisites.each do |o|
+          .panel.panel-default
+            .panel-heading
+              Vous ne pouvez choisir qu'un seul des corequis suivants
             .panel-body
               = render "courses", courses: o
