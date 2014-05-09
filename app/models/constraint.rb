@@ -58,9 +58,9 @@ class Constraint < ActiveRecord::Base
         constraint = ConstraintsChecker::Constraints::Prerequisite.new(course, self.courses.first.id)
       end
     when "X"
-      constraint = get_x_constraint_set_object(course)
-    when "OR"
       constraint = get_xor_constraint_set_object(course)
+    when "OR"
+      constraint = get_or_constraint_set_object(course)
     end
     return constraint
   end
@@ -76,13 +76,13 @@ private
     return target_ids
   end
 
-  def get_x_constraint_set_object(course)
+  def get_or_constraint_set_object(course)
     constraint = nil
     target_ids = get_target_ids
     if self.corequisite?
-      constraint = ConstraintsChecker::Constraints::XCorequisite.new(course, target_ids)
+      constraint = ConstraintsChecker::Constraints::OrCorequisite.new(course, target_ids)
     elsif self.prerequisite?
-      constraint = ConstraintsChecker::Constraints::XPrerequisite.new(course, target_ids)
+      constraint = ConstraintsChecker::Constraints::OrPrerequisite.new(course, target_ids)
     end
     return constraint
   end
@@ -91,7 +91,7 @@ private
     constraint = nil
     target_ids = get_target_ids
     if self.corequisite?
-      constraint = ConstraintsChecker::Constraints::XirCorequisite.new(course, target_ids)
+      constraint = ConstraintsChecker::Constraints::XorCorequisite.new(course, target_ids)
     elsif self.prerequisite?
       constraint = ConstraintsChecker::Constraints::XorPrerequisite.new(course, target_ids)
     end
