@@ -17,6 +17,7 @@ module ConstraintsChecker
         prerequisites_not_passed: [],
         to_few_credits: [],
         to_many_credits: [],
+        courses_missing_in_module: {}
       }
     end
 
@@ -37,7 +38,13 @@ module ConstraintsChecker
       results = check
       results.each do |result|
         result.each do |key, value|
-          @logs[key] += value
+          if value.is_a?(Hash)
+            p @logs[key]
+            p value
+            @logs[key] = @logs[key].merge(value)
+          else
+            @logs[key] += value
+          end
         end
       end
       return @logs

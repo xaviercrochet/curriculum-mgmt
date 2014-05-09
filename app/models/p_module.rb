@@ -89,13 +89,22 @@ class PModule < ActiveRecord::Base
 		"MODULES"
 	end
 
-	def get_p_module_object(mandatoryy)
+	def get_p_module_object(mandatory)
 		p_module = ConstraintsChecker::Entities::PModule.new(id: self.id, name: self.name)
 		p_module.add_constraint(ConstraintsChecker::Constraints::Min.new(p_module, self.min))-
 		p_module.add_constraint(ConstraintsChecker::Constraints::Max.new(p_module, self.max))
 		self.sub_modules.each do |m|
 			p_module.add_children(m.get_p_module_object(true))
 		end
+
+		if mandatory
+			course_ids = []
+			self.courses.each do |course|
+				course_ids << course.id
+			end
+			p_module.add_constraint(ConstraintsChecker::Constraints::Mandatory.new(p_module, course_ids))
+		end
+
 		return p_module
 	end
 

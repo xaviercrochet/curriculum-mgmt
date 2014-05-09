@@ -54,5 +54,25 @@ module ConstraintsChecker
         end
       end
     end
+
+    class Mandatory < PropertyConstraint
+      attr_accessor :children_ids
+
+      def initialize(target, children_ids)
+        super(target, "MANDATORY", true)
+        self.children_ids = children_ids
+      end
+
+      def check
+        missing_ids = []
+        self.children_ids.each do |id|
+          result = self.target.find_course(id)
+          if result.nil?
+            missing_ids << id
+          end
+        end
+        return {courses_missing_in_module: {self.target.id => missing_ids}}
+      end
+    end
   end
 end
