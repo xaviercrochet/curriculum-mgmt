@@ -50,7 +50,6 @@ class Constraint < ActiveRecord::Base
 
   def get_constraint_object(course)
     constraint = nil
-    p self.set_type
     case self.set_type
     when "BINARY"
       if self.corequisite?
