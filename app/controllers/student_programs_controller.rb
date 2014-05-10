@@ -94,6 +94,9 @@ class StudentProgramsController < ApplicationController
   end
 
 private
+  def student_program_params
+    params.require(:student_program).permit()
+  end
 
   def record_history
     session[:history] ||= []
