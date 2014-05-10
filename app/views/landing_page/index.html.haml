@@ -1,2 +1,6 @@
-.col-md-offset-2
-  %h3 Plateforme de gestion des programmes de cours
+.jumbotron
+  %h1 Curricula mgmt
+  %p Bienvenue sur la plateforme de gestion des programmes de cours. Veuillez vous connectez, ou creer un compte si vous n'en avez pas encore un.
+  - if ! user_signed_in?
+    = link_to "Connection",  new_user_session_path, class: "btn btn-lg btn-success"
+    = link_to "Créer un comte", new_user_registration_path, class: "btn btn-lg btn-primary"

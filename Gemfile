@@ -43,6 +43,7 @@ gem 'nokogiri'
 gem "paperclip", "~> 3.5.3"
 gem 'spreadsheet'
 gem "d3-rails"
+gem 'devise'
 gem 'gon'
 gem 'aws-sdk'
 # Use ActiveModel has_secure_password

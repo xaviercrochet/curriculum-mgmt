@@ -1,6 +1,8 @@
 CurriculumMgmt::Application.routes.draw do
   get "landing_page/index"
   root "landing_page#index"
+
+  devise_for :users
   resources :validations do
     get :validate
   end

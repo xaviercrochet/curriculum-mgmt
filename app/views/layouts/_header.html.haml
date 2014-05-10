@@ -17,3 +17,16 @@
           = link_to "Programmes des étudiants", student_programs_path
         %li
           = link_to "Demandes de validation", validations_path
+        
+      %ul.nav.navbar-nav.pull-right
+        - if user_signed_in?
+          %li.drop-down
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              Menu
+              %b.caret
+              %ul.dropdown-menu.dropdown-menu-right
+                %li
+                  = link_to "Mes programmes de cours", student_programs_path
+                %li.divider
+                %li
+                  = link_to "Déconnexion", destroy_user_session_path, method: :delete
