@@ -1,17 +1,25 @@
-%h2 Sign up
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = devise_error_messages!
-  %div
-    = f.label :email
-    %br/
-    = f.email_field :email, autofocus: true
-  %div
-    = f.label :password
-    %br/
-    = f.password_field :password, autocomplete: "off"
-  %div
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation, autocomplete: "off"
-  %div= f.submit "Sign up"
-= render "devise/shared/links"
+.col-md-6.col-md-offset-3
+  .panel.panel-default
+    .panel-heading.text-center
+      Créer un nouveau compte
+    .panel-body
+      .form-horizontal
+        = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+          = devise_error_messages!
+          .form-group
+            .col-md-3
+              = f.label :email, class: 'control-label'
+            .col-md-9
+              = f.email_field :email, autofocus: true, class: 'form-control'
+          .form-group
+            .col-md-3
+              = f.label :password, class: 'control-label'
+            .col-md-9
+              = f.password_field :password, autocomplete: "off", class: 'form-control'
+          .form-group
+            .col-md-3
+              = f.label :password_confirmation, class: 'control-label'
+            .col-md-9
+              = f.password_field :password_confirmation, autocomplete: "off", class: 'form-control'
+          = f.submit "S'enregistrer", class: "btn btn-primary btn-lg btn-block"
+        = render "devise/shared/links"
