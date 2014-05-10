@@ -1,4 +1,5 @@
 class SubModulesController < ApplicationController
+	before_action :authenticate_user!
 	
 	def index
 		@p_module = PModule.find(params[:p_module_id])

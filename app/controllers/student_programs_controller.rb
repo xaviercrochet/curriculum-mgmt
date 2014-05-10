@@ -1,5 +1,6 @@
 class StudentProgramsController < ApplicationController
   before_filter :record_history
+  before_action :authenticate_user!
 
   def new
     @catalog = Catalog.last #Remplace by Catalog.MAIN

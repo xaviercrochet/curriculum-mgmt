@@ -1,5 +1,6 @@
 class PModulesController < ApplicationController
-
+  before_action :authenticate_user!
+  
   def index
     @parent = context
   	@p_modules = @parent.p_modules.where(parent_id: nil)

@@ -1,4 +1,5 @@
 class ValidationsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @validations = Validation.all
   end

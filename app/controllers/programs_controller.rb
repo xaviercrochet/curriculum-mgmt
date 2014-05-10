@@ -1,5 +1,6 @@
 class ProgramsController < ApplicationController
   before_filter :record_history
+  before_action :authenticate_user!
 
   def index
     @catalog = Catalog.find(params[:catalog_id])
