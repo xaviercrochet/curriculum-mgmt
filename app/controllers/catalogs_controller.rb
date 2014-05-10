@@ -1,6 +1,7 @@
 class CatalogsController < ApplicationController
 	before_action :authenticate_user!
-	
+	load_and_authorize_resource
+
 	def index
 		@catalogs = Catalog.all
 	end
