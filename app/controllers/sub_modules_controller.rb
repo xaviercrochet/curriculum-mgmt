@@ -1,5 +1,6 @@
 class SubModulesController < ApplicationController
 	before_action :authenticate_user!
+	load_and_authorize_resource
 	
 	def index
 		@p_module = PModule.find(params[:p_module_id])

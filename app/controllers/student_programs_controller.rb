@@ -1,6 +1,7 @@
 class StudentProgramsController < ApplicationController
   before_filter :record_history
   before_action :authenticate_user!
+  load_and_authorize_resource
 
   def new
     @catalog = Catalog.last #Remplace by Catalog.MAIN
