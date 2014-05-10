@@ -5,7 +5,8 @@ class Ability
     if user.admin?
         can :manage, :all
     else
-        can :manage, StudentProgram
+        can :manage, [StudentProgram, Year, Semester]
+        can :create, Validation
     end
     # Define abilities for the passed in user here. For example:
     #
