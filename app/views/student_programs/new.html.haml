@@ -4,7 +4,7 @@
       %h4 Nouveau Programme d'étudiants
     .panel-body
       .form-horizontal
-        = form_for @student_program do |f|
+        = form_for [current_user, @student_program] do |f|
           .form-group
             .col-md-3
               = f.label :program, "PROGRAMME", class: "control-label"

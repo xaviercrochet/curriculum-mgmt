@@ -19,7 +19,7 @@
               = link_to "Demandes de validation", validations_path
           - if ! current_user.admin?
             %li
-              = link_to "Mes programmes de cours", student_programs_path
+              = link_to "Mes programmes de cours", user_student_programs_path(current_user)
 
         
         %ul.nav.navbar-nav.pull-right
@@ -30,7 +30,7 @@
               %ul.dropdown-menu.dropdown-menu-right
                 - if ! current_user.admin?
                   %li
-                    = link_to "Mes programmes de cours", student_programs_path
+                    = link_to "Mes programmes de cours", user_student_programs_path(current_user)
                   %li.divider
                 %li
                   = link_to "Mon compte", edit_user_registration_path

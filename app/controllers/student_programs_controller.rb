@@ -5,12 +5,14 @@ class StudentProgramsController < ApplicationController
 
   def new
     @catalog = Catalog.last #Remplace by Catalog.MAIN
-    @student_program = StudentProgram.new
+    current_user.student_programs.new
   end
 
   def create
     @program = Program.find(params[:student_program][:program_id])
-    @student_program = @program.student_programs.create
+    @student_program = current_user.student_programs.create
+    @student_program.program = @program
+    @student_program.save
     redirect_to @student_program
   end
 
@@ -23,7 +25,7 @@ class StudentProgramsController < ApplicationController
   def destroy
     @student_program = StudentProgram.find(params[:id])
     @student_program.destroy
-    redirect_to student_programs_path
+    redirect_to user_student_programs_path(current_user)
   end
 
   def update
@@ -45,7 +47,7 @@ class StudentProgramsController < ApplicationController
   end
 
   def index
-    @student_programs = StudentProgram.all
+    @student_programs = current_user.student_programs
     
     @back = back
     record_history

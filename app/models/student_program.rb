@@ -3,6 +3,7 @@ require 'constraints_checker/constraints/property_constraint'
 
 class StudentProgram < ActiveRecord::Base
   belongs_to :program
+  belongs_to :user
   has_many :years, dependent: :destroy
   has_many :validations, dependent: :destroy
   has_and_belongs_to_many :p_modules

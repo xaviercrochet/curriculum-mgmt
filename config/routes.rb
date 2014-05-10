@@ -1,21 +1,23 @@
 CurriculumMgmt::Application.routes.draw do
   get "landing_page/index"
   root "landing_page#index"
-
-  devise_for :users
-  resources :validations do
-    get :validate
-  end
-  resources :student_programs, shallow: true do
-    get :configure
-    get :new_validation
-    get :check
-    resources :years, shallow: true do
-      resources :semesters, shallow: true do
-        resources :courses
+  devise_for :users, :path => 'accounts' 
+  resources :users do
+    resources :student_programs, shallow: true do
+      get :configure
+      get :new_validation
+      get :check
+      resources :years, shallow: true do
+        resources :semesters, shallow: true do
+          resources :courses
+        end
       end
     end
   end
+  resources :validations do
+    get :validate
+  end
+  
 
   resources :catalogs, shallow: true do
     patch :upload

@@ -2,7 +2,7 @@
   %h2.text-center Programme d'étudiant
   .panel.panel-default
     .panel-heading.text-center
-      = link_to student_programs_path do
+      = link_to user_student_programs_path(current_user) do
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la page précédente
     .panel-body
