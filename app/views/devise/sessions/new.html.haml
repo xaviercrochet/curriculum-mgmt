@@ -5,6 +5,7 @@
     .panel-body
       .form-horizontal
         = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+          = render 'error_messages', object: f.object
           .form-group
             .col-md-3
               = f.label :email, class: 'control-label'

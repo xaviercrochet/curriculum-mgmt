@@ -5,7 +5,7 @@
     .panel-body
       .form-horizontal
         = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-          = devise_error_messages!
+          = render 'error_messages', object: f.object, action: "mis à jour"
           .form-group
             .col-md-3
               = f.label :email, class: 'control-label'
