@@ -30,10 +30,13 @@
               %ul.dropdown-menu.dropdown-menu-right
                 - if ! current_user.admin?
                   %li
+                    = link_to "Choisir le catalogue", '#'
+                  %li
                     = link_to "Mes programmes de cours", user_student_programs_path(current_user)
                   %li.divider
-                %li
-                  = link_to "Catalogues", catalogs_path
+                - if current_user.admin?
+                  %li
+                    = link_to "Catalogues", catalogs_path
                 %li
                   = link_to "Mon compte", edit_user_registration_path
                 %li

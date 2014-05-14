@@ -11,6 +11,7 @@ class Catalog < ActiveRecord::Base
 	has_many :p_modules, dependent: :destroy
 	has_many :constraint_types, dependent: :destroy
 	belongs_to :academic_year
+	has_many :users
 
 	has_attached_file :spreadsheet, path: "spreadsheets/:id/:filename"
 	validates_attachment_content_type :spreadsheet, content_type: "application/vnd.ms-excel"
@@ -23,6 +24,7 @@ class Catalog < ActiveRecord::Base
 	scope :main, -> {where("version = ?", 1)}
 	scope :old ,-> {where("version = ?", 2)}
 	scope :futur, -> {where("version = ?", 0)}
+	scope :available_for_student, -> {where("version > ?", 0 )}
 
 
 
@@ -38,6 +40,10 @@ class Catalog < ActiveRecord::Base
 			status = "Anciennne"
 		end
 		return status
+	end
+
+	def complete_name
+		self.name + " - " + self.academic_year.name + " - version: " + self.status
 	end
 
 	# upgrade the catalog version to main
