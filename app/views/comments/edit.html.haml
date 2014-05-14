@@ -1,0 +1,15 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading.text-center
+      Justifier les contraintes 
+      = link_to "non respectées", student_program_student_program_check_path(@student_program)
+      du programme
+    .panel-body
+      .form
+        = form_for @comment do |f|
+          = render 'error_messages', object: f.object
+          .form-group
+            .text-center
+              = f.label :justification
+            = f.text_area :content, class: 'form-control'
+          = f.submit "Ajouter la justification", class: "btn btn-primary btn-lg btn-block"

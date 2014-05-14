@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
+  
   def new
     @student_program = StudentProgram.find(params[:student_program_id])
     @comment = @student_program.build_comment
@@ -12,6 +14,22 @@ class CommentsController < ApplicationController
     else
       redirect_to @student_program
     end
+  end
+
+  def update
+    @comment = Comment.find(params[:id])
+    @comment.update(comment_params)
+    if @comment.errors.any?
+      @student_program = @comment.student_program
+      render action: :edit
+    else
+      redirect_to @comment.student_program
+    end
+  end
+
+  def edit
+    @comment = Comment.find(params[:id])
+    @student_program = @comment.student_program
   end
 
 private

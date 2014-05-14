@@ -23,6 +23,7 @@ class YearsController < ApplicationController
       @second_semester.courses << Course.find(id.to_i) unless id.eql? "0"
     end unless params[:first_semester].nil?
     
+    @student_program.set_count(-1)
     @student_program.devalidate
     redirect_to @year
   end

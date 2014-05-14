@@ -39,6 +39,7 @@ class StudentProgramsController < ApplicationController
       @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
     end unless params[:optional_modules].nil?
     
+    @student_program.set_count(-1)
     redirect_to student_program_student_program_configure_path(@student_program)
   end
 
@@ -76,12 +77,13 @@ class StudentProgramsController < ApplicationController
 
     @xor_prerequisites = @student_program.get_missing_xor_prerequisites(@logs)
     @count += @xor_prerequisites.size
+    @student_program.set_count(@count)
 
   end
 
   def new_validation
     @student_program = StudentProgram.find(params[:student_program_id])
-    @student_program.validations.create
+    @student_program.create_validation
     redirect_to @student_program
   end
 

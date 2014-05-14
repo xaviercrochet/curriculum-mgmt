@@ -1,0 +1,14 @@
+- if student_program.errors_count.eql? -1
+  .alert.alert-danger.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Veuillez vérifier vos contraintes pour pouvoir envoyer votre programme à la validation
+- if ! student_program.can_validates?
+  .alert.alert-danger.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Veuillez justifier vos contraintes non vérifiées pour pouvoir envoyer votre programme à la validation.
+
+- if ! student_program.validation.nil? 
+  .alert.alert-info.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Une validation a déjà été envoyée. Veuillez attendre qu'elle soit traitée par la commission. Pour la supprimer, cliquez
+    = link_to "ici.", student_program.validation, method: :delete

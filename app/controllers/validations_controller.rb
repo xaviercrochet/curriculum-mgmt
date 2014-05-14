@@ -12,7 +12,7 @@ class ValidationsController < ApplicationController
   def destroy
     @validation = Validation.find(params[:id])
     @validation.destroy
-    redirect_to validations_path
+    redirect_to(:back)
   end
 
   def validate

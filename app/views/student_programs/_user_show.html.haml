@@ -4,6 +4,7 @@
       %span.glyphicon.glyphicon-chevron-left
         Retour vers la page précédente
   .panel-body
+    = render 'alert_messages', student_program: student_program
     .row
       .col-md-8.col-md-offset-2
         = link_to "Configurer le programme de cours", student_program_student_program_configure_path(student_program), class:'btn btn-block btn-primary'
@@ -15,7 +16,13 @@
         = link_to "Vérifier les contraintes", student_program_student_program_check_path(student_program), class:'btn btn-block btn-primary'
     .row
       .col-md-8.col-md-offset-2
-        = link_to "Justifier les contraintes non respectée", new_student_program_comment_path(@student_program), class: 'btn btn-block btn-danger'
+        - link = nil
+        - if student_program.comment.nil?
+          - link = new_student_program_comment_path(student_program)
+        - else
+          - link = edit_comment_path(student_program.comment)
+
+        = link_to "Justifier les contraintes non respectée", link, class: 'btn btn-block btn-danger', disabled: ! student_program.can_justify?
     .row
       .col-md-8.col-md-offset-2
         = link_to "Envoyer à la validation", student_program_student_program_new_validation_path(student_program), class:'btn btn-block btn-danger', disabled: student_program.state

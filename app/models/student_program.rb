@@ -5,7 +5,7 @@ class StudentProgram < ActiveRecord::Base
   belongs_to :program
   belongs_to :user
   has_many :years, dependent: :destroy
-  has_many :validations, dependent: :destroy
+  has_one :validation, dependent: :destroy
   has_one :comment, dependent: :destroy
   has_and_belongs_to_many :p_modules
 
@@ -42,6 +42,32 @@ class StudentProgram < ActiveRecord::Base
     end
     
     return c.check_constraints
+  end
+  def can_justify?
+    self.errors_count > 0
+  end
+
+  def edit_or_new_comment_link
+    link = nil
+    if self.comment.nil?
+      link = new_student_program_comment_path(self)
+    else
+      link = edit_comment_path(self.comment)
+    end
+    return link
+  end
+
+
+
+
+  def can_validates?
+    self.errors_count == 0 or ! self.comment.nil?
+  end
+
+
+  def set_count(count)
+    self.errors_count = count
+    self.save
   end
 
   def first_semester_available_courses
@@ -133,7 +159,7 @@ class StudentProgram < ActiveRecord::Base
 
 
   def validation_request_already_sent
-    self.validations.count > 0
+    ! self.validation.nil?
   end
 
   def validate
