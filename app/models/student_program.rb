@@ -81,6 +81,55 @@ class StudentProgram < ActiveRecord::Base
     self.program.second_semester_optional_courses
   end
 
+  def get_missing_mandatory_courses(logs)
+    mandatories_id = []
+    mandatories_id  += logs[:mandatory_courses_missing]
+    logs[:courses_missing_in_module].each do |key, value|
+      mandatories_id += value
+    end 
+    return Course.find(mandatories_id)
+  end
+
+  def get_missing_prerequisites(logs)
+    Course.find(logs[:prerequisites_missing])
+  end
+
+  def get_missing_corequisites(logs)
+    Course.find(logs[:corequisites_missing])
+  end
+
+  def get_missing_or_corequisites(logs)
+    or_corequisites = []
+    logs[:or_corequisites_missing].each do |o|
+      or_corequisites << Course.find(o)
+    end
+    return or_corequisites
+  end
+
+  def get_missing_xor_corequisites(logs)
+    xor_corequisites = []
+    logs[:xor_corequisites_missing].each do |o|
+      xor_corequisites << Course.find(o)
+    end
+    return xor_corequisites
+  end
+
+  def get_missing_or_prerequisites(logs)
+    or_prerequisites = []
+    logs[:or_prerequisites_missing].each do |o|
+      or_prerequisites << Course.find(o)
+    end
+    return or_prerequisites
+  end
+
+  def get_missing_xor_prerequisites(logs)
+    xor_prerequisites = []
+    logs[:xor_prerequisites_missing].each do |o|
+      xor_prerequisites << Course.find(o)
+    end
+    return xor_prerequisites
+  end
+
 
   def validation_request_already_sent
     self.validations.count > 0

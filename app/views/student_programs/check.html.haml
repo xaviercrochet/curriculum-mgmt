@@ -1,7 +1,14 @@
-%h3.text-center Vérification des contraintes du programme
+%h3.text-center
+  = @count
+  contrainte(s) non respectée(s)
 .panel.panel-default
   .panel-heading.text-center
-    = link_to student_program_student_program_configure_path(@student_program) do
+    - path = nil
+    - if current_user.admin?
+      - path = validations_path
+    - else
+      - path = student_program_student_program_configure_path(@student_program)
+    = link_to path do
       %span.glyphicon.glyphicon-chevron-left
         Retour vers la page précédente
   .panel-body
