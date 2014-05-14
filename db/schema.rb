@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140514122035) do
+ActiveRecord::Schema.define(version: 20140514111202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,11 +41,6 @@ ActiveRecord::Schema.define(version: 20140514122035) do
   end
 
   add_index "catalogs", ["academic_year_id"], name: "index_catalogs_on_academic_year_id", using: :btree
-
-  create_table "comments", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "constraint_types", force: true do |t|
     t.string   "name"

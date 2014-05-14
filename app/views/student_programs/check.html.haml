@@ -7,7 +7,7 @@
     - if current_user.admin?
       - path = validations_path
     - else
-      - path = student_program_student_program_configure_path(@student_program)
+      - path = :back
     = link_to path do
       %span.glyphicon.glyphicon-chevron-left
         Retour vers la page précédente
