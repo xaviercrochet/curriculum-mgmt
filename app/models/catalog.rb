@@ -21,6 +21,18 @@ class Catalog < ActiveRecord::Base
 	validates :graph, presence: true
 
 
+
+
+	def status
+		status = "Futur"
+		if self.version == 1
+			status = "Principal"
+		elsif self.version == 2
+			status = "Ancien"
+		end
+		return status
+	end
+
 	def as_json(option={})
 		if self.has_programs?
 			{

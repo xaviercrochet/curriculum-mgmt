@@ -4,9 +4,11 @@
 			Catalogue
 			.pull-right
 				.badge{:style => 'background-color: #428bca;'}
-					= @catalog.faculty.capitalize
+					= @catalog.name.capitalize
 				.badge{:style => 'background-color: #428bca;'}
-					= @catalog.department.capitalize
+					= @catalog.academic_year.name.capitalize
+				.badge{:style => 'background-color: #428bca;'}
+					= @catalog.status
 		.panel-body
 			.alert.alert-danger.alert-dismissable
 				%button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
