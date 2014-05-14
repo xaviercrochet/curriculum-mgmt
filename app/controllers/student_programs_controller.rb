@@ -4,7 +4,7 @@ class StudentProgramsController < ApplicationController
   load_and_authorize_resource
 
   def new
-    @catalog = Catalog.last #Remplace by Catalog.MAIN
+    @catalog = current_user.catalog
     current_user.student_programs.new
   end
 
