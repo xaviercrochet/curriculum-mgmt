@@ -10,6 +10,7 @@ class Catalog < ActiveRecord::Base
 	has_many :courses, dependent: :destroy
 	has_many :p_modules, dependent: :destroy
 	has_many :constraint_types, dependent: :destroy
+	belongs_to :academic_year
 
 	has_attached_file :spreadsheet, path: "spreadsheets/:id/:filename"
 	validates_attachment_content_type :spreadsheet, content_type: "application/vnd.ms-excel"
