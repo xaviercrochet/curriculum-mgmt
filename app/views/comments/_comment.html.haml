@@ -6,10 +6,7 @@
   .panel-collapse.collapse{:id => id}
     .panel-body
       %p
-        = comment.content
-        .small.pull-right
-          envoyé à
-          = comment.updated_at
+        = simple_format(comment.content)
       = render 'answers', answers: comment.answers
       = render 'new_answer', comment: comment, answer: answer
 
