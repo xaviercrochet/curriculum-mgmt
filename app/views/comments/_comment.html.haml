@@ -7,7 +7,7 @@
     .panel-body
       %p
         = comment.content
-        .small
+        .small.pull-right
           envoyé à
           = comment.updated_at
       = render 'answers', answers: comment.answers

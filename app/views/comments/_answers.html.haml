@@ -1,6 +1,7 @@
-- answers.each do |a|
-  %p
-    = a.content
-    .small
-      envoyé par
-      = a.user.email
+%ul.list-group
+  - answers.each do |a|
+    %li.list-group-item
+      = a.content
+      .small.pull-right
+        envoyé par
+        = a.user.email
