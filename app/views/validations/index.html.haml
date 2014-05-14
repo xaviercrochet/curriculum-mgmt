@@ -7,10 +7,20 @@
         %thead
         %tbody
         - @validations.each do |validation|
-          %tr
-            %td
-              = link_to "Programme", validation.student_program, class: "btn btn-primary btn-block"
-            %td
+          .row
+            .col-md-4
+              .btn-group
+                %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                  Plus d'informations
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    = link_to "Programme", validation
+                  %li
+                    = link_to "Exceptions", "#"
+                  %li
+                    = link_to "Justifications", "#"
+            .col-md-4
               = link_to "Valider", validation_validate_path(validation), data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-success btn-block"
-            %td
+            .col-md-4
               = link_to "Refuser", validation, method: :delete, data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-danger btn-block" 

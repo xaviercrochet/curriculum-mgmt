@@ -6,7 +6,7 @@ class ValidationsController < ApplicationController
   end
 
   def show
-    @validation = Validation.find(params[:validation_id])
+    @validation = Validation.find(params[:id])
   end
 
   def destroy
