@@ -20,6 +20,13 @@ class CatalogsController < ApplicationController
 		end
 	end
 
+	def upgrade
+		@catalog = Catalog.find(params[:catalog_id])
+		@catalog.upgrade_version
+		redirect_to @catalog
+
+	end
+
 	def show
 		@catalog = Catalog.find(params[:id])
 		p @catalog.id.to_s

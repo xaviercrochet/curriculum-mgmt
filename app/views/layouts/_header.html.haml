@@ -33,6 +33,8 @@
                     = link_to "Mes programmes de cours", user_student_programs_path(current_user)
                   %li.divider
                 %li
+                  = link_to "Catalogues", catalogs_path
+                %li
                   = link_to "Mon compte", edit_user_registration_path
                 %li
                   = link_to "Déconnexion", destroy_user_session_path, method: :delete

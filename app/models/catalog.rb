@@ -20,17 +20,43 @@ class Catalog < ActiveRecord::Base
 	validates :name, presence: true
 	validates :graph, presence: true
 
+	scope :main, -> {where("version = ?", 1)}
+	scope :old ,-> {where("version = ?", 2)}
+	scope :futur, -> {where("version = ?", 0)}
 
 
+
+	def main?
+		self.version.eql? 1
+	end
 
 	def status
-		status = "Futur"
-		if self.version == 1
-			status = "Principal"
-		elsif self.version == 2
-			status = "Ancien"
+		status = "Future"
+		if self.version.eql? 1
+			status = "Principale"
+		elsif self.version.eql? 2
+			status = "Anciennne"
 		end
 		return status
+	end
+
+	# upgrade the catalog version to main
+	# 0 = future version
+	# 1 = main version (only one can exist)
+	# 2 = old version
+
+	def upgrade_version
+		p self.version.to_s
+		if ! self.version.eql? 1
+			main = Catalog.main.first
+			if ! main.nil?
+				main.version = 2
+				main.save
+			end
+			self.version = 1
+			self.save
+		end
+		self.version
 	end
 
 	def as_json(option={})

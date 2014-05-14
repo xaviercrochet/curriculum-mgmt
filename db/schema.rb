@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20140514092634) do
     t.datetime "spreadsheet_updated_at"
     t.integer  "academic_year_id"
     t.string   "name"
-    t.integer  "version"
+    t.integer  "version",                  default: 0
   end
 
   add_index "catalogs", ["academic_year_id"], name: "index_catalogs_on_academic_year_id", using: :btree

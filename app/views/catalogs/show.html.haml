@@ -10,6 +10,8 @@
 				.badge{:style => 'background-color: #428bca;'}
 					= @catalog.status
 		.panel-body
+			- if ! @catalog.main?
+				= link_to 'Utiliser comme catalogue principal', catalog_catalog_upgrade_path(@catalog), class: "btn btn-primary btn-lg btn-block"
 			.alert.alert-danger.alert-dismissable
 				%button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
 				.text-center

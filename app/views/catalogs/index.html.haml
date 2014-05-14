@@ -9,15 +9,17 @@
 			%table.table.table-bordered
 				%thead
 					%tr
-						%th.text-center Faculté
-						%th.text-center Department
+						%th.text-center Nom
+						%th.text-center Année académique
+						%th.text-center Version
 						%th 
 						%th
 				%tbody
 					- @catalogs.each do |c|
 						%tr
-							%td.text-center= c.faculty
-							%td.text-center= c.department
+							%td.text-center= c.name
+							%td.text-center= c.academic_year.name
+							%td.text-center= c.status
 							%td= link_to 'Plus d\'informations', c, class: "btn btn-primary btn-block"
 							%td= link_to 'Supprimer', c, method: :delete, data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-primary btn-block"
 
