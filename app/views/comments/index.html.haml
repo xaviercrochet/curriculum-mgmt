@@ -1,0 +1,8 @@
+.panel.panel-default
+  .panel-heading.text-center
+    test
+  .panel-body
+    - @comments.unread.each do |comment|
+      = render 'comment', comment: comment, id: comment.id
+    - @comments.read.each do |comment|
+      = render 'comment', comment: comment, id: comment.id

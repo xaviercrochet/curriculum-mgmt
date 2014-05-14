@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource
   
   def new
     @student_program = StudentProgram.find(params[:student_program_id])
@@ -14,6 +15,10 @@ class CommentsController < ApplicationController
     else
       redirect_to @student_program
     end
+  end
+
+  def index
+    @comments = Comment.all
   end
 
   def update

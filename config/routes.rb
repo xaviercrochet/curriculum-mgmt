@@ -2,6 +2,7 @@ CurriculumMgmt::Application.routes.draw do
   get "landing_page/index"
   root "landing_page#index"
   devise_for :users, :path => 'accounts' 
+  resources :comments
   resources :users do
     get :choose_catalog
     patch :update_catalog

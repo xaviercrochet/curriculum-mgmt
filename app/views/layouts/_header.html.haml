@@ -17,7 +17,9 @@
               = link_to "Catalogues", catalogs_path
             %li
               = link_to "Demandes de validation", validations_path
-          - if ! current_user.admin?
+            %li
+              = link_to "Discussions", comments_path
+          - else
             %li
               = link_to "Mes programmes de cours", user_student_programs_path(current_user)
 
@@ -34,7 +36,7 @@
                   %li
                     = link_to "Mes programmes de cours", user_student_programs_path(current_user)
                   %li.divider
-                - if current_user.admin?
+                - else
                   %li
                     = link_to "Catalogues", catalogs_path
                 %li
