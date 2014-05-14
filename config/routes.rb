@@ -3,6 +3,8 @@ CurriculumMgmt::Application.routes.draw do
   root "landing_page#index"
   devise_for :users, :path => 'accounts' 
   resources :users do
+    get :choose_catalog
+    patch :update_catalog
     resources :student_programs, shallow: true do
       get :configure
       get :new_validation
