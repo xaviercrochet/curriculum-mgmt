@@ -1,0 +1,8 @@
+.form
+  = form_for [comment, answer] do |f|
+    .form-group
+      .text-center
+        = f.label :message
+      = f.text_area :content, class: 'form-control'
+    = f.submit "Envoyer", class: "btn btn-primary btn-lg btn-block"
+

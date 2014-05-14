@@ -1,16 +1,35 @@
-.panel-body
-  .col-md-3
-    %div{:style => "height:100px;float:left"}
-      %button{"data-target" => "#"+id.to_s, "data-toggle" => "collapse"}
+.panel.panel-default
+  .panel-heading
+    .text-center
+      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#"+id.to_s}
         = comment.student_program.user.email
-  .col-md-9
-    .collapse.width{:style => "height:100px", :id => id}
-      .panel.panel-default
-        .panel-heading.text-center
-          Envoyé à 
+  .panel-collapse.collapse{:id => id}
+    .panel-body
+      %p
+        = comment.content
+        .small
+          envoyé à
           = comment.updated_at
-        .panel-body
-          %p
-            = comment.content
-          = render comment.answers
+      = render 'answers', answers: comment.answers
+      = render 'new_answer', comment: comment, answer: answer
+
+/ .panel-body
+/   .row
+/     .col-md-3
+/       %div{:style => "float:left"}
+/         %button{"data-target" => "#"+id.to_s, "data-toggle" => "collapse"}
+/           = comment.student_program.user.email
+/   .row
+/     .col-md-9.col-md-offset-3
+/       .collapse.width{:style => "height:500px", :id => id}
+/         .panel.panel-default
+/           .panel-heading.text-center
+/             Envoyé à 
+/             = comment.updated_at
+/           .panel-body
+/             %p
+/               = comment.content
+/             = render 'answers', answers: comment.answers
+/             = render 'new_answer', comment: comment, answer: answer
+
 

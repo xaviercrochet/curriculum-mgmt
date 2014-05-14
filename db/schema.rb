@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20140514160007) do
   create_table "answers", force: true do |t|
     t.integer  "comment_id"
     t.string   "content"
+    t.integer  "user_id"
+    t.boolean  "read",       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

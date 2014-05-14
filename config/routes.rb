@@ -2,13 +2,17 @@ CurriculumMgmt::Application.routes.draw do
   get "landing_page/index"
   root "landing_page#index"
   devise_for :users, :path => 'accounts' 
-  resources :comments
+  resources :comments do
+    resources :answers
+  end
   resources :users do
     get :choose_catalog
     patch :update_catalog
     resources :student_programs, shallow: true do
       resources :validations
-      resources :comments
+      resources :comments do
+        resources :answers
+      end
       get :configure
       get :new_validation
       get :check

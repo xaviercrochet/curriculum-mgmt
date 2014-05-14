@@ -19,6 +19,7 @@ class CommentsController < ApplicationController
 
   def index
     @comments = Comment.all
+    @answer = Answer.new
   end
 
   def update

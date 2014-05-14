@@ -1,8 +1,8 @@
 .panel.panel-default
   .panel-heading.text-center
-    test
+    Discussions
   .panel-body
     - @comments.unread.each do |comment|
-      = render 'comment', comment: comment, id: comment.id
+      = render 'comment', comment: comment, id: comment.id, answer: @answer
     - @comments.read.each do |comment|
-      = render 'comment', comment: comment, id: comment.id
+      = render 'comment', comment: comment, id: comment.id, answer: @answer

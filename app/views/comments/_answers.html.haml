@@ -1,8 +1,6 @@
-%p
-  COUCOU
-%p
-  COUCOU
-%p
-  COUCOU
-%p
-  COUCOU
+- answers.each do |a|
+  %p
+    = a.content
+    .small
+      envoyé par
+      = a.user.email
