@@ -13,4 +13,7 @@
             %tr
               %td.text-center
                 = link_to "Plus d'informations", p, class: "btn btn-primary btn-block"
+              %td
+                = link_to "Discussion", p.comment, class: "btn btn-primary btn-block"
+                
               %td= link_to "Supprimer", p, method: :delete, data: {confirm: "Êtes vous sûr?"}, class: "btn btn-primary btn-block"

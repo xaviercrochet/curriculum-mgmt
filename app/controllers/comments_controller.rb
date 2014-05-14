@@ -17,6 +17,11 @@ class CommentsController < ApplicationController
     end
   end
 
+  def show
+    @comment = Comment.find(params[:id])
+    @answer = Answer.new
+  end
+
   def index
     @comments = Comment.all
     @answer = Answer.new
