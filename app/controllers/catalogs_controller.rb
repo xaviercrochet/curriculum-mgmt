@@ -46,6 +46,6 @@ class CatalogsController < ApplicationController
 
 	private
 		def catalog_params
-			params.require(:catalog).permit(:faculty, :department, :graph, :spreadsheet)
+			params.require(:catalog).permit(:name, :academic_year_id, :graph, :spreadsheet)
 		end
 end

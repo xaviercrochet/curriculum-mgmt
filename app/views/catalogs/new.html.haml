@@ -8,14 +8,14 @@
 					= render 'error_messages', object: f.object
 					.form-group
 						.col-md-3
-							= f.label :faculté, class: 'control-label'
+							= f.label :name, class: 'control-label'
 						.col-md-9
-							= f.text_field :faculty, class: 'form-control'
+							= f.text_field :name, class: 'form-control'
 					.form-group
 						.col-md-3
-							= f.label :departement, class: 'control-label'
+							= f.label :année, class: 'control-label'
 						.col-md-9
-							= f.text_field :department, class: 'form-control'
+							= collection_select(:catalog, :academic_year_id, AcademicYear.all, :id, :name, {}, {:class => 'form-control'})
 					.form-group
 						.col-md-3
 							= f.label "Graphe", class: 'control-label'

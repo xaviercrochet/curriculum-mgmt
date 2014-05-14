@@ -17,8 +17,7 @@ class Catalog < ActiveRecord::Base
 	has_attached_file :graph, path: "graphes/:id/:filename"
 	validates_attachment :graph, content_type: {content_type: "application/xml", content_type: "application/octet-stream"}
 	
-	validates :department, presence: true
-	validates :faculty, presence: true
+	validates :name, presence: true
 	validates :graph, presence: true
 
 

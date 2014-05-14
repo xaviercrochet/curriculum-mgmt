@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140514085226) do
+ActiveRecord::Schema.define(version: 20140514092634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,8 +24,6 @@ ActiveRecord::Schema.define(version: 20140514085226) do
   end
 
   create_table "catalogs", force: true do |t|
-    t.string   "faculty"
-    t.string   "department"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "main",                     default: false
@@ -37,7 +35,12 @@ ActiveRecord::Schema.define(version: 20140514085226) do
     t.string   "spreadsheet_content_type"
     t.integer  "spreadsheet_file_size"
     t.datetime "spreadsheet_updated_at"
+    t.integer  "academic_year_id"
+    t.string   "name"
+    t.integer  "version"
   end
+
+  add_index "catalogs", ["academic_year_id"], name: "index_catalogs_on_academic_year_id", using: :btree
 
   create_table "constraint_types", force: true do |t|
     t.string   "name"
