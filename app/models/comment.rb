@@ -13,7 +13,7 @@ class Comment < ActiveRecord::Base
     self.read = true
     self.save
     self.answers.each do |a|
-      a.read = true unless ! a.user_id.eql? user.id #we don't to tag as read his answers
+      a.read = true unless a.user_id.eql? user.id #we don't to tag as read his answers
       a.save
     end
   end

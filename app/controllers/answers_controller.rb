@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource
   def create
     @answer = Answer.new
     @answer.content = params[:answer][:content]
@@ -8,7 +9,7 @@ class AnswersController < ApplicationController
     @comment.tag_as_read(current_user)
     @answer.comment = @comment
     @answer.save
-    redirect_to comments_path
+    redirect_to :back
   end
 
 private

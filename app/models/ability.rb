@@ -9,6 +9,7 @@ class Ability
         can :create, Validation, Comment
         can :destroy, Validation, Comment
         can :manage, Comment
+        can :manage, Answer
     end
     # Define abilities for the passed in user here. For example:
     #

@@ -17,7 +17,7 @@
                 = link_to p.comment, class: "btn btn-primary btn-block" do
                   Discussion
                   %span.badge
-                    = p.comment.answers.unread.count
+                    = p.comment.answers.not_from(current_user).unread.count
                   
 
                 
