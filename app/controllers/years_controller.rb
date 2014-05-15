@@ -12,7 +12,7 @@ class YearsController < ApplicationController
 
   def create
     @student_program = StudentProgram.find(params[:student_program_id])
-    @year = @student_program.years.create
+    @year = @student_program.years.create(year_params)
     @first_semester = @year.create_first_semester
     @second_semester = @year.create_second_semester
     params[:first_semester][:ids].each do |id|
@@ -48,6 +48,10 @@ class YearsController < ApplicationController
   end
 
 private
+
+  def year_params
+    params.require(:year).permit(:academic_year_id)
+  end
   def record_history
     session[:history] ||= []
     session[:history].push request.url

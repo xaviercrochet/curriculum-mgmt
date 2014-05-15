@@ -7,13 +7,11 @@
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la page précédente
     .panel-body
-      - i = 1
       / repalce with property to identify year
       - @years.each do |c|
         .btn-group.btn-group-justified 
-          = link_to i.to_s+" - Plus d'infos", c, class: "btn btn-primary btn-block"
-          = link_to "Supprimer", c, method: :delete, data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-danger btn-block", disabled: c.passed
-        - i = i + 1
+          = link_to years.academic_year.name+" - Plus d'infos", c, class: "btn btn-primary btn-block"
+          = link_to "Supprimer", c, method: :delete, data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-danger btn-block", disabled: c.passed? or c.failed?
 
       = link_to 'Ajouter une nouvelle année', new_student_program_year_path(@student_program), class: "btn btn-default btn-block"
 

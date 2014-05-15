@@ -5,17 +5,21 @@
     .panel-body
       .form-horizontal
         = form_for [@student_program, @year] do |f|
+          .form-group
+            .col-md-3
+              = f.label :année, class: 'control-label'
+            .col-md-9
+              = collection_select(:year, :academic_year_id, AcademicYear.all, :id, :name, {}, {:class => 'form-control'})
           %ul.nav.nav-tabs
             %li.active
               %a{"data-toggle" => "tab", :href => "#first_semester"} Premier Quadri
-            %li
+            %li.pull-right
               %a{"data-toggle" => "tab", :href => "#second_semester"} Second Quadri
           .tab-content
             #first_semester.tab-pane.active
               = fields_for :first_semester do |builder|
-                = render 'years/new/courses', f: builder, courses: @student_program.first_semester_available_courses, div: "first"
+                = render 'years/new/courses', courses: @student_program.second_semester_available_courses, id: "first", f: builder
             #second_semester.tab-pane
               = fields_for :second_semester do |builder|
-                = render 'years/new/courses', f: builder, courses: @student_program.second_semester_available_courses, div: "second"
-          %p
-            = f.submit "Ajouter l'année", class: "btn btn-primary btn-lg btn-block"
+                = render 'years/new/courses', courses: @student_program.second_semester_available_courses, id: "second", f: builder
+          = f.submit "Ajouter l'année", class: "btn btn-primary btn-lg btn-block"

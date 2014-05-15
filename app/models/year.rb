@@ -1,10 +1,15 @@
 class Year < ActiveRecord::Base
   belongs_to :student_program
+  belongs_to :academic_year
   has_one :first_semester, dependent: :destroy
   has_one :second_semester, dependent: :destroy
 
   def passed?
-    self.passed
+    self.status.eql? "2"
+  end
+
+  def failed?
+    self.status.eql? "1"
   end 
 
   def count_credits

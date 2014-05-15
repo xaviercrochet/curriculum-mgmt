@@ -1,5 +1,7 @@
 .col-md-8.col-md-offset-2
-  %h2.text-center Année
+  %h2.text-center 
+    Année -
+    = @year.academic_year.name
   .panel.panel-default
     .panel-heading.text-center
       = link_to student_program_student_program_configure_path(@student_program) do

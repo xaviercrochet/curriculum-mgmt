@@ -1,18 +1,40 @@
+/ .panel.panel-default
+/   .panel-heading
+/     Cours
+/   .panel-body
+/     %ul.nav.nav-tabs
+/       %li.active
+/         %a{"data-toggle" => "tab", :href => "#mandatory"+div} Obligatoires
+/       %li.pull-right
+/         %a{"data-toggle" => "tab", :href => "#optional"+div} Optionnels
+/     .tab-content
+/       .tab-pane.active{:id => "mandatory"+div}
+/         - courses.each do |course|
+/           - if course.mandatory?
+/             = render 'years/new/course', f: f, course: course
+/       .tab-pane{:id => "optional"+div}
+/         - courses.each do |course|
+/           - if ! course.mandatory?
+/             = render 'years/new/course', f: f, course: course
+
 .panel.panel-default
   .panel-heading
-    Cours
-  .panel-body
-    %ul.nav.nav-tabs
-      %li.active
-        %a{"data-toggle" => "tab", :href => "#mandatory"+div} Obligatoires
-      %li.pull-right
-        %a{"data-toggle" => "tab", :href => "#optional"+div} Optionnels
-    .tab-content
-      .tab-pane.active{:id => "mandatory"+div}
-        - courses.each do |course|
-          - if course.mandatory?
-            = render 'years/new/course', f: f, course: course
-      .tab-pane{:id => "optional"+div}
-        - courses.each do |course|
-          - if ! course.mandatory?
-            = render 'years/new/course', f: f, course: course
+    .text-center
+      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#mandatory_"+id.to_s}
+        Obligatoires
+  .panel-collapse.collapse{:id => "mandatory_"+id}
+    .panel-body
+      - courses.each do |course|
+        - if course.mandatory?
+          = render 'years/new/course', f: f, course: course
+.panel.panel-default
+  .panel-heading
+    .text-center
+      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#optional_"+id.to_s}
+        Optionnels
+  .panel-collapse.collapse{:id => "optional_"+id}
+    .panel-body
+      - courses.each do |course|
+        - if ! course.mandatory?
+          = render 'years/new/course', f: f, course: course
+
