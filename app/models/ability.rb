@@ -10,6 +10,9 @@ class Ability
         can :destroy, Validation, Justification
         can :manage, Justification
         can :manage, Answer
+        can :read, Course
+        can :read, PModule
+        can :read, Program
     end
     # Define abilities for the passed in user here. For example:
     #
