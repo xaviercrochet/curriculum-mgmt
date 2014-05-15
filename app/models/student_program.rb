@@ -90,7 +90,7 @@ class StudentProgram < ActiveRecord::Base
   end
 
   def enough_credits?
-    self.count_credits >= self.program.min and self.count_credits <= self.program.max
+    (self.count_credits >= self.program.min and self.count_credits <= self.program.max) or (self.count_credits >= self.program.count_credits)
   end
 
 

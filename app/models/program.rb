@@ -35,6 +35,17 @@ class Program < ActiveRecord::Base
 		return ["NAME", "MIN", "MAX", "CREDITS"]
 	end
 
+	def count_credits
+		result = 0
+		self.courses.each do |course|
+			result += course.credits.to_i
+		end
+		self.p_modules.each do |p_module|
+			result += p_module.count_credits
+		end
+		return credits.to_i
+	end
+
 
 
 	def optional_modules

@@ -21,7 +21,7 @@ class YearsController < ApplicationController
 
     params[:second_semester][:ids].each do |id|
       @second_semester.courses << Course.find(id.to_i) unless id.eql? "0"
-    end unless params[:first_semester].nil?
+    end unless params[:second_semester].nil?
     
     @student_program.set_count(-1)
     @student_program.devalidate

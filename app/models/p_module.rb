@@ -19,6 +19,17 @@ class PModule < ActiveRecord::Base
 		return mandatory.eql? "OUI"
 	end
 
+	def count_credits
+		result = 0
+		self.courses.each do |course|
+			result += course.credits.to_i
+		end
+		self.sub_modules.each do |p_module|
+			result += p_module.count_credits
+		end
+		return result
+	end
+
 	def self.header
 		return ["NAME", "CREDITS", "MIN", "MAX", "OBLIGATOIRE"]
 	end
