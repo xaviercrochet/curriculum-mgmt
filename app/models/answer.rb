@@ -1,5 +1,5 @@
 class Answer < ActiveRecord::Base
-  belongs_to :comment
+  belongs_to :justification
   validates :content, presence: true
   belongs_to :user
 

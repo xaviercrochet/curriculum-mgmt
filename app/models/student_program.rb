@@ -6,7 +6,7 @@ class StudentProgram < ActiveRecord::Base
   belongs_to :user
   has_many :years, dependent: :destroy
   has_one :validation, dependent: :destroy
-  has_one :comment, dependent: :destroy
+  has_one :justification, dependent: :destroy
   has_and_belongs_to_many :p_modules
 
   def check_constraints
@@ -47,12 +47,12 @@ class StudentProgram < ActiveRecord::Base
     self.errors_count > 0
   end
 
-  def edit_or_new_comment_link
+  def edit_or_new_justification_link
     link = nil
-    if self.comment.nil?
-      link = new_student_program_comment_path(self)
+    if self.justification.nil?
+      link = new_student_program_justification_path(self)
     else
-      link = edit_comment_path(self.comment)
+      link = edit_justification_path(self.justification)
     end
     return link
   end
@@ -61,7 +61,7 @@ class StudentProgram < ActiveRecord::Base
 
 
   def can_validates?
-    self.errors_count == 0 or ! self.comment.nil?
+    self.errors_count == 0 or ! self.justification.nil?
   end
 
 
