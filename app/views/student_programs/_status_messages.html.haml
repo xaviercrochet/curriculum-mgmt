@@ -1,0 +1,12 @@
+- if percentages[:min] == 40 and percentages[:max] == 40
+  .alert.alert-danger.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Vous avez dépassé la limite de crédit aurorisée pour ce programme!
+- elsif percentages[:min] == 50 and percentages[:max] <= 100
+  .alert.alert-warning.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Attention, vous avez plus de crédits qu'il n'est nécessaire pour valider ce programme!
+- else
+  .alert.alert-info.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Attention, il vous manque encore des crédits pour valider ce programme!
