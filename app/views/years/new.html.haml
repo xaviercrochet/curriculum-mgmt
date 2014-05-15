@@ -18,7 +18,7 @@
           .tab-content
             #first_semester.tab-pane.active
               = fields_for :first_semester do |builder|
-                = render 'years/new/courses', courses: @student_program.second_semester_available_courses, id: "first", f: builder
+                = render 'years/new/courses', courses: @student_program.first_semester_available_courses, id: "first", f: builder
             #second_semester.tab-pane
               = fields_for :second_semester do |builder|
                 = render 'years/new/courses', courses: @student_program.second_semester_available_courses, id: "second", f: builder

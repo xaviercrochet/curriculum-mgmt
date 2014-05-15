@@ -19,7 +19,7 @@
                   %li
                     = link_to "Exceptions", student_program_student_program_check_path(validation.student_program)
                   %li
-                    = link_to "Justifications", "#"
+                    = link_to "Justifications", student_program_justifications_path(validation.student_program)
             .col-md-4
               = link_to "Valider", validation_validate_path(validation), data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-success btn-block"
             .col-md-4

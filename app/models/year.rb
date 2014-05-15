@@ -35,8 +35,8 @@ class Year < ActiveRecord::Base
 
   def get_course_objects
     courses = []
-    courses = courses + self.first_semester.get_courses_objects(self.passed) unless  self.first_semester.nil?
-    courses = courses + self.second_semester.get_courses_objects(self.passed) unless self.second_semester.nil?
+    courses = courses + self.first_semester.get_courses_objects(self.passed?) unless  self.first_semester.nil?
+    courses = courses + self.second_semester.get_courses_objects(self.passed?) unless self.second_semester.nil?
     return courses
   end
 
