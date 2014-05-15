@@ -6,9 +6,9 @@ class Ability
         can :manage, :all
     else
         can :manage, [StudentProgram, Year, Semester]
-        can :create, Validation, Comment
-        can :destroy, Validation, Comment
-        can :manage, Comment
+        can :create, Validation, Justification
+        can :destroy, Validation, Justification
+        can :manage, Justification
         can :manage, Answer
     end
     # Define abilities for the passed in user here. For example:
