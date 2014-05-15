@@ -33,7 +33,11 @@ module ConstraintsChecker
 
       def check
         if ! target.check_min(self.value)
-          return {to_few_credits: [self.target.id]}
+          if target.class.name.eql? ConstraintsChecker::Catalog.name
+            return {to_few_credits_in_program: [self.target.id]}
+          else
+            return {to_few_credits_in_module: [self.target.id]}
+          end
         else
           return true
         end
@@ -48,7 +52,11 @@ module ConstraintsChecker
 
       def check
         if ! target.check_max(self.value)
-          return {to_many_credits: [self.target.id]}
+          if target.class.name.eql? ConstraintsChecker::Catalog.name
+            return {to_many_credits_in_program: [self.target.id]}
+          else
+            return {to_many_credits_in_module: [self.target.id]}
+          end
         else
           return true
         end
