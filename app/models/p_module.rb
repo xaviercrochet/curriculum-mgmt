@@ -27,7 +27,7 @@ class PModule < ActiveRecord::Base
 		self.sub_modules.each do |p_module|
 			result += p_module.count_credits
 		end
-		return result
+		return result.to_i
 	end
 
 	def self.header
@@ -89,6 +89,15 @@ class PModule < ActiveRecord::Base
 			constraints << ConstraintChecker::Constraints::Max.new(p_module_object, max.value)
 		end
 		constraints 
+
+	end
+
+	def all_courses
+		result = self.courses
+		self.sub_modules.each do |m|
+			result += m.all_courses
+		end
+		return result
 
 	end
 

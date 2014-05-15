@@ -36,14 +36,15 @@ class Program < ActiveRecord::Base
 	end
 
 	def count_credits
+		p self.name
 		result = 0
 		self.courses.each do |course|
 			result += course.credits.to_i
 		end
 		self.p_modules.each do |p_module|
-			result += p_module.count_credits
+			result += p_module.count_credits.to_i
 		end
-		return credits.to_i
+		return result
 	end
 
 
@@ -117,14 +118,11 @@ class Program < ActiveRecord::Base
 	end
 
 	def all_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
 		result = self.courses
-		prgrm.p_modules.each do |pm|
-			result += pm.courses
-			pm.sub_modules.each do |sm|
-				result +=  sm.courses
-			end
+		self.p_modules.each do |pm|
+			result += pm.all_courses
 		end
+
 		return result
 
 	end
