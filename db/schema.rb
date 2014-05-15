@@ -24,10 +24,10 @@ ActiveRecord::Schema.define(version: 20140514160007) do
   end
 
   create_table "answers", force: true do |t|
-    t.integer  "comment_id"
+    t.integer  "justification_id"
     t.string   "content"
     t.integer  "user_id"
-    t.boolean  "read",       default: false
+    t.boolean  "read",             default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -50,14 +50,6 @@ ActiveRecord::Schema.define(version: 20140514160007) do
   end
 
   add_index "catalogs", ["academic_year_id"], name: "index_catalogs_on_academic_year_id", using: :btree
-
-  create_table "comments", force: true do |t|
-    t.string   "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "student_program_id"
-    t.boolean  "read",               default: false
-  end
 
   create_table "constraint_types", force: true do |t|
     t.string   "name"
@@ -116,6 +108,14 @@ ActiveRecord::Schema.define(version: 20140514160007) do
   create_table "first_semesters", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "justifications", force: true do |t|
+    t.string   "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "student_program_id"
+    t.boolean  "read",               default: false
   end
 
   create_table "p_modules", force: true do |t|

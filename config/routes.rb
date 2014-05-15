@@ -2,7 +2,7 @@ CurriculumMgmt::Application.routes.draw do
   get "landing_page/index"
   root "landing_page#index"
   devise_for :users, :path => 'accounts' 
-  resources :comments do
+  resources :justifications do
     resources :answers
   end
   resources :users do
@@ -10,7 +10,7 @@ CurriculumMgmt::Application.routes.draw do
     patch :update_catalog
     resources :student_programs, shallow: true do
       resources :validations
-      resources :comments do
+      resources :justifications do
         resources :answers
       end
       get :configure
@@ -75,13 +75,13 @@ end
 
   # Example resource route with sub-resources:
   #   resources :products do
-  #     resources :comments, :sales
+  #     resources :justifications, :sales
   #     resource :seller
   #   end
 
   # Example resource route with more complex sub-resources:
   #   resources :products do
-  #     resources :comments
+  #     resources :justifications
   #     resources :sales do
   #       get 'recent', on: :collection
   #     end
