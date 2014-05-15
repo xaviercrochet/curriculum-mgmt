@@ -14,10 +14,10 @@
               %td.text-center
                 = link_to "Plus d'informations", p, class: "btn btn-primary btn-block"
               %td
-                = link_to p.comment, class: "btn btn-primary btn-block" do
+                = link_to p.justification, class: "btn btn-primary btn-block" do
                   Discussion
                   %span.badge
-                    = p.comment.answers.not_from(current_user).unread.count
+                    = p.justification.answers.not_from(current_user).unread.count
                   
 
                 
