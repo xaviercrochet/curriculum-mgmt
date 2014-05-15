@@ -28,6 +28,18 @@ class YearsController < ApplicationController
     redirect_to @year
   end
 
+  def pass
+    @year = Year.find(params[:year_id])
+    @year.pass
+    redirect_to user_manage_years_path(current_user)
+  end
+
+  def fail
+    @year = Year.find(params[:year_id])
+    @year.fail
+    redirect_to user_manage_years_path(current_user)
+  end
+
 
 
   def destroy

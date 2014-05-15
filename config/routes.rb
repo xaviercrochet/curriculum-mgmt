@@ -19,6 +19,8 @@ CurriculumMgmt::Application.routes.draw do
       get :new_validation
       get :check
       resources :years, shallow: true do
+        get :pass
+        get :fail
         resources :semesters, shallow: true do
           resources :courses
         end
