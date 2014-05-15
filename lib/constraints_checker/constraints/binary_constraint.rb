@@ -24,10 +24,14 @@ module ConstraintsChecker
         result = self.course.find_course(self.target_id)
         if result.nil?
           return {prerequisites_missing: [self.target_id]}
-        elsif ! result.passed
-          return {prerequisites_not_passed: [self.target_id]}
+        # elsif ! result.passed
+        #   return {prerequisites_not_passed: [self.target_id]}
         else
-          return true
+          if course.compare(result).eql? 1
+            return true
+          else
+            return {prerequisites_missing: [self.target_id]}
+          end
         end
       end
     end
@@ -40,9 +44,13 @@ module ConstraintsChecker
       def check
         result = self.course.find_course(self.target_id)
         if result.nil?
-          {corequisites_missing: [self.target_id]}
+          return {corequisites_missing: [self.target_id]}
         else
-          true
+          if course.compare(result).eql? -1
+            return {corequisites_missing: [self.target_id]}
+          else
+            return true
+          end
         end
       end
     end
