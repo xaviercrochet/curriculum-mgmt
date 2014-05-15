@@ -2,13 +2,13 @@
   .panel-heading
     .text-center
       %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#"+id.to_s}
-        = comment.student_program.user.email
+        = justification.student_program.user.email
   .panel-collapse.collapse{:id => id}
     .panel-body
       %p
-        = simple_format(comment.content)
+        = simple_format(justification.content)
       = render 'answers', answers: comment.answers
-      = render 'new_answer', comment: comment, answer: answer
+      = render 'new_answer', justification: justification, answer: answer
 
 / .panel-body
 /   .row

@@ -1,6 +1,6 @@
-class CreateComments < ActiveRecord::Migration
+class CreateJustifications < ActiveRecord::Migration
   def change
-    create_table :comments do |t|
+    create_table :justifications do |t|
       t.string :content
       t.timestamps
       t.references :student_program
