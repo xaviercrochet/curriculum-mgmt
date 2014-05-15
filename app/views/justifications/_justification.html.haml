@@ -7,7 +7,7 @@
     .panel-body
       %p
         = simple_format(justification.content)
-      = render 'answers', answers: comment.answers
+      = render 'answers', answers: justification.answers
       = render 'new_answer', justification: justification, answer: answer
 
 / .panel-body
@@ -15,18 +15,18 @@
 /     .col-md-3
 /       %div{:style => "float:left"}
 /         %button{"data-target" => "#"+id.to_s, "data-toggle" => "collapse"}
-/           = comment.student_program.user.email
+/           = justification.student_program.user.email
 /   .row
 /     .col-md-9.col-md-offset-3
 /       .collapse.width{:style => "height:500px", :id => id}
 /         .panel.panel-default
 /           .panel-heading.text-center
 /             Envoyé à 
-/             = comment.updated_at
+/             = justification.updated_at
 /           .panel-body
 /             %p
-/               = comment.content
-/             = render 'answers', answers: comment.answers
-/             = render 'new_answer', comment: comment, answer: answer
+/               = justification.content
+/             = render 'answers', answers: justification.answers
+/             = render 'new_answer', justification: justification, answer: answer
 
 

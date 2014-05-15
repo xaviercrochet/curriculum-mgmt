@@ -17,10 +17,10 @@
     .row
       .col-md-8.col-md-offset-2
         - link = nil
-        - if student_program.comment.nil?
-          - link = new_student_program_comment_path(student_program)
+        - if student_program.justification.nil?
+          - link = new_student_program_justification_path(student_program)
         - else
-          - link = edit_comment_path(student_program.comment)
+          - link = edit_justification_path(student_program.justification)
 
         = link_to "Justifier les contraintes non respectée", link, class: 'btn btn-block btn-danger', disabled: ! student_program.can_justify?
     .row
