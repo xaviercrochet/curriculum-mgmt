@@ -6,6 +6,7 @@ CurriculumMgmt::Application.routes.draw do
     resources :answers
   end
   resources :users do
+    get :manage_years
     get :choose_catalog
     patch :update_catalog
     resources :student_programs, shallow: true do

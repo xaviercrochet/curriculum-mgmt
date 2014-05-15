@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
+  load_and_authorize_resource
+
 
   def choose_catalog
     @current_catalog = current_user.catalog
@@ -9,5 +12,9 @@ class UsersController < ApplicationController
     current_user.catalog = @catalog
     current_user.save
     redirect_to user_choose_catalog_path
+  end
+
+  def manage_years
+    @years = Year.current
   end
 end

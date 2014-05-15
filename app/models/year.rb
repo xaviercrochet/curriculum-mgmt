@@ -4,13 +4,27 @@ class Year < ActiveRecord::Base
   has_one :first_semester, dependent: :destroy
   has_one :second_semester, dependent: :destroy
 
+  scope :passed, -> {where("status = ?", 2)}
+  scope :failed, -> {where("status = ?", 1)}
+  scope :current, -> {where("status = ?", 0)}
+
   def passed?
     self.status.eql? "2"
   end
 
   def failed?
     self.status.eql? "1"
-  end 
+  end
+
+  def pass
+    self.status = 2
+    self.save 
+  end
+
+  def fail
+    self.status = 1
+    self.save
+  end
 
   def count_credits
     result = 0

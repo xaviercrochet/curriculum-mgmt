@@ -18,6 +18,8 @@
             %li
               = link_to "Demandes de validation", validations_path
             %li
+              = link_to "Gérer les années" , user_manage_years_path(current_user)
+            %li
               = link_to  justifications_path do
                 Discussions
                 %span.badge
@@ -42,6 +44,11 @@
                 - else
                   %li
                     = link_to "Catalogues", catalogs_path
+                  %li
+                    = link_to "Demandes de validation", validations_path
+                  %li
+                    = link_to "Gérer les années" , user_manage_years_path(current_user)
+                  %li.divider
                 %li
                   = link_to "Mon compte", edit_user_registration_path
                 %li

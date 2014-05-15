@@ -1,0 +1,16 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-body.text-center
+      %table.table-striped.table-centered
+        %thead
+          %th Étudiant
+          %th Année Académique
+          %th Action
+        %tbody
+          - @years.each do |year|
+            %td
+              = year.student_program.user.email
+            %td
+              = year.academic_year.name
+            %td
+              COUCOu
