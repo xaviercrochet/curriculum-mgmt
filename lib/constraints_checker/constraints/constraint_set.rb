@@ -21,6 +21,7 @@ module ConstraintsChecker
         @target_ids.each do |id|
           if @course.find_course(id).nil?
             results << id
+          else
           end
         end
         return results
@@ -31,11 +32,38 @@ module ConstraintsChecker
       def initialize(set_type, course, target_ids)
         super(set_type, "COREQUISITE", course, target_ids)
       end
+
+      def find_missing_dependencies
+        results = []
+        @target_ids.each do |id|
+          result = @course.find_course(id)
+          if result.nil?
+            results << id
+          elsif ! result.nil and @course.compare(result).eql? -1
+            results << id
+          end
+        end
+        return results
+      end
+
     end
 
     class PrerequisiteSet < ConstraintSet
       def initialize(set_type, course, target_ids)
         super(set_type, "PREREQUISITE", course, target_ids)
+      end
+
+      def find_missing_dependencies
+        results = []
+        @target_ids.each do |id|
+          result = @course.find_course(id)
+          if result.nil?
+            results << id
+          elsif ! result.nil and @course.compare(result) < 1
+            results << id
+          end
+        end
+        return results
       end
     end
 
