@@ -57,6 +57,31 @@ class StudentProgram < ActiveRecord::Base
     return link
   end
 
+  def count_credits
+    result = 0
+    self.years.each do |year|
+      result += year.count_credits
+    end
+    return result
+  end
+
+  def credits_percentages
+    result = {min: 0, max: 0, overflow: 0}
+    # percentage = (self.count_credits.to_f / self.program.min.to_f)
+    if self.count_credits <= self.program.min
+      result[:min] = StudentProgram.percentage(self.count_credits, self.program.min )
+    elsif self.count_credits > self.program.min and self.count_credits <= self.program.max
+      result[:min] = 50
+      result[:max] = StudentProgram.percentage(self.count_credits-self.program.min, self.program.max - self.program.min)/2
+    else
+      result[:min] = 40
+      result[:max] = 40
+      result[:overflow] = StudentProgram.percentage(self.count_credits-self.program.max, self.program.min+self.program.max)*0.2
+    end
+    return result
+  end
+
+
 
 
 
@@ -174,5 +199,13 @@ class StudentProgram < ActiveRecord::Base
 
   def state
     self.validated or self.validation_request_already_sent
+  end
+private
+  def self.percentage(value1, value2)
+    result = (value1.to_f / value2.to_f) * 100
+    if result > 100
+      result = 100
+    end
+    return result
   end
 end

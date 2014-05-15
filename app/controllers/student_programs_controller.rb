@@ -25,6 +25,7 @@ class StudentProgramsController < ApplicationController
   def status
     @student_program = StudentProgram.find(params[:student_program_id])
     @logs = @student_program.check_constraints
+    @program = @student_program.program
   end
 
   def destroy

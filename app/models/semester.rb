@@ -9,4 +9,12 @@ class Semester < ActiveRecord::Base
     end
     return courses
   end
+
+  def count_credits
+    result = 0
+    self.courses.each do |course|
+      result += course.credits.to_i
+    end
+    return result
+  end
 end

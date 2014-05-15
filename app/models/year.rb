@@ -7,6 +7,13 @@ class Year < ActiveRecord::Base
     self.passed
   end 
 
+  def count_credits
+    result = 0
+    result += first_semester.count_credits
+    result += second_semester.count_credits
+    return result
+  end
+
   def get_course_objects
     courses = []
     courses = courses + self.first_semester.get_courses_objects(self.passed) unless  self.first_semester.nil?
