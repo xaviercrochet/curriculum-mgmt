@@ -18,10 +18,10 @@
             %li
               = link_to "Demandes de validation", validations_path
             %li
-              = link_to  comments_path do
+              = link_to  justifications_path do
                 Discussions
                 %span.badge
-                  = Comment.unread.count
+                  = Justification.unread.count
           - else
             %li
               = link_to "Mes programmes de cours", user_student_programs_path(current_user)
