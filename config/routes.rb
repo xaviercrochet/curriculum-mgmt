@@ -13,6 +13,7 @@ CurriculumMgmt::Application.routes.draw do
       resources :justifications do
         resources :answers
       end
+      get :status
       get :configure
       get :new_validation
       get :check

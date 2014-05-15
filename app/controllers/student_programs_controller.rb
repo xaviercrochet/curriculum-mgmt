@@ -22,6 +22,9 @@ class StudentProgramsController < ApplicationController
     @back = back
   end
 
+  def status
+  end
+
   def destroy
     @student_program = StudentProgram.find(params[:id])
     @student_program.destroy
