@@ -13,6 +13,7 @@ class Ability
         can :read, Course
         can :read, PModule
         can :read, Program
+        can :read, Property
     end
     # Define abilities for the passed in user here. For example:
     #
