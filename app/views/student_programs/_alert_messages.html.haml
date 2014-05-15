@@ -12,3 +12,15 @@
     %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
     Une validation a déjà été envoyée. Veuillez attendre qu'elle soit traitée par la commission. Pour la supprimer, cliquez
     = link_to "ici.", student_program.validation, method: :delete
+- if student_program.count_credits <= student_program.program.min
+  .alert.alert-warning.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Vous n'avez pas assez de crédits! (
+    = student_program.count_credits
+    )
+- if student_program.count_credits > student_program.program.max
+  .alert.alert-warning.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Vous avez trop de crédits! (
+    = student_program.count_credits
+    )
