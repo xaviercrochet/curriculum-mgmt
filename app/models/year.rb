@@ -9,11 +9,11 @@ class Year < ActiveRecord::Base
   scope :current, -> {where("status = ?", 0)}
 
   def passed?
-    self.status.eql? "2"
+    self.status.eql? 2
   end
 
   def failed?
-    self.status.eql? "1"
+    self.status.eql? 1
   end
 
   def pass
