@@ -6,19 +6,17 @@
     .panel-heading.text-center
       = link_to 'Nouveau Programme', new_user_student_program_path(current_user), class: "btn btn-primary btn-lg btn-block"
     .panel-body
-      %table.table.table-bordered
-        %thead
-        %tbody
-          -@student_programs.each do |p|
-            %tr
-              %td.text-center
-                = link_to "Plus d'informations", p, class: "btn btn-primary btn-block"
-              %td
-                = link_to p.justification, class: "btn btn-primary btn-block" do
-                  Discussion
-                  %span.badge
-                    = p.justification.answers.not_from(current_user).unread.count
-                  
-
-                
-              %td= link_to "Supprimer", p, method: :delete, data: {confirm: "Êtes vous sûr?"}, class: "btn btn-primary btn-block"
+      -@student_programs.each do |p|
+        .row
+          .col-md-3.text-center
+            = link_to "Détails", p, class: "btn btn-primary btn-block"
+          .col-md-4
+            = link_to p.justification, class: "btn btn-primary btn-block" do
+              Justification
+              %span.badge
+                = p.justification.answers.not_from(current_user).unread.count
+          .col-md-3
+            = link_to "Status", "#", class: "btn btn-primary btn-block"
+          .col-md-2 
+            = link_to p, method: :delete, data: {confirm: "Êtes vous sûr?"}, class: "btn btn-danger btn-block" do
+              .glyphicon.glyphicon-remove
