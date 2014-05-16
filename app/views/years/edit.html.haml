@@ -1,0 +1,5 @@
+.col-md-8.col-md-offset-2
+  - if current_user.admin?
+    = render "admin_edit", year: @year
+  - else
+    = render "edit", year: @year

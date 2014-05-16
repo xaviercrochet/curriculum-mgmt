@@ -34,13 +34,35 @@ class YearsController < ApplicationController
     redirect_to user_manage_years_path(current_user)
   end
 
+  def edit
+    @year = Year.find(params[:id])
+  end
+
+  def update
+    @year = Year.find(params[:id])
+
+    @year.first_semester.courses = []
+    @year.second_semester.courses = []
+    params[:first_semester][:ids].each do |id|
+      @year.first_semester.courses << Course.find(id.to_i) unless id.eql? "0"
+    end unless params[:first_semester].nil?
+
+    params[:second_semester][:ids].each do |id|
+      @year.second_semester.courses << Course.find(id.to_i) unless id.eql? "0"
+    end unless params[:second_semester].nil?
+
+    if current_user.admin?
+      @year.fail
+      redirect_to user_manage_years_path(current_user)
+    else
+      redirect_to student_program_student_program_configure(@year.student_program)
+    end
+  end
+
   def fail
     @year = Year.find(params[:year_id])
     @year.fail
-    redirect_to user_manage_years_path(current_user)
   end
-
-
 
   def destroy
     @year = Year.find(params[:id])

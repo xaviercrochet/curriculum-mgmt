@@ -1,0 +1,15 @@
+.panel.panel-default
+  .panel-heading
+
+  .panel-body
+    .form-horizontal
+      = form_for year do |f|
+        .form-group
+          = fields_for :first_semester do |builder|
+            - year.first_semester.courses.each do |course|
+              = render 'years/new/course', f: builder, course: course, checked: true
+          = fields_for :second_semester do |builder|
+            - year.second_semester.courses.each do |course|
+              = render 'years/new/course', f: builder, course: course, checked: true
+
+        = f.submit "Marquer l'année comme ratée", class: "btn btn-primary btn-lg btn-block"

@@ -17,4 +17,8 @@ class UsersController < ApplicationController
   def manage_years
     @years = Year.current
   end
+
+  def edit_year
+    @year = Year.find(params[:year_id])
+  end
 end

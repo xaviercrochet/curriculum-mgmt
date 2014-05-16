@@ -1,3 +1,4 @@
-%p
-  = f.label course.name
-  = f.check_box :ids, {multiple: true}, course.id
+.col-md-4.col-md-offset-4
+  .checkbox
+    = f.check_box :ids, {multiple: true, checked: checked}, course.id
+    = f.label course.name
