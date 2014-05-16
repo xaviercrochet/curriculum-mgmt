@@ -55,7 +55,7 @@ class YearsController < ApplicationController
       @year.fail
       redirect_to user_manage_years_path(current_user)
     else
-      redirect_to student_program_student_program_configure(@year.student_program)
+      redirect_to student_program_student_program_configure_path(@year.student_program)
     end
   end
 

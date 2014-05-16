@@ -1,0 +1,25 @@
+.panel.panel-default
+  .panel-heading.text-center
+    Modifier l'année
+  .panel-body
+    .form-horizontal
+      = form_for year do |f|
+        .form-group
+          .col-md-3
+            = f.label :année, class: 'control-label'
+          .col-md-9
+            = collection_select(:year, :academic_year_id, AcademicYear.all, :id, :name, {}, {:class => 'form-control'})
+        %ul.nav.nav-tabs
+          %li.active
+            %a{"data-toggle" => "tab", :href => "#first_semester"} Premier Quadri
+          %li.pull-right
+            %a{"data-toggle" => "tab", :href => "#second_semester"} Second Quadri
+        .tab-content
+          #first_semester.tab-pane.active
+            = fields_for :first_semester do |builder|
+              = render 'years/edit/courses', semester: year.first_semester, id: "first", f: builder
+
+          #second_semester.tab-pane
+            = fields_for :second_semester do |builder|
+              = render 'years/edit/courses', semester: year.second_semester, id: "second", f: builder
+        = f.submit "Modifier l'année", class: "btn btn-primary btn-lg btn-block"

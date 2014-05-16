@@ -53,6 +53,10 @@ class Course < ActiveRecord::Base
     return mandatory.eql? "OUI"
   end
 
+  def optional?
+    return ! mandatory?
+  end
+
 
   def self.header
     return ["SIGLE", "CREDITS", "SEMESTRE", "OBLIGATOIRE"]
