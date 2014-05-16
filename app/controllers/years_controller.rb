@@ -40,7 +40,7 @@ class YearsController < ApplicationController
 
   def update
     @year = Year.find(params[:id])
-
+    @year.update(year_params)
     @year.first_semester.courses = []
     @year.second_semester.courses = []
     params[:first_semester][:ids].each do |id|
