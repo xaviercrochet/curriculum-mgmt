@@ -6,7 +6,8 @@
   .panel-collapse.collapse{:id => "mandatory_"+id}
     .panel-body
       - semester.courses.each do |course|
-        = render 'years/new/course', f: f, course: course, checked: true
+        - if course.mandatory?
+          = render 'years/new/course', f: f, course: course, checked: true
       - if id.eql? "first"
         - semester.year.student_program.first_semester_available_courses.each do |course|
           - if course.mandatory?
@@ -23,7 +24,8 @@
   .panel-collapse.collapse{:id => "optional_"+id}
     .panel-body
       - semester.courses.each do |course|
-        = render 'years/new/course', f: f, course: course, checked: true
+        - if course.optional?
+          = render 'years/new/course', f: f, course: course, checked: true
       - if id.eql? "first"
         - semester.year.student_program.first_semester_available_courses.each do |course|
           - if course.optional?
