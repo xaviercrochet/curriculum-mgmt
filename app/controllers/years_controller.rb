@@ -40,7 +40,6 @@ class YearsController < ApplicationController
 
   def update
     @year = Year.find(params[:id])
-    @year.update(year_params)
     @year.first_semester.courses = []
     @year.second_semester.courses = []
     params[:first_semester][:ids].each do |id|
@@ -55,6 +54,7 @@ class YearsController < ApplicationController
       @year.fail
       redirect_to user_manage_years_path(current_user)
     else
+      @year.update(year_params)
       redirect_to student_program_student_program_configure_path(@year.student_program)
     end
   end
@@ -86,6 +86,7 @@ private
   def year_params
     params.require(:year).permit(:academic_year_id)
   end
+    
   def record_history
     session[:history] ||= []
     session[:history].push request.url
