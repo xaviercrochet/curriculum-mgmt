@@ -23,7 +23,7 @@ private
   def context
     if params[:catalog_id]
       @parent = Catalog.find(params[:catalog_id])
-      @p_modules = @parent.p_modules
+      @p_modules = @parent.p_modules.without_parent
       @parent
     elsif params[:program_id]
       @parent = Program.find(params[:program_id])
