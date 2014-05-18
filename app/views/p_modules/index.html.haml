@@ -10,11 +10,13 @@
 			%table.table.table-bordered
 				%thead
 					%tr
-						%th.text-center NOM 
-						%th
+						%th.text-center NOM
+						- if current_user.admin? 
+							%th
 				%tbody
 					- @p_modules.each do |p|
 						%tr
 							%td= link_to p.name, p, class: "btn btn-primary btn-block"
-							%td= link_to 'Supprimer', p, method: :delete, data:{confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"
+							- if current_user.admin?
+								%td= link_to 'Supprimer', p, method: :delete, data:{confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"
 

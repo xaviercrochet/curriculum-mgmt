@@ -1,5 +1,4 @@
 class ProgramsController < ApplicationController
-  before_filter :record_history
   before_action :authenticate_user!
   load_and_authorize_resource
 
@@ -48,23 +47,11 @@ class ProgramsController < ApplicationController
   def show
     @program = Program.find(params[:id])
     @catalog = @program.catalog
-    @back = back
   end
 
 private
 
   def program_params
     params.require(:program).permit(properties_attributes: [:p_type, :value])
-  end
-
-  def record_history
-    session[:history] ||= []
-    session[:history].push request.url
-    session[:history] = session[:history].last(10)
-  end
-
-  def back
-    session[:history].pop unless session.nil?
-    root_path if session.nil?
   end
 end

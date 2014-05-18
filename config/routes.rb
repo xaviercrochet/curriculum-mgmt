@@ -37,7 +37,7 @@ CurriculumMgmt::Application.routes.draw do
     patch :upload
     resources :courses
     resources :p_modules, shallow: true do
-      resources :sub_modules
+      resources :p_modules
       resources :courses, shallow: true do
         resources :constraints
       end
