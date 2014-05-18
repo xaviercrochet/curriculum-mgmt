@@ -1,23 +1,5 @@
 .col-md-8.col-md-offset-2
-	%h2
-		.text-center
-			Programmes
-	.panel.panel-default
-		.panel-heading.text-center
-			= link_to 'Nouveau Programme', new_catalog_program_path, class: "btn btn-primary btn-lg btn-block"
-		.panel-heading.text-center
-			= link_to @catalog do
-				%span.glyphicon.glyphicon-chevron-left
-					Retour vers la page précédente
-		.panel-body
-			%table.table.table-bordered
-				%thead
-					%tr
-						%th.text-center NOM 
-						%th
-				%tbody
-					- @programs.each do |p|
-						%tr
-							%td= link_to p.name, p, class: "btn btn-primary btn-block"
-							%td= link_to 'Supprimer', p, method: :delete, data: { confirm: "Êtes vous sûr?"}, class: "btn btn-primary btn-block"
- 
+	- if current_user.admin?
+		= render 'admin_index', programs: @programs, catalog: @catalog
+	- else
+		= render "index", programs: @programs, catalog: @catalog

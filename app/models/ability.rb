@@ -14,6 +14,7 @@ class Ability
         can :read, PModule
         can :read, Program
         can :read, Property
+        can :choose_catalog, User
     end
     # Define abilities for the passed in user here. For example:
     #

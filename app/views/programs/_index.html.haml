@@ -1,0 +1,17 @@
+.panel.panel-default
+  .panel-heading.text-center
+    Programmes disponnibles
+  .panel-body
+    .alert.alert-info.alert-dismissable
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+      Pour avoir accès à d'anciens programmes, cliquez
+      = link_to "ici", user_choose_catalog_path(current_user)
+      pour changer de catalogue
+    %table.table.table-bordered
+      %thead
+        %tr
+          %th.text-center NOM 
+      %tbody
+        - programs.each do |p|
+          %tr
+            %td= link_to p.name, p, class: "btn btn-primary btn-block"
