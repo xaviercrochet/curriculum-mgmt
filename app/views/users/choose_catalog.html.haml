@@ -16,15 +16,15 @@
           Les programmes de cours que vous pouvez suivre sont restreints au catalogue de cours que vous choisissez
         .alert.alert-info.alert-dismissable
           %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
-          Par défaut, le catalogue taggué comme principale par la commission est selectionné
+          Par défaut, le catalogue taggé comme principal par la commission est selectionné
         .alert.alert-info.alert-dismissable
           %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
-          Pour avoir accès aux anciens programmes de cours, selectionné le catalogue désiré en dessous (en fonction de l'année académique)
+          Pour avoir accès aux anciens programmes de cours, selectionnez le catalogue désiré en dessous (en fonction de l'année académique)
         .form-horizontal
           = form_for current_user, url: {action: :update_catalog}, method: :patch do |f|
             .form-group
               .col-md-3
-                = f.label :catalogue, calss: 'control-label'
+                = f.label :catalogue, class: 'control-label'
               .col-md-9
                 = collection_select(:user, :catalog_id, Catalog.available_for_student, :id, :complete_name, {}, {:class => 'form-control'})
             = f.submit "Choisir le catalogue", class: "btn btn-primary btn-lg btn-block"
