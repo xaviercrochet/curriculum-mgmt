@@ -15,6 +15,7 @@ class Ability
         can :read, Program
         can :read, Property
         can :choose_catalog, User
+        can :update_catalog, User
     end
     # Define abilities for the passed in user here. For example:
     #

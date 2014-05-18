@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     @catalog = Catalog.find(params[:user][:catalog_id])
     current_user.catalog = @catalog
     current_user.save
-    redirect_to user_choose_catalog_path
+    redirect_to user_choose_catalog_path(current_user)
   end
 
   def manage_years
