@@ -41,7 +41,7 @@
             .panel-body
               #accordion.panel-group
                 - if @course.constraints.binary.corequisites.size > 0
-                  = render @course.constraints.binary.corequisites, name: "Corequis", div: "collapseOne"
+                  = render 'constraints', constraints: @course.constraints.binary.corequisites, name: "Corequis", div: "collapseOne"
                 - if @course.constraints.binary.prerequisites.size > 0
                   = render 'constraints', constraints: @course.constraints.binary.prerequisites, name: "Prerequis", div: "collapseTwo"
                 - if @course.constraints.o_r.prerequisites.size > 0
