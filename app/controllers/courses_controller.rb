@@ -12,32 +12,18 @@ load_and_authorize_resource
   def show
     @course = Course.find(params[:id])
     @catalog = @course.catalog
-    @back = back
-    record_history
   end
 
   def index
     @context = context
     @header = Course.header
     @courses = @context.courses
-    record_history
   end
 
 private
 	def course_params
 		params.require(:course).permit(:name, :sigle)
 	end
-  
-  def record_history
-    session[:history] ||= []
-    session[:history].push request.url
-    session[:history] = session[:history].last(10)
-  end
-
-  def back
-    session[:history].pop unless session.nil?
-    root_path if session.nil?
-  end
 
   def context
     if params[:p_module_id]

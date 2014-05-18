@@ -1,0 +1,17 @@
+%h2
+  .text-center
+    Cours
+.panel.panel-default
+  .panel-heading.text-center
+    = link_to polymorphic_url(context) do
+      %span.glyphicon.glyphicon-chevron-left
+      Retour vers la page précédente
+  .panel-body
+    %table.table.table-bordered
+      %thead
+        %tr
+          %th.text-center SIGLE 
+        %tbody
+          - courses.each do |c|
+            %tr
+              %td= link_to c.name, c, class: "btn btn-primary btn-block"
