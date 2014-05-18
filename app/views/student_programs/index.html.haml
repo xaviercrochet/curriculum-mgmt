@@ -11,10 +11,11 @@
           .col-md-3.text-center
             = link_to "Détails", p, class: "btn btn-primary btn-block"
           .col-md-4
-            = link_to p.justification, class: "btn btn-primary btn-block" do
+            = link_to p.justification, class: "btn btn-primary btn-block", disabled: p.justification.nil? do
               Justification
-              %span.badge
-                = p.justification.answers.not_from(current_user).unread.count
+              - if ! p.justification.nil?
+                %span.badge
+                  = p.justification.answers.not_from(current_user).unread.count
           .col-md-3
             = link_to "Status", student_program_student_program_status_path(p), class: "btn btn-primary btn-block"
           .col-md-2 
