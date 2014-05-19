@@ -4,11 +4,12 @@
       Selectionner le catalogue de cours à utiliser
     .panel-body
       .row
-        .col-md-6
-          Catalogue utilisé pour le moment:
-        .col-md-6
-          .span.label.label-default
-            = @current_catalog.complete_name
+        .col-md-4
+          Catalogue utilisé:
+        .col-md-8
+          .pull-right
+            .span.label.label-default
+              = @current_catalog.complete_name
       %br
       .row
         .alert.alert-info.alert-dismissable
