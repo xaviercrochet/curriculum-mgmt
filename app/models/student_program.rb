@@ -86,7 +86,7 @@ class StudentProgram < ActiveRecord::Base
 
 
   def can_validates?
-    (self.errors_count == 0 or ! self.justification.nil?) and (self.enough_credits?)
+    (self.errors_count == 0 or ! self.justification.nil?) and (self.enough_credits?) and (self.validation.nil?)
   end
 
   def enough_credits?
