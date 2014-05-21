@@ -27,8 +27,9 @@
           - else
             %li
               = link_to "Mes programmes de cours", user_student_programs_path(current_user)
-            %li
-              = link_to "Programmes disponnibles", catalog_programs_path(current_user.catalog)
+            - if ! current_user.catalog.nil?
+              %li
+                = link_to "Programmes disponnibles", catalog_programs_path(current_user.catalog)
 
         
         %ul.nav.navbar-nav.pull-right
