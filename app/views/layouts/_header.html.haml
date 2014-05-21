@@ -27,9 +27,13 @@
           - else
             %li
               = link_to "Mes programmes de cours", user_student_programs_path(current_user)
+            - link = root_path
             - if ! current_user.catalog.nil?
-              %li
-                = link_to "Programmes disponnibles", catalog_programs_path(current_user.catalog)
+              - link = catalog_programs_path(current_user.catalog)
+            - else
+              - link = user_choose_catalog_path(current_user)
+            %li
+              = link_to "Programmes disponnibles", link
 
         
         %ul.nav.navbar-nav.pull-right
@@ -40,9 +44,9 @@
               %ul.dropdown-menu.dropdown-menu-right
                 - if ! current_user.admin?
                   
-                  - if ! current_user.catalog.nil?
-                    %li
-                      = link_to "Choisir le catalogue", user_choose_catalog_path(current_user)
+                  
+                  %li
+                    = link_to "Choisir le catalogue", user_choose_catalog_path(current_user)  
                   %li
                     = link_to "Mes programmes de cours", user_student_programs_path(current_user)
                   %li.divider

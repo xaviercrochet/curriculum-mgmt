@@ -1,4 +1,10 @@
 .col-md-8.col-md-offset-2
+- if @current_catalog.nil?
+  .panel.panel-default
+    .panel-body
+      .text-center
+        %p.help-block{:style => 'color: red;'} La commission de programme n'a pas encore importé de catalogue de cours
+- else
   .panel.panel-default
     .panel-heading.text-center
       Selectionner le catalogue de cours à utiliser
