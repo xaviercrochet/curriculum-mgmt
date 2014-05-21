@@ -10,7 +10,7 @@
         = link_to "Configurer le programme de cours", student_program_student_program_configure_path(student_program), class:'btn btn-block btn-primary'
     .row
       .col-md-8.col-md-offset-2
-        = link_to "Informations sur le programme choisi", "#", class:'btn btn-block btn-primary'
+        = link_to "Informations sur le programme choisi", student_program.program, class:'btn btn-block btn-primary'
     .row
       .col-md-8.col-md-offset-2  
         = link_to "Vérifier les contraintes", student_program_student_program_check_path(student_program), class:'btn btn-block btn-primary'
