@@ -8,6 +8,7 @@ class Ability
         can :manage, StudentProgram, user_id: user.id
         can :manage, [Year, Semester]
         can :manage, Justification
+        can :manage, Validation, student_program: { user_id: user.id}
         can :manage, Answer, user_id: user.id
         can :read, Course
         can :read, PModule
