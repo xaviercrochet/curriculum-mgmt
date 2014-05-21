@@ -5,11 +5,10 @@ class Ability
     if user.admin?
         can :manage, :all
     else
-        can :manage, [StudentProgram, Year, Semester]
-        can :create, Validation, Justification
-        can :destroy, Validation, Justification
+        can :manage, StudentProgram, user_id: user.id
+        can :manage, [Year, Semester]
         can :manage, Justification
-        can :manage, Answer
+        can :manage, Answer, user_id: user.id
         can :read, Course
         can :read, PModule
         can :read, Program

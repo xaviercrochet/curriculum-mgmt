@@ -83,7 +83,8 @@ class Course < ActiveRecord::Base
   def get_course_object(start_year, end_year)
     course = ConstraintsChecker::Entities::Course.new(name: self.name, id: self.id, start_year: start_year, end_year: end_year, parent_id: self.p_module_id, credits: self.credits, mandatory: self.mandatory?)
     self.constraints.each do |c|
-      course.add_constraint(c.get_constraint_object(course))
+      constraint = c.get_constraint_object(course)
+      course.add_constraint(constraint) unless constraint.nil?
     end
     return course
   end

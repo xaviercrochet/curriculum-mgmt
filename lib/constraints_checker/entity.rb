@@ -62,6 +62,7 @@ module ConstraintsChecker
 		def check
 			p "checking ... " + self.name
 			logs = []
+			p @constraints.size
 			@constraints.each do |c|
 				if c.check != true
 				 	logs << c.check
