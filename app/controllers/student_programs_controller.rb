@@ -7,6 +7,13 @@ class StudentProgramsController < ApplicationController
     current_user.student_programs.new
   end
 
+  def update_program
+    @student_program = StudentProgram.find(params[:student_program_id])
+    @program  = Program.find(params[:student_program][:program_id])
+    @student_program.migrate_program(@program)
+    redirect_to @student_program
+  end
+
   def create
     @program = Program.find(params[:student_program][:program_id])
     @student_program = current_user.student_programs.create
@@ -20,7 +27,7 @@ class StudentProgramsController < ApplicationController
     @years = @student_program.years
   end
 
-  def update_program
+  def edit
     @student_program = StudentProgram.find(params[:id])
   end
 

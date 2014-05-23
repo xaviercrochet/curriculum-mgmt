@@ -28,6 +28,27 @@ class Catalog < ActiveRecord::Base
 
 
 
+	def find_program(name)
+		results = []
+		self.programs.each do |program|
+			if program.name.eql? name
+				results << program
+			end
+		end
+		return results
+	end
+
+	def find_updated_version
+		candidates = Catalog.available_for_student
+		result = []
+		candidates.each do |catalog|
+			if catalog.academic_year.start_year > self.academic_year.start_year
+				result << catalog
+			end
+		end
+		return result
+	end
+
 	def main?
 		self.version.eql? 1
 	end

@@ -12,6 +12,11 @@ class Year < ActiveRecord::Base
     self.status.eql? 2
   end
 
+  def migrate(catalog)
+    self.first_semester.migrate(catalog)
+    self.second_semester.migrate(catalog)
+  end
+
   def failed?
     self.status.eql? 1
   end

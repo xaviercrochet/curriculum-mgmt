@@ -1,0 +1,17 @@
+.col-md-8.col-md-offset-2
+  .panel.panel-default
+    .panel-heading.text-center
+
+    .panel-body
+      - if  @student_program.can_update?
+        .form-horizontal
+          = form_for @student_program, url: student_program_student_program_update_program_path(@student_program) do |f|
+            .form-group
+              .col-md-3
+                = f.label :programme, class: 'control-label'
+              .col-md-9
+                = collection_select(:student_program, :program_id, @student_program.find_updated_programs, :id, :complete_name, {}, {:class => 'form-control'} )
+            = f.submit "Mettre à jour le programme", class: "btn btn-primary btn-lg btn-block"
+      - else
+        %p
+          il n'y a pas de version plus récente disponnible pour votre programme :s

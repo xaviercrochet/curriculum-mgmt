@@ -9,6 +9,31 @@ class StudentProgram < ActiveRecord::Base
   has_one :justification, dependent: :destroy
   has_and_belongs_to_many :p_modules
 
+  def can_update?
+    self.program.catalog.find_updated_version.size > 0
+  end
+
+  def migrate_program(program)
+    self.years.current do |year|
+      year.migrate(program.catalog)
+    end
+    self.program = program
+    self.save
+  end
+
+  def find_updated_programs
+    catalog_candidates = self.program.catalog.find_updated_version
+    results = []
+    catalog_candidates.each do |catalog|
+      program_candidates = catalog.find_program(self.program.name)
+      if program_candidates.size > 0
+        results += program_candidates
+      end
+    end
+    return results
+  end
+
+
   def check_constraints
     c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
     c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))

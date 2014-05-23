@@ -19,6 +19,10 @@ class Program < ActiveRecord::Base
 		"PROGRAMMES"
 	end
 
+	def complete_name
+		self.catalog.name + " : " + self.catalog.academic_year.name + " - " + self.name
+	end
+
 	def credits
 		get_property("CREDITS")
 	end
