@@ -11,12 +11,21 @@ class Semester < ActiveRecord::Base
   end
 
   def get_courses_objects_for_migrated_program(program, start_year, end_year)
+    results = []
+    courses = coresponding_courses(program)
+    courses.each do |course|
+      results << course.get_course_object(start_year, end_year)
+    end
+    return results
+  end
+
+  def coresponding_courses(program)
     courses = []
     self.courses.each do |course|
       migrated_course = Course.find_by_property("SIGLE", course.name, program.catalog)
-      courses << migrated_course.get_course_object(start_year, end_year) unless migrated_course.nil?
+      courses << migrated_course unless migrated_course.nil?
     end
-    return courses
+    return courses 
   end
 
   def migrate(catalog)
