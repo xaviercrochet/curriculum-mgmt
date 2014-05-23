@@ -61,6 +61,8 @@ class Constraint < ActiveRecord::Base
       constraint = get_xor_constraint_set_object(course)
     when "OR"
       constraint = get_or_constraint_set_object(course)
+    when  "XOR"
+      constraint = get_xor_constraint_set_object(course)
     end
     return constraint
   end
