@@ -70,6 +70,7 @@ class StudentProgramsController < ApplicationController
   def check
     @student_program = StudentProgram.find(params[:student_program_id])
     @logs = @student_program.check_constraints
+    @program = @student_program.program
     @count = 0
     @prerequisites = @student_program.get_missing_prerequisites(@logs)
     @count += @prerequisites.size
