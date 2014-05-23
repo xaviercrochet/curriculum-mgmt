@@ -43,12 +43,12 @@ class Year < ActiveRecord::Base
 
   def get_course_objects
     courses = []
-    if year.satus.eql? "0"
+    if self.status.eql? "0"
       courses += self.first_semester.get_courses_objects(self.academic_year.start_year, self.academic_year.end_year) unless  self.first_semester.nil?
       courses += self.second_semester.get_courses_objects(self.academic_year.start_year, self.academic_year.end_year) unless self.second_semester.nil?
     else
       courses += self.first_semester.get_courses_objects_for_migrated_program(self.student_program.program, self.academic_year.start_year, self.academic_year.end_year) unless self.first_semester.nil?
-      courses += self.second_semester.get_courses_objects_for_migrated_program(self.student_program.program, self.academic_year.start_year, self.academic_year.end_year) unless self.secnd_semester.nil?
+      courses += self.second_semester.get_courses_objects_for_migrated_program(self.student_program.program, self.academic_year.start_year, self.academic_year.end_year) unless self.second_semester.nil?
     end
     return courses
   end
