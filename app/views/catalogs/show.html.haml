@@ -1,40 +1,45 @@
-.col-md-8
+.col-md-8.col-md-offset-2
 	.panel.panel-default
 		.panel-heading
 			Catalogue
 			.pull-right
+				Nom:
 				.badge{:style => 'background-color: #428bca;'}
 					= @catalog.name.capitalize
+				Année:
 				.badge{:style => 'background-color: #428bca;'}
 					= @catalog.academic_year.name.capitalize
+				Version:
 				.badge{:style => 'background-color: #428bca;'}
 					= @catalog.status
 		.panel-body
-			- if ! @catalog.main?
-				= link_to 'Utiliser comme catalogue principal', catalog_catalog_upgrade_path(@catalog), class: "btn btn-primary btn-lg btn-block"
 			.alert.alert-danger.alert-dismissable
 				%button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
 				.text-center
 					1 - Télécharger le fichier excel
 				.text-center
-					2 - Compléter le fichier excel
+					2 - Compléter puis sélectionner le fichier excel
 				.text-center
 					3 - Mettre à jour le fichier excel
 			= link_to '1 - Télécharger les informations du catalogue', @catalog.spreadsheet_url, class: "btn btn-danger btn-lg btn-block"
 			= form_for @catalog, :url => catalog_catalog_upload_path(@catalog) do |f|
 				.form-group
 					.col-md-3
+						2 -
 						= f.label "Fichier excel", class: 'control-label'
 					.col-md-9
 						= f.file_field :spreadsheet
 						%p.help-block{:style => 'color: red;'} Le fichier excel doit être au format .xls
 				.form-group
 					= f.submit "3 - Mettre à jour les informations", class: "btn btn-primary btn-lg btn-block"
+		- if ! @catalog.main?
+			.panel-heading
+				= link_to 'Utiliser comme catalogue principal', catalog_catalog_upgrade_path(@catalog), class: "btn btn-warning btn-lg btn-block"
 			
 	/ .span9
 	/ 	%h3 Catalog Overview
 	/ 	%script{:src => '/assets/test.js.coffee'}
-.col-md-4
+
 	.panel.panel-default
 		.panel-heading
 			.text-center
