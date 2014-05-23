@@ -10,7 +10,8 @@ class StudentProgramsController < ApplicationController
   def update_program
     @student_program = StudentProgram.find(params[:student_program_id])
     @program  = Program.find(params[:student_program][:program_id])
-    @student_program.migrate_program(@program)
+    results = @student_program.migrate_program(@program)
+    p results
     redirect_to @student_program
   end
 

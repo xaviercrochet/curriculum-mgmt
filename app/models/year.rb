@@ -13,8 +13,10 @@ class Year < ActiveRecord::Base
   end
 
   def migrate(catalog)
-    self.first_semester.migrate(catalog)
-    self.second_semester.migrate(catalog)
+    missing_courses = []
+    missing_courses += self.first_semester.migrate(catalog)
+    missing_courses += self.second_semester.migrate(catalog)
+    return missing_courses
   end
 
   def failed?
@@ -40,8 +42,11 @@ class Year < ActiveRecord::Base
 
   def get_course_objects
     courses = []
-    courses = courses + self.first_semester.get_courses_objects(self.academic_year.start_year, self.academic_year.end_year) unless  self.first_semester.nil?
-    courses = courses + self.second_semester.get_courses_objects(self.academic_year.start_year, self.academic_year.end_year) unless self.second_semester.nil?
+    if year.satus.eql? "0"
+      courses += self.first_semester.get_courses_objects(self.academic_year.start_year, self.academic_year.end_year) unless  self.first_semester.nil?
+      courses += courses + self.second_semester.get_courses_objects(self.academic_year.start_year, self.academic_year.end_year) unless self.second_semester.nil?
+    else
+    end
     return courses
   end
 

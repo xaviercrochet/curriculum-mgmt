@@ -14,11 +14,13 @@ class StudentProgram < ActiveRecord::Base
   end
 
   def migrate_program(program)
+    missing_courses = []
     self.years.current do |year|
-      year.migrate(program.catalog)
+      missing_courses += year.migrate(program.catalog)
     end
     self.program = program
     self.save
+    return missing_courses
   end
 
   def find_updated_programs
