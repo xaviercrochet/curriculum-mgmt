@@ -1,6 +1,3 @@
-%h3.text-center
-  = @count
-  contrainte(s) non respectée(s)
 .panel.panel-default
   .panel-heading.text-center
     - path = nil
@@ -29,7 +26,7 @@
                 Maximum:
                 .label.label-danger
                   = @student_program.program.max
-      #status.panel-collapse.collapse
+      #status.panel-collapse.collapse.in
         .panel-body
           - percentages = @student_program.credits_percentages
 
