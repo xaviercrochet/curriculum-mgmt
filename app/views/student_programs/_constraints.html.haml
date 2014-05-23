@@ -1,0 +1,16 @@
+- if courses.size > 0
+  - if active
+    .tab-pane.active{id: id}
+  - else
+    .tab-pane{id: id}
+
+  - if nary
+    - courses.each do |o|
+      .panel.panel-default
+        .panel-heading
+          = message
+        .panel-body
+          = render "courses", courses: o
+  - else
+    = render "courses", courses: courses
+

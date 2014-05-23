@@ -1,0 +1,9 @@
+- if courses.size > 0
+  - if active
+    %li.active
+      %a{"data-toggle" => "tab", :href => "#"+id} 
+        = name
+  - else
+    %li
+      %a{"data-toggle" => "tab", :href => "#"+id} 
+        = name

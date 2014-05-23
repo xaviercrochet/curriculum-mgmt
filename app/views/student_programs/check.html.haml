@@ -54,53 +54,52 @@
         .panel-body
 
           %ul.nav.nav-tabs
-            %li.active
-              %a{"data-toggle" => "tab", :href => "#pre"} Prérequis Manquants
-            %li
-              %a{"data-toggle" => "tab", :href => "#co"} Corequis Manquants
-            %li
-              %a{"data-toggle" => "tab", :href => "#mandatory"} Cours Obligatoires Manquants
-            %li
-              %a{"data-toggle" => "tab", :href => "#or_co"} Corequis Disjonctifs (OR)
-            %li
-              %a{"data-toggle" => "tab", :href => "#or_pre"} Prerequis Disjonctifs (Or)
-            %li
-              %a{"data-toggle" => "tab", :href => "#xor_co"} Corequis Disjonctifs Exclusif (XOR)
-            %li
-              %a{"data-toggle" => "tab", :href => "#xor_pre"} Prerequis Disjonctifs Exclusif (XOR)
+            = render 'constraints_header', active: true, id: "pre", name: "Prérequis manquants", courses: @prerequisites
+            = render 'constraints_header', active: @prerequisites.size==0, id: "co", name: "Corequis manquants", courses: @corequisites
+            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", name: "Cours obligatoires manquants", courses: @mandatories
+            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0), id: "or_co", name: "Corequis disjonctifs (OR)",courses: @or_corequisites
+            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0 and @or_corequisites.size == 0), id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites
+            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites
+            = render 'constraints_header', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), id: "xor_pre", courses: @xor_prerequisites, name: "Prerequis disjonctif exclusifs (XOR)"
 
           .tab-content
-            #pre.tab-pane.active
-              = render "courses", courses: @prerequisites
-            #co.tab-pane
-              = render "courses", courses: @corequisites
-            #mandatory.tab-pane
-              = render "courses", courses: @mandatories
-            #or_co.tab-pane
-              - @or_corequisites.each do |o|
-                .panel.panel-default
-                  .panel-heading
-                    Il vous manque un des corequis suivants
-                  .panel-body
-                    = render "courses",courses: o
-            #or_pre.tab-pane
-              - @or_prerequisites.each do |o|
-                .panel.panel-default
-                  .panel-heading
-                    Il vous manque un des prerequis suivants
-                  .panel-body
-                    = render "courses", courses: o
-            #xor_pre.tab-pane
-              - @xor_prerequisites.each do |o|
-                .panel.panel-default
-                  .panel-heading
-                    Vous ne pouvez choisir qu'un seul des prérequis suivants
-                  .panel-body
-                    = render "courses", courses: o
-            #xor_co.tab-pane
-              - @xor_corequisites.each do |o|
-                .panel.panel-default
-                  .panel-heading
-                    Vous ne pouvez choisir qu'un seul des corequis suivants
-                  .panel-body
-                    = render "courses", courses: o
+            = render 'constraints', active: true, id: "pre",nary: false, message: "", courses: @prerequisites
+            = render 'constraints', active: @prerequisites.size==0, id: "co", nary: false, message: "", courses: @corequisites
+            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", nary: false, message: "", courses: @mandatories
+            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0), id: "or_co", nary: true, message: "Il vous manque un des corequis suivant", courses: @or_corequisites
+            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0 and @or_corequisites.size == 0), nary: true, id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites
+            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites, nary: true
+            = render 'constraints', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size > 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), name: "Prérequis disjonctifs exclusif (XOR)", courses: @xor_prerequisites, nary: true
+         
+
+          / - if @mandatories.size > 0
+          /   = render 'constraints'
+          /     = render "courses", courses: @mandatories
+          /   #or_co.tab-pane
+          /     - @or_corequisites.each do |o|
+          /       .panel.panel-default
+          /         .panel-heading
+          /           Il vous manque un des corequis suivants
+          /         .panel-body
+          /           = render "courses",courses: o
+          /   #or_pre.tab-pane
+          /     - @or_prerequisites.each do |o|
+          /       .panel.panel-default
+          /         .panel-heading
+          /           Il vous manque un des prerequis suivants
+          /         .panel-body
+          /           = render "courses", courses: o
+          /   #xor_pre.tab-pane
+          /     - @xor_prerequisites.each do |o|
+          /       .panel.panel-default
+          /         .panel-heading
+          /           Vous ne pouvez choisir qu'un seul des prérequis suivants
+          /         .panel-body
+          /           = render "courses", courses: o
+          /   #xor_co.tab-pane
+          /     - @xor_corequisites.each do |o|
+          /       .panel.panel-default
+          /         .panel-heading
+          /           Vous ne pouvez choisir qu'un seul des corequis suivants
+          /         .panel-body
+          /           = render "courses", courses: o
