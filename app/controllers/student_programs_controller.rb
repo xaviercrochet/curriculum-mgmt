@@ -1,5 +1,4 @@
 class StudentProgramsController < ApplicationController
-  before_filter :record_history
   before_action :authenticate_user!
   load_and_authorize_resource
 
@@ -19,7 +18,10 @@ class StudentProgramsController < ApplicationController
   def configure
     @student_program = StudentProgram.find(params[:student_program_id])
     @years = @student_program.years
-    @back = back
+  end
+
+  def update_program
+    @student_program = StudentProgram.find(params[:id])
   end
 
   def status
@@ -55,9 +57,6 @@ class StudentProgramsController < ApplicationController
 
   def index
     @student_programs = current_user.student_programs
-    
-    @back = back
-    record_history
   end
 
   def check
@@ -96,17 +95,6 @@ class StudentProgramsController < ApplicationController
 private
   def student_program_params
     params.require(:student_program).permit()
-  end
-
-  def record_history
-    session[:history] ||= []
-    session[:history].push request.url
-    session[:history] = session[:history].last(10)
-  end
-
-  def back
-    session[:history].pop unless session.nil?
-    root_path if session.nil?
   end
 
 end

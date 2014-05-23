@@ -10,6 +10,7 @@ CurriculumMgmt::Application.routes.draw do
     get :choose_catalog
     patch :update_catalog
     resources :student_programs, shallow: true do
+      get :update_program
       resources :validations
       resources :justifications do
         resources :answers
