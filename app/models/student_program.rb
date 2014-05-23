@@ -9,7 +9,7 @@ class StudentProgram < ActiveRecord::Base
   has_one :justification, dependent: :destroy
   has_and_belongs_to_many :p_modules
 
-  def can_update?
+  def can_migrate?
     self.program.catalog.find_updated_version.size > 0
   end
 

@@ -24,3 +24,10 @@
     Vous avez trop de crédits! (
     = student_program.count_credits
     )
+- if student_program.can_migrate?
+  .alert.alert-warning.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    Une nouvelle version du programme que vous avez sélectionné est disponnible. Veuillez cliquez
+    = link_to 'ici', edit_student_program_path(student_program) 
+    pour procéder à la migration. 
+  
