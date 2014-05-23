@@ -7,12 +7,15 @@ class Course < ActiveRecord::Base
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :constraints, dependent: :destroy
 
-  scope :without_parent, where(p_module_id: nil)
-  scope :first_semester, -> {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" =>  "1")}
-  scope :second_semester, -> {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" =>  "2")}
-  scope :no_semester,->  {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" => "NONE")}
-  scope :mandatory, -> {joins(:properties).where("properties.p_type" => "OBLIGATOIRE", "properties.value" => "OUI")}
-  scope :optional, -> {joins(:properties).where("properties.p_type" => "OBLIGATOIRE", "properties.value" => "NON")}
+  scope :without_parent, -> {where(p_module_id: nil)}
+  # scope :first_semester, -> {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" =>  "1")}
+  scope :first_semester, ->{joins(:properties).merge(Property.first_semester)}
+  scope :second_semester, -> {joins(:properties).merge(Property.second_semester)}
+  scope :mandatory, -> {joins(:properties).merge(Property.mandatory)}
+  scope :both_semesters, -> {joins(:properties).merge(Property.both_semesters)}
+  scope :optional, -> {joins(:properties).merge(Property.optional)}
+  scope :optional_and_from_first_semester, -> {Course.optional & Course.first_semester}
+  scope :mandatory_and_from_first_semester, -> {Course.mandatory & Course.first_semester}
   
   def build(properties)
   	p "Building course properties ..."

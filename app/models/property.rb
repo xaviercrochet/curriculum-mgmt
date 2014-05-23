@@ -4,8 +4,11 @@ class Property < ActiveRecord::Base
   validates :p_type, presence: true
   validates :value, presence: true
 
-  scope :semester, -> {where p_type: "SEMESTRE"}
-  scope :mandatory, -> {where p_type: "OBLIGATOIRE"}
+  scope :first_semester, -> {where(p_type: "SEMESTRE", value: "1")}
+  scope :second_semester, -> {where(p_type: "SEMESTRE", value: "2")}
+  scope :both_semesters, -> {where(p_type: "SEMESTRE", value: "NONE")}
+  scope :mandatory, -> {where(p_type: "OBLIGATOIRE", value: "OUI")}
+  scope :optional, -> {where(p_type: "OBLIGATOIRE", value: "NON")}
   scope :credits, -> {where p_type: "CREDITS"}
 
 	before_save {
