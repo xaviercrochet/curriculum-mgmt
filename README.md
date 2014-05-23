@@ -1,23 +1,7 @@
-TODO
-- Inteface
-  - Change back link behaviour in course & p_module show view
-  - Add progress bar while importing graph
-  - Add navigation (Nautilus style) to help navigation through pages
-- Year
-  - Allow to modify years if they are not passed
-  - Allow one of the two parties to tag year as passed
-- Student Program
-  - Proopose optional module if available or if course of those module are chosen
-- Temporality
-  - Add academical Year model
-- Models
-  - Add ConstraintSet object (to reduce rendundancy in db)
-  - Add PropertyConstraint (to represent property constraints in db)
-- User
-  - Add Admin & Student Role
-  - Add custom view for programs & student_programs (to not allow student to delete courses)
-- Heroku
-  - Upload files to Amazon s3
-- Else
-  - Add main attribute to Catalog (to specify the one we have to use)
+WIKI
+  - Créer l'app sur heroku
+  - Ajouter le remote
+  - push sur heroku
+  - configurer les varaible pour pouvoir upload sur amazon
+  - enjoy :-)
 
