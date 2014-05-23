@@ -71,35 +71,3 @@
             = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites, nary: true, message: "Vous ne pouvez choisir qu'un seul des corequis suivant"
             = render 'constraints', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), name: "Prérequis disjonctifs exclusif (XOR)", courses: @xor_prerequisites, nary: true, message: "Vous ne pouvez choisir qu'un seul des prérequis suivant"
          
-
-          / - if @mandatories.size > 0
-          /   = render 'constraints'
-          /     = render "courses", courses: @mandatories
-          /   #or_co.tab-pane
-          /     - @or_corequisites.each do |o|
-          /       .panel.panel-default
-          /         .panel-heading
-          /           Il vous manque un des corequis suivants
-          /         .panel-body
-          /           = render "courses",courses: o
-          /   #or_pre.tab-pane
-          /     - @or_prerequisites.each do |o|
-          /       .panel.panel-default
-          /         .panel-heading
-          /           Il vous manque un des prerequis suivants
-          /         .panel-body
-          /           = render "courses", courses: o
-          /   #xor_pre.tab-pane
-          /     - @xor_prerequisites.each do |o|
-          /       .panel.panel-default
-          /         .panel-heading
-          /           Vous ne pouvez choisir qu'un seul des prérequis suivants
-          /         .panel-body
-          /           = render "courses", courses: o
-          /   #xor_co.tab-pane
-          /     - @xor_corequisites.each do |o|
-          /       .panel.panel-default
-          /         .panel-heading
-          /           Vous ne pouvez choisir qu'un seul des corequis suivants
-          /         .panel-body
-          /           = render "courses", courses: o
