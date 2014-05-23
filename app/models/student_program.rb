@@ -14,8 +14,9 @@ class StudentProgram < ActiveRecord::Base
   end
 
   def migrate_program(program)
+    p "migrating program ..."
     missing_courses = []
-    self.years.current do |year|
+    self.years.current.each do |year|
       missing_courses += year.migrate(program.catalog)
     end
     self.program = program
