@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140524093346) do
+ActiveRecord::Schema.define(version: 20140524101948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(version: 20140524093346) do
     t.integer  "catalog_id"
     t.integer  "user_id"
     t.integer  "errors_count", default: -1
+    t.boolean  "checked",      default: false
   end
 
   add_index "student_programs", ["catalog_id"], name: "index_student_programs_on_catalog_id", using: :btree
