@@ -1,6 +1,6 @@
 %tr
   %td.text-center
-    = render 'courses', courses: exception.entity.courses, type: "Prérequis disjonctif exclusif(XOR)", student_program: program
+    = render 'courses', courses: exception.entity.courses, type: "Prérequis disjonctif exclusif(XOR)", student_program: student_program
   %td.text-center
     - if exception.message.nil? or exception.message.eql? ""
       %span.label.label-danger

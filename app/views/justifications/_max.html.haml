@@ -1,0 +1,27 @@
+%tr
+  %td.text-center
+    Le maximum requis
+    %span.badge 
+      = exception.entity.max
+    pour le
+    - if exception.entity.class.name.eql? "Program"
+      Programme
+    - else
+      Module
+    %span.badge  
+      = exception.entity.name
+    
+    est dépassé. Crédits actuels:
+    
+    - if exception.entity.class.name.eql? "Program"
+      %span.badge
+        = exception.entity.count_credits
+    - else
+      %span.badge
+        = student_program.count_credits_for_module(exception.entity) 
+  %td.text-center
+    - if exception.message.nil? or exception.message.eql? ""
+      %span.label.label-danger
+        AUCUNE
+    - else
+      = simple_format(exception.message)
