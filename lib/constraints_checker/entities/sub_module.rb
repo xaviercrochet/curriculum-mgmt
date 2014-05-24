@@ -9,6 +9,10 @@ module constraints_checker
         self.courses = courses 
         self.p_module = p_module
       end
+
+      def find_course(id)
+        self.find_children(id, "ConstraintsChecker::Entities::Course")
+      end
     end
   end
 end

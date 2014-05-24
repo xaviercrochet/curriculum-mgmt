@@ -116,6 +116,8 @@ class StudentProgram < ActiveRecord::Base
         c.add_children(m.get_p_module_object(true))
       end
     end
+
+
     
     courses = []
     
@@ -133,6 +135,12 @@ class StudentProgram < ActiveRecord::Base
         p "PMODULE FOUND"
         p_module.add_children(course)
       end
+    end
+
+        c.childrens.each do |cc|
+      p cc.name
+      p cc.childrens
+      
     end
     results = c.check
     create_constraint_exceptions(results)
