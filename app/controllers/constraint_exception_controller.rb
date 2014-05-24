@@ -1,0 +1,2 @@
+class ConstraintExceptionController < ApplicationController
+end
