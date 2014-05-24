@@ -5,6 +5,7 @@ class Justification < ActiveRecord::Base
 
   scope :unread, -> {where("read = ?", false)}
   scope :read, -> {where("read = ?", true)}
+  accepts_nested_attributes_for :constraint_exceptions
 
 
 

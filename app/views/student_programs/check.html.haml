@@ -48,15 +48,18 @@
     = @justification.constraint_exceptions.count
     contrainte(s) non respectée(s)
   .panel-body
-    = render 'student_programs/check/constraints_header', id: "pre", name: "Prérequis manquants", exceptions: @justification.constraint_exceptions.prerequisite, student_program: @student_program
-    = render 'student_programs/check/constraints_header',  id: "co", name: "Corequis manquants", exceptions: @justification.constraint_exceptions.corequisite, student_program: @student_program
-    = render 'student_programs/check/constraints_header',  id: "mandatory", name: "Cours obligatoires manquants", exceptions: @justification.constraint_exceptions.mandatory, student_program: @student_program
-    = render 'student_programs/check/constraints_header',  id: "or_co", name: "Corequis disjonctifs (OR)",exceptions: @justification.constraint_exceptions.or_corequisite, student_program: @student_program
-    = render 'student_programs/check/constraints_header',  id: "or_pre", name: "Prerequis disjonctifs (OR)", exceptions: @justification.constraint_exceptions.or_prerequisite, student_program: @student_program
-    = render 'student_programs/check/constraints_header',  id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", exceptions: @justification.constraint_exceptions.xor_corequisite, student_program: @student_program
-    = render 'student_programs/check/constraints_header', id: "xor_pre", exceptions: @justification.constraint_exceptions.xor_prerequisite, name: "Prerequis disjonctif exclusifs (XOR)", student_program: @student_program
-    = render 'student_programs/check/constraints_header', name: "Minimum de crédits non atteints", id: "min", exceptions: @justification.constraint_exceptions.min, student_program: @student_program
-    = render 'student_programs/check/constraints_header',  name: "Maximum de crédits dépassés", exceptions: @justification.constraint_exceptions.max, id: "max", student_program: @student_program
+    = form_for @justification do |ff|
+      = ff.fields_for :constraint_exceptions do |f|
+        = render 'student_programs/check/constraints_header', id: "pre", name: "Prérequis manquants", exceptions: @justification.constraint_exceptions.prerequisite, student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header',  id: "co", name: "Corequis manquants", exceptions: @justification.constraint_exceptions.corequisite, student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header',  id: "mandatory", name: "Cours obligatoires manquants", exceptions: @justification.constraint_exceptions.mandatory, student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header',  id: "or_co", name: "Corequis disjonctifs (OR)",exceptions: @justification.constraint_exceptions.or_corequisite, student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header',  id: "or_pre", name: "Prerequis disjonctifs (OR)", exceptions: @justification.constraint_exceptions.or_prerequisite, student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header',  id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", exceptions: @justification.constraint_exceptions.xor_corequisite, student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header', id: "xor_pre", exceptions: @justification.constraint_exceptions.xor_prerequisite, name: "Prerequis disjonctif exclusifs (XOR)", student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header', name: "Minimum de crédits non atteints", id: "min", exceptions: @justification.constraint_exceptions.min, student_program: @student_program, f: f
+        = render 'student_programs/check/constraints_header',  name: "Maximum de crédits dépassés", exceptions: @justification.constraint_exceptions.max, id: "max", student_program: @student_program, f: f
+      = ff.submit "Compléter la justification", class: "btn btn-lg btn-danger btn-block"
 
 
     / = render 'student_programs/check/prerequisites', exceptions: @justification.constraint_exceptions.prerequisite

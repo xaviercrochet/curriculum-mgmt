@@ -3,7 +3,9 @@
     %tr
       %th.text-center Cours sélectionné
       %th.text-center Corequis manquant
-      %th.text-center Justification
+      %th.text-center 
+        %span.label.label-danger
+          JUSTIFICATION
   %tbody
   - exceptions.each do |exception|
 
@@ -13,3 +15,4 @@
       %td.text-center
         = exception.entity.courses.first.name
       %td.text-center
+        = render "student_programs/check/edit_constraint_exception", f: f, constraint_exception: exception

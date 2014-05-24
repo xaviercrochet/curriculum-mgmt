@@ -14,6 +14,7 @@ CurriculumMgmt::Application.routes.draw do
       resources :validations
       resources :justifications do
         resources :answers
+        resources :constraint_exceptions
       end
       get :status
       get :configure
