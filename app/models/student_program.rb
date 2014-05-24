@@ -300,7 +300,6 @@ private
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::MandatoryCourse"
         when "ConstraintsChecker::Constraints::Min"
-          p "coucou"
           if result.target.class.name.eql? "ConstraintsChecker::Catalog"
             entity = self.program
             type = "Min"
