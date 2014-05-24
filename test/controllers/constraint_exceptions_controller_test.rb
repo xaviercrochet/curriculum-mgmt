@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ConstraintExceptionControllerTest < ActionController::TestCase
+class ConstraintExceptionsControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end
