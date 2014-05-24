@@ -1,3 +1,11 @@
-%p
-  = f.label :justification
-  = f.text_area :message
+.form-group
+  - if label
+    .col-md-4
+      = f.label :justification, class: 'control-label' do
+        %span.label.label-danger
+          JUSTIFICATION
+    .col-md-8
+      = f.text_area :message, class: 'form-control'
+  - else
+    = f.text_area :message, class: 'form-control'
+
