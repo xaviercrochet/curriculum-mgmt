@@ -74,6 +74,8 @@ class StudentProgramsController < ApplicationController
       @student_program.check_constraints
     end
     @justification  = @student_program.justification
+    @constraint_exceptions = @justification.constraint_exceptions
+
   end
 
   def new_validation
