@@ -1,1 +1,27 @@
-= exceptions.count
+= f.fields_for :constraint_exceptions, @constraint_exceptions.mandatory  do |builder|
+  .panel.panel-default
+    .panel-heading.text-center
+      - if builder.object.entity.class.name.eql? "PModule"
+        - if builder.object.entity.is_sub_module?
+          Les cours obligatoires suivants du module
+          = builder.object.entity.parent.name
+          n'ont pas été sélectionnés
+        - else
+          Les cours suivants du module obligatoire
+          = builder.object.entity.name
+          n'ont pas été sélectionnés
+      - else
+        coucou
+    .panel-body
+      .col-md-4
+        %table.table.table-bordered
+          %thead
+            %tr
+              %th.text-center Cours manquant
+          %tbody
+            - builder.object.entity.courses.each do |course|
+              %tr
+              - if ! student_program.course_present?(course)
+                %td.text-center
+                  = course.name
+
