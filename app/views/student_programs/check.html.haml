@@ -48,15 +48,27 @@
     = @justification.constraint_exceptions.count
     contrainte(s) non respectée(s)
   .panel-body
-    = render 'student_programs/check/prerequisites', exceptions: @justification.constraint_exceptions.prerequisite
-    = render 'student_programs/check/corequisites', exceptions: @justification.constraint_exceptions.corequisite
-    = render 'student_programs/check/xor_corequisites', exceptions: @justification.constraint_exceptions.xor_corequisite
-    = render 'student_programs/check/xor_prerequisites', exceptions: @justification.constraint_exceptions.xor_prerequisite
-    = render 'student_programs/check/or_corequisites', exceptions: @justification.constraint_exceptions.or_corequisite
-    = render 'student_programs/check/or_prerequisites', exceptions: @justification.constraint_exceptions.or_prerequisite
-    = render 'student_programs/check/max', exceptions: @justification.constraint_exceptions.max
-    = render 'student_programs/check/min', exceptions: @justification.constraint_exceptions.min
-    = render 'student_programs/check/mandatories', exceptions: @justification.constraint_exceptions.mandatory
+    = render 'student_programs/check/constraints_header', id: "pre", name: "Prérequis manquants", exceptions: @justification.constraint_exceptions.prerequisite
+    = render 'student_programs/check/constraints_header',  id: "co", name: "Corequis manquants", exceptions: @justification.constraint_exceptions.corequisite
+    = render 'student_programs/check/constraints_header',  id: "mandatory", name: "Cours obligatoires manquants", exceptions: @justification.constraint_exceptions.mandatory
+    = render 'student_programs/check/constraints_header',  id: "or_co", name: "Corequis disjonctifs (OR)",exceptions: @justification.constraint_exceptions.or_corequisite
+    = render 'student_programs/check/constraints_header',  id: "or_pre", name: "Prerequis disjonctifs (Or)", exceptions: @justification.constraint_exceptions.or_prerequisite
+    = render 'student_programs/check/constraints_header',  id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", exceptions: @justification.constraint_exceptions.xor_corequisite
+    = render 'student_programs/check/constraints_header', id: "xor_pre", exceptions: @justification.constraint_exceptions.xor_prerequisite, name: "Prerequis disjonctif exclusifs (XOR)"
+    = render 'student_programs/check/constraints_header', name: "Minimum de crédits non atteints", id: "min", exceptions: @justification.constraint_exceptions.min
+    = render 'student_programs/check/constraints_header',  name: "Maximum de crédits dépassés", exceptions: @justification.constraint_exceptions.max, id: "max"
+
+
+    / = render 'student_programs/check/prerequisites', exceptions: @justification.constraint_exceptions.prerequisite
+    / = render 'student_programs/check/corequisites', exceptions: @justification.constraint_exceptions.corequisite
+    / = render 'student_programs/check/mandatories', exceptions: @justification.constraint_exceptions.mandatory
+    / = render 'student_programs/check/xor_corequisites', exceptions: @justification.constraint_exceptions.xor_corequisite
+    / = render 'student_programs/check/xor_prerequisites', exceptions: @justification.constraint_exceptions.xor_prerequisite
+    / = render 'student_programs/check/or_corequisites', exceptions: @justification.constraint_exceptions.or_corequisite
+    / = render 'student_programs/check/or_prerequisites', exceptions: @justification.constraint_exceptions.or_prerequisite
+    / = render 'student_programs/check/max', exceptions: @justification.constraint_exceptions.max
+    / = render 'student_programs/check/min', exceptions: @justification.constraint_exceptions.min
+
     / .panel.panel-default
     /   .panel-heading
     /     .text-heading.text-center
@@ -68,13 +80,13 @@
     /     .panel-body
 
     /       %ul.nav.nav-tabs
-    /         = render 'constraints_header', active: true, id: "pre", name: "Prérequis manquants", courses: @prerequisites
-    /         = render 'constraints_header', active: @prerequisites.size==0, id: "co", name: "Corequis manquants", courses: @corequisites
-    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", name: "Cours obligatoires manquants", courses: @mandatories
-    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0), id: "or_co", name: "Corequis disjonctifs (OR)",courses: @or_corequisites
-    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0), id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites
-    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites
-    /         = render 'constraints_header', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), id: "xor_pre", courses: @xor_prerequisites, name: "Prerequis disjonctif exclusifs (XOR)"
+    /         = render 'student_programs/check/constraints_header', active: true, id: "pre", name: "Prérequis manquants", courses: @prerequisites
+    /         = render 'student_programs/check/constraints_header', active: @prerequisites.size==0, id: "co", name: "Corequis manquants", courses: @corequisites
+    /         = render 'student_programs/check/constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", name: "Cours obligatoires manquants", courses: @mandatories
+    /         = render 'student_programs/check/constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0), id: "or_co", name: "Corequis disjonctifs (OR)",courses: @or_corequisites
+    /         = render 'student_programs/check/constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0), id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites
+    /         = render 'student_programs/check/constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites
+    /         = render 'student_programs/check/constraints_header', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), id: "xor_pre", courses: @xor_prerequisites, name: "Prerequis disjonctif exclusifs (XOR)"
 
     /       .tab-content
     /         = render 'constraints', active: true, id: "pre",nary: false, message: "", courses: @prerequisites

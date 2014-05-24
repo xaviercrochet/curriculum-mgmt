@@ -1,0 +1,12 @@
+- if exceptions.count > 0
+  .panel.panel-default
+    .panel-heading
+      .text-heading.text-center
+        %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#"+id}
+          = name
+          (
+          = exceptions.count
+          )
+    .panel-collapse.collapse{id: id}
+      = id
+      = render_constraints(exceptions, id)
