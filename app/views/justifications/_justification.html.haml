@@ -11,7 +11,7 @@
     .panel-body
       %p
         = simple_format(justification.content)
-      = render justification.constraint_exceptions
+      = render "constraint_exceptions", constraint_exceptions: justification.constraint_exceptions
       = render 'answers', answers: justification.answers
       = render 'new_answer', justification: justification, answer: answer
 
