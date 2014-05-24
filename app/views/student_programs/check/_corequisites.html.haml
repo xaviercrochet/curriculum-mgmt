@@ -8,12 +8,12 @@
         %span.label.label-danger
           JUSTIFICATION
   %tbody
-  - exceptions.each do |exception|
+    = f.fields_for :constraint_exceptions, exceptions  do |builder|
 
-    %tr
-      %td.text-center
-        = exception.entity.course.name
-      %td.text-center
-        = exception.entity.courses.first.name
-      %td.text-center
-        = render "student_programs/check/edit_constraint_exception", f: f, constraint_exception: exception, label: false
+      %tr
+        %td.text-center
+          = builder.object.entity.course.name
+        %td.text-center
+          = builder.object.entity.courses.first.name
+        %td.text-center
+          = render "student_programs/check/edit_constraint_exception", f: builder, constraint_exception: builder.object, label: false

@@ -1,4 +1,4 @@
-= f.fields_for :constraint_exceptions, @constraint_exceptions.mandatory  do |builder|
+= f.fields_for :constraint_exceptions, exceptions  do |builder|
   .panel.panel-default
     .panel-heading.text-center
       - if builder.object.entity.class.name.eql? "PModule"
@@ -24,4 +24,7 @@
               - if ! student_program.course_present?(course)
                 %td.text-center
                   = course.name
+      .col-md-8
+        = render "student_programs/check/edit_constraint_exception", f: builder, constraint_exception: builder.object, label: true
+
 

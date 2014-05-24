@@ -1,9 +1,9 @@
 %h4.text-center.help-block{:style => 'color: red;'} Le prérequis doit être suivit au plus tard l'année PRÉCÉDENTE
-- exceptions.each do |exception|
+= f.fields_for :constraint_exceptions, exceptions do |builder|
   .panel.panel-default
     .panel-heading.text-center
       Le cours
-      = exception.entity.course.name
+      = builder.object.entity.course.name
       nécessite UN et UN SEUL des prérequis suivant
     .panel-body
       .col-md-4
@@ -13,7 +13,7 @@
               %th.text-center Prérequis
               %th.text-center Présent?
           %tbody
-            - exception.entity.courses.each do |course|
+            - builder.object.entity.courses.each do |course|
               %tr
                 %td.text-center
                   = course.name
@@ -25,4 +25,4 @@
                     %span.label.label-danger
                       NON
       .col-md-8
-        = render "student_programs/check/edit_constraint_exception", f: f, constraint_exception: exception, label: true
+        = render "student_programs/check/edit_constraint_exception", f: builder, constraint_exception: builder.object, label: true
