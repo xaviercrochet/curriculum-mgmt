@@ -37,13 +37,6 @@ class StudentProgram < ActiveRecord::Base
     return result
   end
 
-  def count_credits_for_p_module(p_module)
-    result = 0
-    sub_module_ids = []
-    p_module.sub_modules.each do |m|
-      sub_module_ids << m.id
-    end
-
 
   def module_present?(p_module)
     self.p_modules.where(id: p_module.id).count > 0
