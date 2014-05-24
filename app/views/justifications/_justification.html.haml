@@ -9,9 +9,15 @@
           Messages
   .panel-collapse.collapse{:id => id}
     .panel-body
-      %p
-        = simple_format(justification.content)
-      = render "constraint_exceptions", constraint_exceptions: justification.constraint_exceptions
+      / %p
+      /   = simple_format(justification.content)
+      %table.table.table-striped
+        %thead
+          %tr
+            %th.text-center Description
+            %th.text-center Justification
+        %tbody
+          = render "constraint_exceptions", constraint_exceptions: justification.constraint_exceptions
       = render 'answers', answers: justification.answers
       = render 'new_answer', justification: justification, answer: answer
 

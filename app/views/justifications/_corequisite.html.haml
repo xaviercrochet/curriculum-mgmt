@@ -1,0 +1,13 @@
+%tr
+  %td.text-center
+    Le corequis
+    = exception.entity.courses.first.name 
+    du cours
+    = exception.entity.course.name
+    n'est pas présent
+  %td.text-center
+    - if exception.message.nil? or exception.message.eql? ""
+      %span.label.label-danger
+        AUCUNE
+    - else
+      = simple_format(exception.message)

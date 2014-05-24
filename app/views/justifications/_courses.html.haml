@@ -1,0 +1,11 @@
+%table.table.table-bordered
+  %thead
+    %tr
+      %th.text-center
+        = type
+        non valide
+  %tbody
+    - courses.each do |course|
+      %tr
+        %td.text-center
+          = course.name
