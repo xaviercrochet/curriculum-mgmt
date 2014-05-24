@@ -60,17 +60,28 @@ module ConstraintsChecker
 		end
 
 		def check
-			p "checking ... " + self.name
-			logs = []
-			p @constraints.size
+			unverified_constraints = []
 			@constraints.each do |c|
 				if c.check != true
-				 	logs << c.check
-				 end
+					unverified_constraints << c
+				end
 			end
-			logs << check_childrens_constraints
-			return logs.flatten				
+			unverified_constraints << check_childrens_constraints
+			return unverified_constraints.flatten
 		end
+
+		# def check
+		# 	p "checking ... " + self.name
+		# 	logs = []
+		# 	p @constraints.size
+		# 	@constraints.each do |c|
+		# 		if c.check != true
+		# 		 	logs << c.check
+		# 		 end
+		# 	end
+		# 	logs << check_childrens_constraints
+		# 	return logs.flatten				
+		# end
 
 		def check_max(value)
 			return count_credits <= value.to_i
@@ -90,18 +101,14 @@ module ConstraintsChecker
 	private		
 		
 		def check_childrens_constraints
-			p "checking children constraints"
-			p "children size : " + @childrens.size.to_s
-			p self.name
-			p self.id.to_s
-			logs = []
+			unverified_constraints = []
 			self.childrens.each do |children|
 				# if children.constraints.size > 0
 				# 	logs << children.check
 				# end
-				logs << children.check
+				unverified_constraints << children.check
 			end
-			return logs
+			return unverified_constraints
 		end
 	end	
 end

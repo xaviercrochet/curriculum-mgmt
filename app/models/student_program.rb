@@ -69,7 +69,7 @@ class StudentProgram < ActiveRecord::Base
       end
     end
     
-    return c.check_constraints
+    return c.check
   end
   def can_justify?
     self.errors_count > 0

@@ -37,6 +37,7 @@ module ConstraintsChecker
       self
     end
 
+
     def check_constraints
       results = check
       results.each do |result|

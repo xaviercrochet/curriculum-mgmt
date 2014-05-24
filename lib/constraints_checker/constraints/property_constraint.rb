@@ -35,9 +35,11 @@ module ConstraintsChecker
       def check
         if ! target.check_min(self.value)
           if target.class.name.eql? ConstraintsChecker::Catalog.name
-            return {to_few_credits_in_program: [self.target.id]}
+            @logs =  {to_few_credits_in_program: [self.target.id]}
+            return false
           else
-            return {to_few_credits_in_module: [self.target.id]}
+            @logs =  {to_few_credits_in_module: [self.target.id]}
+            return false
           end
         else
           return true
@@ -54,9 +56,11 @@ module ConstraintsChecker
       def check
         if ! target.check_max(self.value)
           if target.class.name.eql? ConstraintsChecker::Catalog.name
-            return {to_many_credits_in_program: [self.target.id]}
+            @logs = {to_many_credits_in_program: [self.target.id]}
+            return false
           else
-            return {to_many_credits_in_module: [self.target.id]}
+            @logs = {to_many_credits_in_module: [self.target.id]}
+            return false
           end
         else
           return true
@@ -80,7 +84,8 @@ module ConstraintsChecker
             missing_ids << id
           end
         end
-        return {courses_missing_in_module: {self.target.id => missing_ids}}
+        @logs =  {courses_missing_in_module: {self.target.id => missing_ids}}
+        return missing_ids.size == 0
       end
     end
 
@@ -96,7 +101,8 @@ module ConstraintsChecker
       def check
         result = target.find_course(course_id)
         if result.nil?
-          return {mandatory_courses_missing: [course_id]}
+          @logs =  {mandatory_courses_missing: [course_id]}
+          return false
         else
           return true
         end

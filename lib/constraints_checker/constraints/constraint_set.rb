@@ -80,7 +80,8 @@ module ConstraintsChecker
         if results.size < target_ids.size
           return true
         else
-          return {or_prerequisites_missing:[results]}
+          @logs = {or_prerequisites_missing:[results]}
+          return false
         end
       end
     end
@@ -92,12 +93,12 @@ module ConstraintsChecker
       end
 
       def check
-        logs = {xor_prerequisites_missing: []}
         result = find_missing_dependencies
         if result.size == target_ids.size - 1
           return true
         else
-          return {xor_prerequisites_missing: [target_ids]}
+          @logs =  {xor_prerequisites_missing: [target_ids]}
+          return false
         end
       end
     end
@@ -113,7 +114,8 @@ module ConstraintsChecker
         if results.size < target_ids.size
           return true
         else
-          return {or_corequisites_missing:[results]}
+          @logs =  {or_corequisites_missing:[results]}
+          return false
         end
       end
     end
@@ -125,12 +127,12 @@ module ConstraintsChecker
       end
 
       def check
-        logs = {xor_corequisites_missing: []}
         result = find_missing_dependencies
         if result.size == target_ids.size - 1
           return true
         else
-          return {xor_corequisites_missing: [target_ids]}
+          @logs =  {xor_corequisites_missing: [target_ids]}
+          return false
         end
       end
     end
