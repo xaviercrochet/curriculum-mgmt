@@ -29,7 +29,7 @@ module ConstraintsChecker
     end
 
     def find_p_module(id)
-      self.find_children(id, ConstraintsChecker::Entities::PModule)
+      self.find_children(id, "ConstraintsChecker::Entities::PModule")
     end
 
 

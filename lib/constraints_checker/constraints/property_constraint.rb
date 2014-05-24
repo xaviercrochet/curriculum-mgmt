@@ -33,6 +33,9 @@ module ConstraintsChecker
       end
 
       def check
+        p "ffffffffffffffffffffffffffffffffffffffffffffffffff"
+        p target.name
+        p target.count_credits
         if ! target.check_min(self.value)
           if target.class.name.eql? ConstraintsChecker::Catalog.name
             @logs =  {to_few_credits_in_program: [self.target.id]}

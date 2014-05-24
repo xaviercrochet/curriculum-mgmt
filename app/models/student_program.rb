@@ -112,7 +112,7 @@ class StudentProgram < ActiveRecord::Base
     end
 
     self.program.p_modules.mandatory.each do |m|
-      if ! module_present?(m)
+      if ! self.module_present?(m)
         c.add_children(m.get_p_module_object(true))
       end
     end
@@ -130,6 +130,7 @@ class StudentProgram < ActiveRecord::Base
         c.add_children(course)
       
       else
+        p "PMODULE FOUND"
         p_module.add_children(course)
       end
     end

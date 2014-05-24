@@ -112,7 +112,7 @@ class PModule < ActiveRecord::Base
 
 	def get_p_module_object(mandatory)
 		p_module = ConstraintsChecker::Entities::PModule.new(id: self.id, name: self.name)
-		p_module.add_constraint(ConstraintsChecker::Constraints::Min.new(p_module, self.min))-
+		p_module.add_constraint(ConstraintsChecker::Constraints::Min.new(p_module, self.min))
 		p_module.add_constraint(ConstraintsChecker::Constraints::Max.new(p_module, self.max))
 		self.sub_modules.each do |m|
 			p_module.add_children(m.get_p_module_object(true))

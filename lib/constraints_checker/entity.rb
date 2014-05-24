@@ -40,6 +40,7 @@ module ConstraintsChecker
 
 		def find_children(children_id, children_type)
 			result
+
 			if self.id.eql? children_id and self.class.name.eql? children_type
 				result = self
 			else
@@ -69,19 +70,6 @@ module ConstraintsChecker
 			unverified_constraints << check_childrens_constraints
 			return unverified_constraints.flatten
 		end
-
-		# def check
-		# 	p "checking ... " + self.name
-		# 	logs = []
-		# 	p @constraints.size
-		# 	@constraints.each do |c|
-		# 		if c.check != true
-		# 		 	logs << c.check
-		# 		 end
-		# 	end
-		# 	logs << check_childrens_constraints
-		# 	return logs.flatten				
-		# end
 
 		def check_max(value)
 			return count_credits <= value.to_i
