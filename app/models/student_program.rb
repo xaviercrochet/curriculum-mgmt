@@ -23,6 +23,10 @@ class StudentProgram < ActiveRecord::Base
     self.save
   end
 
+  def checked?
+    self.checked.eql? true
+  end
+
   def migrate_program(program)
     p "migrating program ..."
     missing_courses = []

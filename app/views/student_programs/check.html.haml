@@ -42,32 +42,46 @@
 
             .progress-bar.progress-bar-danger{"aria-valuemax" => @program.max+@program.min, "aria-valuemin" => "0", "aria-valuenow" => @student_program.count_credits, :role => "progressbar", :style => "width:"+percentages[:overflow].to_s+"%;"}
 
+.panel.panel-default
+  .panel-heading.text-center
+    Vous avez
+    = @justification.constraint_exceptions.count
+    contrainte(s) non respectée(s)
+  .panel-body
+    = render 'student_programs/check/prerequisites', exceptions: @justification.constraint_exceptions.prerequisite
+    = render 'student_programs/check/corequisites', exceptions: @justification.constraint_exceptions.corequisite
+    = render 'student_programs/check/xor_corequisites', exceptions: @justification.constraint_exceptions.xor_corequisite
+    = render 'student_programs/check/xor_prerequisites', exceptions: @justification.constraint_exceptions.xor_prerequisite
+    = render 'student_programs/check/or_corequisites', exceptions: @justification.constraint_exceptions.or_corequisite
+    = render 'student_programs/check/or_prerequisites', exceptions: @justification.constraint_exceptions.or_prerequisite
+    = render 'student_programs/check/max', exceptions: @justification.constraint_exceptions.max
+    = render 'student_programs/check/min', exceptions: @justification.constraint_exceptions.min
+    = render 'student_programs/check/mandatories', exceptions: @justification.constraint_exceptions.mandatory
+    / .panel.panel-default
+    /   .panel-heading
+    /     .text-heading.text-center
+    /       %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#dependancies"}
+    /         Dépendances Manquantes (
+    /         = @count
+    /         )
+    /   #dependancies.panel-collapse.collapse
+    /     .panel-body
 
-    .panel.panel-default
-      .panel-heading
-        .text-heading.text-center
-          %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#dependancies"}
-            Dépendances Manquantes (
-            = @count
-            )
-      #dependancies.panel-collapse.collapse
-        .panel-body
+    /       %ul.nav.nav-tabs
+    /         = render 'constraints_header', active: true, id: "pre", name: "Prérequis manquants", courses: @prerequisites
+    /         = render 'constraints_header', active: @prerequisites.size==0, id: "co", name: "Corequis manquants", courses: @corequisites
+    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", name: "Cours obligatoires manquants", courses: @mandatories
+    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0), id: "or_co", name: "Corequis disjonctifs (OR)",courses: @or_corequisites
+    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0), id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites
+    /         = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites
+    /         = render 'constraints_header', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), id: "xor_pre", courses: @xor_prerequisites, name: "Prerequis disjonctif exclusifs (XOR)"
 
-          %ul.nav.nav-tabs
-            = render 'constraints_header', active: true, id: "pre", name: "Prérequis manquants", courses: @prerequisites
-            = render 'constraints_header', active: @prerequisites.size==0, id: "co", name: "Corequis manquants", courses: @corequisites
-            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", name: "Cours obligatoires manquants", courses: @mandatories
-            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0), id: "or_co", name: "Corequis disjonctifs (OR)",courses: @or_corequisites
-            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0), id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites
-            = render 'constraints_header', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites
-            = render 'constraints_header', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), id: "xor_pre", courses: @xor_prerequisites, name: "Prerequis disjonctif exclusifs (XOR)"
-
-          .tab-content
-            = render 'constraints', active: true, id: "pre",nary: false, message: "", courses: @prerequisites
-            = render 'constraints', active: @prerequisites.size==0, id: "co", nary: false, message: "", courses: @corequisites
-            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", nary: false, message: "", courses: @mandatories
-            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0), id: "or_co", nary: true, message: "Il vous manque un des corequis suivant", courses: @or_corequisites
-            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0), nary: true, id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites, message: "Il vous manque un des prérequis suivant"
-            = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites, nary: true, message: "Vous ne pouvez choisir qu'un seul des corequis suivant"
-            = render 'constraints', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), name: "Prérequis disjonctifs exclusif (XOR)", courses: @xor_prerequisites, nary: true, message: "Vous ne pouvez choisir qu'un seul des prérequis suivant"
+    /       .tab-content
+    /         = render 'constraints', active: true, id: "pre",nary: false, message: "", courses: @prerequisites
+    /         = render 'constraints', active: @prerequisites.size==0, id: "co", nary: false, message: "", courses: @corequisites
+    /         = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0), id: "mandatory", nary: false, message: "", courses: @mandatories
+    /         = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0), id: "or_co", nary: true, message: "Il vous manque un des corequis suivant", courses: @or_corequisites
+    /         = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0), nary: true, id: "or_pre", name: "Prerequis disjonctifs (Or)", courses: @or_prerequisites, message: "Il vous manque un des prérequis suivant"
+    /         = render 'constraints', active: (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0), id: 'xor_co', name: "Corequis disjonctifs exclusifs (XOR)", courses: @xor_corequisites, nary: true, message: "Vous ne pouvez choisir qu'un seul des corequis suivant"
+    /         = render 'constraints', active:  (@corequisites.size==0 and @prerequisites.size==0 and @mandatories.size == 0 and @or_corequisites.size == 0 and @or_prerequisites.size == 0 and @xor_corequisites.size == 0), name: "Prérequis disjonctifs exclusif (XOR)", courses: @xor_prerequisites, nary: true, message: "Vous ne pouvez choisir qu'un seul des prérequis suivant"
          

@@ -69,30 +69,11 @@ class StudentProgramsController < ApplicationController
 
   def check
     @student_program = StudentProgram.find(params[:student_program_id])
-    @logs = @student_program.check_constraints
     @program = @student_program.program
-    @count = 0
-    @prerequisites = @student_program.get_missing_prerequisites(@logs)
-    @count += @prerequisites.size
-
-    @mandatories = @student_program.get_missing_mandatory_courses(@logs)
-    @corequisites = @student_program.get_missing_corequisites(@logs)
-    @count += @corequisites.size
-    
-
-    @or_corequisites = @student_program.get_missing_or_corequisites(@logs)
-    @count+= @or_corequisites.size
-
-    @or_prerequisites = @student_program.get_missing_or_prerequisites(@logs)
-    @count+= @or_prerequisites.size
-
-    @xor_corequisites = @student_program.get_missing_xor_corequisites(@logs)
-    @count += @xor_corequisites.size
-
-    @xor_prerequisites = @student_program.get_missing_xor_prerequisites(@logs)
-    @count += @xor_prerequisites.size
-    @student_program.set_count(@count)
-
+    if ! @student_program.checked?
+      @student_program.check_constraints
+    end
+    @justification  = @student_program.justification
   end
 
   def new_validation
