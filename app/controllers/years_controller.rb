@@ -23,7 +23,7 @@ class YearsController < ApplicationController
       @second_semester.courses << Course.find(id.to_i) unless id.eql? "0"
     end unless params[:second_semester].nil?
     
-    @student_program.set_count(-1)
+    @student_program.uncheck
     @student_program.devalidate
     redirect_to @year
   end
@@ -55,6 +55,8 @@ class YearsController < ApplicationController
       redirect_to user_manage_years_path(current_user)
     else
       @year.update(year_params)
+      @year.student_program.devalidate
+      @year.student_program.uncheck
       redirect_to student_program_student_program_configure_path(@year.student_program)
     end
   end
