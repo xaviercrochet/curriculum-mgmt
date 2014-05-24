@@ -1,6 +1,11 @@
 %tr
   %td.text-center
-    = render 'courses', courses: exception.entity.courses, type: "Cours obligatoires", student_program: student_program
+    - if exception.entity.class.name.eql? "Course"
+      Le cours obligatoire
+      = exception.entity.name
+      n'est pas présent dans votre programme
+    - else
+      = render 'courses', courses: exception.entity.courses, type: "Cours obligatoires", student_program: student_program
   %td.text-center
     - if exception.message.nil? or exception.message.eql? ""
       %span.label.label-danger

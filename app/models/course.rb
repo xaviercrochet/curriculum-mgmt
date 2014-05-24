@@ -89,7 +89,6 @@ class Course < ActiveRecord::Base
       constraint = c.get_constraint_object(course)
       course.add_constraint(constraint) unless constraint.nil?
     end
-    p course.constraints
     return course
   end
 

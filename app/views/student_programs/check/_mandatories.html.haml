@@ -11,7 +11,7 @@
           = builder.object.entity.name
           n'ont pas été sélectionnés
       - else
-        coucou
+        Le cours suivant est obligatoire dans le programme que vous suivez.
     .panel-body
       .col-md-4
         %table.table.table-bordered
@@ -19,11 +19,16 @@
             %tr
               %th.text-center Cours manquant
           %tbody
-            - builder.object.entity.courses.each do |course|
+            - if builder.object.entity.class.name.eql? "Course"
               %tr
-              - if ! student_program.course_present?(course)
                 %td.text-center
-                  = course.name
+                  = builder.object.entity.name
+            - else
+              - builder.object.entity.courses.each do |course|
+                %tr
+                - if ! student_program.course_present?(course)
+                  %td.text-center
+                    = course.name
       .col-md-8
         = render "student_programs/check/edit_constraint_exception", f: builder, constraint_exception: builder.object, label: true
 

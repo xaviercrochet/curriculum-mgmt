@@ -325,6 +325,9 @@ private
           type = "Mandatory"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::MandatoryCourse"
+          entity = Course.find(result.course_id)
+          type = "Mandatory"
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::Min"
           if result.target.class.name.eql? "ConstraintsChecker::Catalog"
             entity = self.program
