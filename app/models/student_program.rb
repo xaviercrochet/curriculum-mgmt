@@ -321,9 +321,8 @@ private
           type = "XorCorequisite"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::Mandatory"
-          p "COUOOOOOOOOOOOO"
           entity = PModule.find(result.target.id)
-          type = "MandatoryModule"
+          type = "Mandatory"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::MandatoryCourse"
         when "ConstraintsChecker::Constraints::Min"
