@@ -13,6 +13,37 @@ class StudentProgram < ActiveRecord::Base
     self.program.catalog.find_updated_version.size > 0
   end
 
+  def count_credits_for_module(p_module)
+    result = 0
+    sub_module_ids = []
+    p_module.sub_modules.each do |m|
+      sub_module_ids << m.id
+    end
+
+    years.each do |year|
+      courses = year.first_semester.courses.where(p_module_id: p_module.id)
+      courses += year.second_semester.courses.where(p_module_id: p_module.id)
+      courses.each do |course|
+        result += course.credits.to_i
+      end
+      sub_module_ids.each do |id|
+        courses = year.first_semester.courses.where(p_module_id: id)
+        courses += year.second_semester.courses.where(p_module_id: id)
+        courses.each do |course|
+          result += course.credits.to_i
+        end
+      end
+    end
+    return result
+  end
+
+  def count_credits_for_p_module(p_module)
+    result = 0
+    sub_module_ids = []
+    p_module.sub_modules.each do |m|
+      sub_module_ids << m.id
+    end
+
 
   def module_present?(p_module)
     self.p_modules.where(id: p_module.id).count > 0

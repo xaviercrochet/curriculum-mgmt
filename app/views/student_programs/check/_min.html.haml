@@ -1,2 +1,21 @@
-= exceptions.size
-fsdfsd
+%table.table.table-striped
+  %thead
+    %tr
+      %th.text-center Programme/Module
+      %th.text-center Crédits actuels
+      %th.text-center Minimum Requis
+      %th.text-center Justification
+  %tbody
+    = f.fields_for :constraint_exceptions, exceptions do |builder|
+      %tr
+        %td.text-center
+          = builder.object.entity.name
+        %td.text-center
+          - if builder.object.entity.class.name.eql? "Program"
+            = student_program.count_credits
+          - else
+            = student_program.count_credits_for_module(builder.object.entity)
+        %td.text-center
+          = builder.object.entity.min
+        %td.text-center
+          = render "student_programs/check/edit_constraint_exception", f: builder, constraint_exception: builder.object, label: false
