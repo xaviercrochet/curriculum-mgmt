@@ -29,12 +29,15 @@ class JustificationsController < ApplicationController
 
   def update
     @justification = Justification.find(params[:id])
-    # @justification.update(justification_params)
-    justification_params[:constraint_exceptions_attributes].each do |key, value|
-      if ! value[:message].eql? ""
-        ce = ConstraintException.find(value[:id])
-        ce.update(message: value[:message], completed: true)
+    if params[:constraint_exceptions_attributes]
+      justification_params[:constraint_exceptions_attributes].each do |key, value|
+        if ! value[:message].eql? ""
+          ce = ConstraintException.find(value[:id])
+          ce.update(message: value[:message], completed: true)
+        end
       end
+    else
+      @justification.update(justification_params)
     end
     if @justification.errors.any?
       @student_program = @justification.student_program

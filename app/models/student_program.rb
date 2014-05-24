@@ -109,7 +109,7 @@ class StudentProgram < ActiveRecord::Base
   end
 
   def can_justify?
-    self.errors_count > 0
+    self.checked
   end
 
   def edit_or_new_justification_link

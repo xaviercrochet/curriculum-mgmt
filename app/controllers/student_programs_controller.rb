@@ -11,7 +11,7 @@ class StudentProgramsController < ApplicationController
     @student_program = StudentProgram.find(params[:student_program_id])
     @program  = Program.find(params[:student_program][:program_id])
     results = @student_program.migrate_program(@program)
-    p results
+    @student_program.uncheck
     redirect_to @student_program
   end
 
