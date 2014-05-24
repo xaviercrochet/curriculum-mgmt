@@ -1,1 +1,18 @@
-= exceptions.count
+- exceptions.each do |exception|
+  .panel.panel-default
+    .panel-heading.text-center
+      Le cours
+      = exception.entity.course.name
+      nécessite AU MOINS un des prérequis suivant
+    .panel-body
+      .col-md-4
+        %table.table.table-bordered
+          %thead
+            %tr
+              %th.text-center Prérequis manquant
+          %tbody
+            - exception.entity.courses.each do |course|
+              %tr
+                %td.text-center
+                  = course.name
+      .col-md-8

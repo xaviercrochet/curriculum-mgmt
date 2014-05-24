@@ -18,6 +18,15 @@ class StudentProgram < ActiveRecord::Base
     self.save
   end
 
+  def course_present?(course)
+    self.years.each do |year|
+      result = year.course_present?(course)
+      return result unless ! result
+    end
+    return false
+  end
+
+
   def uncheck
     self.checked = false
     self.save

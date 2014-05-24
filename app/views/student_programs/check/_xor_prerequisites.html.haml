@@ -1,1 +1,26 @@
-= exceptions.count
+- exceptions.each do |exception|
+  .panel.panel-default
+    .panel-heading.text-center
+      Le cours
+      = exception.entity.course.name
+      nécessite UN et UN SEUL des prérequis suivant
+    .panel-body
+      .col-md-4
+        %table.table.table-bordered
+          %thead
+            %tr
+              %th.text-center Prérequis
+              %th.text-center Présent?
+          %tbody
+            - exception.entity.courses.each do |course|
+              %tr
+                %td.text-center
+                  = course.name
+                %td.text-center
+                  - if student_program.course_present?(course)
+                    %span.label.label-success
+                      OUI
+                  - else
+                    %span.label.label-danger
+                      NON
+      .col-md-8

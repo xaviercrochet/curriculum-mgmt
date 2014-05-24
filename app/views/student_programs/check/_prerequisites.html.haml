@@ -1,1 +1,15 @@
-= exceptions.count
+%table.table.table-striped
+  %thead
+    %tr
+      %th.text-center Cours sélectionné
+      %th.text-center Prérequis manquant
+      %th.text-center Justification
+  %tbody
+  - exceptions.each do |exception|
+
+    %tr
+      %td.text-center
+        = exception.entity.course.name
+      %td.text-center
+        = exception.entity.courses.first.name
+      %td.text-center

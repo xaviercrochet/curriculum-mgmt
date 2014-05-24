@@ -10,6 +10,15 @@ class Semester < ActiveRecord::Base
     return courses
   end
 
+  def course_present?(course)
+    self.courses.each do |c|
+      if course.name.eql? c.name
+        return true
+      end
+    end
+    return false
+  end
+
   def get_courses_objects_for_migrated_program(program, start_year, end_year)
     results = []
     courses = coresponding_courses(program)

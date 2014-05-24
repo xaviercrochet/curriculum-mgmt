@@ -12,6 +12,13 @@ class Year < ActiveRecord::Base
     self.status.eql? 2
   end
 
+  def course_present?(course)
+    result = self.first_semester.course_present?(course)
+    return result unless ! result
+    result = self.second_semester.course_present?(course)
+    return result
+  end
+
   def migrate(catalog)
     p "migrating year ..."
     missing_courses = []
