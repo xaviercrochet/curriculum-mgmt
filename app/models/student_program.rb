@@ -14,6 +14,9 @@ class StudentProgram < ActiveRecord::Base
   end
 
 
+  def module_present?(p_module)
+    self.p_modules.where(id: p_module.id).count > 0
+  end
 
   def check
     self.checked = true
@@ -84,6 +87,12 @@ class StudentProgram < ActiveRecord::Base
       self.p_modules.each do |m|
         c.add_children(m.get_p_module_object(m.mandatory?))
       end
+
+      self.program.p_modules.mandatory.each do |m|
+        if ! module_present?(m)
+          c.add_children(m.get_p_module_object(true))
+        end
+      end
       
       courses = []
       
@@ -104,6 +113,7 @@ class StudentProgram < ActiveRecord::Base
       results = c.check
       create_constraint_exceptions(results)
       self.check
+      results
     else
     end
   end
@@ -311,6 +321,7 @@ private
           type = "XorCorequisite"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::Mandatory"
+          p "COUOOOOOOOOOOOO"
           entity = PModule.find(result.target.id)
           type = "MandatoryModule"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)

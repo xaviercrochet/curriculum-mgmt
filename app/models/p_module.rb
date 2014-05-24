@@ -10,6 +10,7 @@ class PModule < ActiveRecord::Base
   belongs_to :parent, class_name: "PModule"
 
   scope :without_parent, -> {where(parent_id: nil)}
+  scope :mandatory, -> {joins(:properties).merge(Property.mandatory)}
 
 	def self.find_by_property(property_type, property_value, catalog)
 		catalog.p_modules.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value).first
@@ -99,6 +100,10 @@ class PModule < ActiveRecord::Base
 		end
 		return result
 
+	end
+
+	def is_sub_module?
+		parent.class.name.eql? "PModule"
 	end
 
 	def self.page_name
