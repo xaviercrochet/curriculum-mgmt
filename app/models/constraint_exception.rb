@@ -11,6 +11,7 @@ class ConstraintException < ActiveRecord::Base
   scope :min, -> {where(constraint_type: "Min")}
   scope :max, ->{where(constraint_type: "Max")}
   scope :mandatory, -> {where(constraint_type: "Mandatory")}
+  scope :un_completed, -> {where(completed: false)}
 
 
 

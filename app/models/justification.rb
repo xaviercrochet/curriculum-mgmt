@@ -8,6 +8,9 @@ class Justification < ActiveRecord::Base
   accepts_nested_attributes_for :constraint_exceptions
 
 
+  def has_uncompleted_exceptions?
+    self.constraint_exceptions.count >= 0
+  end
 
   # tag justification and all the answer he get to read when user responds. 
   def tag_as_read(user)

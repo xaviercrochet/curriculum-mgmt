@@ -13,6 +13,8 @@ class StudentProgram < ActiveRecord::Base
     self.program.catalog.find_updated_version.size > 0
   end
 
+
+
   def check
     self.checked = true
     self.save
@@ -149,7 +151,8 @@ class StudentProgram < ActiveRecord::Base
 
 
   def can_validates?
-    (self.errors_count == 0 or ! self.justification.nil?) and (self.enough_credits?) and (self.validation.nil?)
+    self.checked? and ! self.justification.has_uncompleted_exceptions? and self.validation.nil?
+    # (self.errors_count == 0 or ! self.justification.nil?) and (self.enough_credits?) and (self.validation.nil?)
   end
 
   def enough_credits?

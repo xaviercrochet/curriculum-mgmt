@@ -1,8 +1,8 @@
-- if student_program.errors_count.eql? -1
+- if ! student_program.checked
   .alert.alert-danger.alert-dismissable
     %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
     Veuillez vérifier vos contraintes pour pouvoir envoyer votre programme à la validation
-- if ! student_program.can_validates?
+- if student_program.justification.has_uncompleted_exceptions?
   .alert.alert-danger.alert-dismissable
     %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
     Veuillez justifier vos contraintes non vérifiées pour pouvoir envoyer votre programme à la validation.
