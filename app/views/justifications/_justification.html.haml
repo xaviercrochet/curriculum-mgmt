@@ -17,7 +17,7 @@
             %th.text-center Description
             %th.text-center Justification
         %tbody
-          = render "constraint_exceptions", constraint_exceptions: justification.constraint_exceptions
+          = render "constraint_exceptions", constraint_exceptions: justification.constraint_exceptions, student_program: justification.student_program
       = render 'answers', answers: justification.answers
       = render 'new_answer', justification: justification, answer: answer
 

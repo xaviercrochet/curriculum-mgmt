@@ -3,9 +3,18 @@
     %tr
       %th.text-center
         = type
-        non valide
+      %th.text-center
+        Présent?
   %tbody
     - courses.each do |course|
       %tr
         %td.text-center
           = course.name
+        %td.text-center
+          - present = student_program.course_present?(course)
+          - if present
+            %span.label.label-success
+              OUI
+          - else
+            %span.label.label-danger
+              NON
