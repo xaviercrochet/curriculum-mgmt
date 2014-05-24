@@ -14,6 +14,7 @@ class JustificationsController < ApplicationController
     if @justification.errors.any?
       render action: :new
     else
+      @student_program.check
       redirect_to @student_program
     end
   end
@@ -30,22 +31,13 @@ class JustificationsController < ApplicationController
 
   def update
     @justification = Justification.find(params[:id])
-    if params[:constraint_exceptions_attributes]
-      justification_params[:constraint_exceptions_attributes].each do |key, value|
-        if ! value[:message].eql? ""
-          ce = ConstraintException.find(value[:id])
-          ce.update(message: value[:message], completed: true)
-        end
-      end
-    else
-      @justification.update(justification_params)
-    end
+    @justification.update(justification_params)
+    @justification.check_and_mark_constraint_exceptions
     if @justification.errors.any?
       @student_program = @justification.student_program
       render action: :edit
     else
-      p params
-      p justification_params
+      @justification.student_program.check
       redirect_to @justification.student_program
     end
   end

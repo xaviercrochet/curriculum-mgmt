@@ -91,55 +91,52 @@ class StudentProgram < ActiveRecord::Base
 
   def check_constraints
 
-    if ! self.checked
-      if self.justification.nil?
-        self.create_justification
-      end
-      self.justification.constraint_exceptions.each do |c|
-        c.destroy
-      end
-      c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
-      c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
-      c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
-      
-      mandatories = program.mandatory_courses
-
-      mandatories.each do |m|
-        c.add_constraint(ConstraintsChecker::Constraints::MandatoryCourse.new(c, m.id))
-      end
-
-      self.p_modules.each do |m|
-        c.add_children(m.get_p_module_object(m.mandatory?))
-      end
-
-      self.program.p_modules.mandatory.each do |m|
-        if ! module_present?(m)
-          c.add_children(m.get_p_module_object(true))
-        end
-      end
-      
-      courses = []
-      
-      self.years.each do |year|
-        courses = courses + year.get_course_objects
-      end
-
-      courses.each do |course|
-        p_module = c.find_p_module(course.parent_id)
-        
-        if p_module.nil?
-          c.add_children(course)
-        
-        else
-          p_module.add_children(course)
-        end
-      end
-      results = c.check
-      create_constraint_exceptions(results)
-      self.check
-      results
-    else
+    if self.justification.nil?
+      self.create_justification
     end
+    self.justification.constraint_exceptions.each do |c|
+      c.destroy
+    end
+    c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
+    c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
+    c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
+    
+    mandatories = program.mandatory_courses
+
+    mandatories.each do |m|
+      c.add_constraint(ConstraintsChecker::Constraints::MandatoryCourse.new(c, m.id))
+    end
+
+    self.p_modules.each do |m|
+      c.add_children(m.get_p_module_object(m.mandatory?))
+    end
+
+    self.program.p_modules.mandatory.each do |m|
+      if ! module_present?(m)
+        c.add_children(m.get_p_module_object(true))
+      end
+    end
+    
+    courses = []
+    
+    self.years.each do |year|
+      courses = courses + year.get_course_objects
+    end
+
+    courses.each do |course|
+      p_module = c.find_p_module(course.parent_id)
+      
+      if p_module.nil?
+        c.add_children(course)
+      
+      else
+        p_module.add_children(course)
+      end
+    end
+    results = c.check
+    create_constraint_exceptions(results)
+    self.check
+    results
   end
 
   def can_justify?

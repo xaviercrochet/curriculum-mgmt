@@ -16,6 +16,7 @@ class Ability
         can :read, Property
         can :choose_catalog, User
         can :update_catalog, User
+        can :manage, ConstraintException, justification: {student_program: {user_id: user.id}}
     end
     # Define abilities for the passed in user here. For example:
     #

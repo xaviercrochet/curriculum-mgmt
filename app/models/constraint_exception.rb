@@ -13,6 +13,18 @@ class ConstraintException < ActiveRecord::Base
   scope :mandatory, -> {where(constraint_type: "Mandatory")}
   scope :un_completed, -> {where(completed: false)}
 
+  def complete
+    self.completed = true
+    self.save
+  end
 
+  def uncomplete
+    self.completed = false
+    self.save
+  end
+
+  def completed?
+    self.completed
+  end
 
 end

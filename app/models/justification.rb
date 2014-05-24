@@ -9,7 +9,15 @@ class Justification < ActiveRecord::Base
 
 
   def has_uncompleted_exceptions?
-    self.constraint_exceptions.count >= 0
+    self.constraint_exceptions.un_completed.count > 0
+  end
+
+  def check_and_mark_constraint_exceptions
+    self.constraint_exceptions.each do |ce|
+      if ! (ce.message.nil? or ce.message.eql? "")
+        ce.complete
+      end
+    end
   end
 
   # tag justification and all the answer he get to read when user responds. 
