@@ -329,17 +329,21 @@ private
           type = "Mandatory"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::Min"
+          type = "Min"
           if result.target.class.name.eql? "ConstraintsChecker::Catalog"
             entity = self.program
-            type = "Min"
-            self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+          else
+            entity = PModule.find(result.target.id)
           end
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::Max"
+          type = "Max"
           if result.target.class.name.eql? "ConstraintsChecker::Catalog"
             entity = self.program
-            type = "Max"
-            self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+          else
+            entity = PModule.find(result.target.id)
           end
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
       end
     end
 

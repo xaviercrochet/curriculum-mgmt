@@ -50,7 +50,7 @@ class PModule < ActiveRecord::Base
 	def max
 		result = get_property("MAX")
 		if result.eql? "NONE"
-			result = 999999
+			result = 999
 		end
 		return result.to_i
 	end
