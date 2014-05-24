@@ -8,8 +8,11 @@ module ConstraintsChecker
       attr_accessor :type
       attr_accessor :courses
       attr_accessor :target_ids
+      attr_accessor :id
 
-      def initialize(set_type, type, course, target_ids)
+      def initialize(id, set_type, type, course, target_ids)
+        super
+        @id = id
         @set_type = set_type
         @type = type
         @course = course
@@ -29,8 +32,8 @@ module ConstraintsChecker
     end
 
     class CorequisiteSet < ConstraintSet
-      def initialize(set_type, course, target_ids)
-        super(set_type, "COREQUISITE", course, target_ids)
+      def initialize(id, set_type, course, target_ids)
+        super(id, set_type, "COREQUISITE", course, target_ids)
       end
 
       def find_missing_dependencies
@@ -49,8 +52,8 @@ module ConstraintsChecker
     end
 
     class PrerequisiteSet < ConstraintSet
-      def initialize(set_type, course, target_ids)
-        super(set_type, "PREREQUISITE", course, target_ids)
+      def initialize(id, set_type, course, target_ids)
+        super(id, set_type, "PREREQUISITE", course, target_ids)
       end
 
       def find_missing_dependencies
@@ -68,8 +71,8 @@ module ConstraintsChecker
     end
 
     class OrPrerequisite < PrerequisiteSet
-      def initialize(course, target_ids)
-        super("OR", course, target_ids)
+      def initialize(id, course, target_ids)
+        super(id, "OR", course, target_ids)
       end
 
       def check
@@ -84,8 +87,8 @@ module ConstraintsChecker
 
     class XorPrerequisite < PrerequisiteSet
 
-      def initialize(course, target_ids)
-        super("XOR", course, target_ids)
+      def initialize(id, course, target_ids)
+        super(id, "XOR", course, target_ids)
       end
 
       def check
@@ -101,8 +104,8 @@ module ConstraintsChecker
 
     class OrCorequisite < CorequisiteSet
       
-      def initialize(course, target_ids)
-        super("OR", course, target_ids)
+      def initialize(id, course, target_ids)
+        super(id, "OR", course, target_ids)
       end
 
       def check
@@ -117,8 +120,8 @@ module ConstraintsChecker
 
     class XorCorequisite < CorequisiteSet
 
-      def initialize(course, target_ids)
-        super("XOR", course, target_ids)
+      def initialize(id, course, target_ids)
+        super(id, "XOR", course, target_ids)
       end
 
       def check

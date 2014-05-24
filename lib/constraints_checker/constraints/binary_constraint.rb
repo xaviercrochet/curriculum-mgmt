@@ -7,8 +7,11 @@ module ConstraintsChecker
       attr_accessor :course
       #target => target de la contrainte, les dépendances d'un cours par exemple
       attr_accessor :target_id
+      attr_accessor :id
 
-      def initialize(course, target_id)
+      def initialize(id, course, target_id)
+        super
+        @id = id
         self.course = course
         self.target_id = target_id
       end
@@ -16,8 +19,8 @@ module ConstraintsChecker
 
     class Prerequisite < BinaryConstraint
       
-      def initialize(course, target_id)
-        super(course, target_id)
+      def initialize(id, course, target_id)
+        super(id, course, target_id)
       end
 
       def check
@@ -37,8 +40,8 @@ module ConstraintsChecker
     end
 
     class Corequisite < BinaryConstraint
-      def initialize(course, target_id)
-        super(course, target_id)
+      def initialize(id, course, target_id)
+        super(id, course, target_id)
       end
 
       def check

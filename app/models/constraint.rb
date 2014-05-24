@@ -53,9 +53,9 @@ class Constraint < ActiveRecord::Base
     case self.set_type
     when "BINARY"
       if self.corequisite?
-        constraint = ConstraintsChecker::Constraints::Corequisite.new(course, self.courses.first.id)
+        constraint = ConstraintsChecker::Constraints::Corequisite.new(self.id, course, self.courses.first.id)
       elsif self.prerequisite?
-        constraint = ConstraintsChecker::Constraints::Prerequisite.new(course, self.courses.first.id)
+        constraint = ConstraintsChecker::Constraints::Prerequisite.new(self.id, course, self.courses.first.id)
       end
     when "X"
       constraint = get_xor_constraint_set_object(course)
@@ -82,9 +82,9 @@ private
     constraint = nil
     target_ids = get_target_ids
     if self.corequisite?
-      constraint = ConstraintsChecker::Constraints::OrCorequisite.new(course, target_ids)
+      constraint = ConstraintsChecker::Constraints::OrCorequisite.new(self.id, course, target_ids)
     elsif self.prerequisite?
-      constraint = ConstraintsChecker::Constraints::OrPrerequisite.new(course, target_ids)
+      constraint = ConstraintsChecker::Constraints::OrPrerequisite.new(self.id, course, target_ids)
     end
     return constraint
   end
@@ -93,9 +93,9 @@ private
     constraint = nil
     target_ids = get_target_ids
     if self.corequisite?
-      constraint = ConstraintsChecker::Constraints::XorCorequisite.new(course, target_ids)
+      constraint = ConstraintsChecker::Constraints::XorCorequisite.new(self.id, course, target_ids)
     elsif self.prerequisite?
-      constraint = ConstraintsChecker::Constraints::XorPrerequisite.new(course, target_ids)
+      constraint = ConstraintsChecker::Constraints::XorPrerequisite.new(self.id, course, target_ids)
     end
     return constraint
   end
@@ -103,9 +103,9 @@ private
   def get_binary_constraint_object(course)
     constraint = nil
     if self.corequisite?
-      constraint = ConstraintsChecker::Constraints::Corequisite.new(course, self.courses.first.id)
+      constraint = ConstraintsChecker::Constraints::Corequisite.new(self.id, course, self.courses.first.id)
     elsif self.prerequisite?
-      constraint = ConstraintsChecker::Constraints::Prerequisite.new(course, self.courses.first.id)
+      constraint = ConstraintsChecker::Constraints::Prerequisite.new(self.id, course, self.courses.first.id)
     end
     return constraint
   end
