@@ -3,7 +3,7 @@ module ConstraintsChecker
     attr_accessor :logs
 
 		def initialize
-      logs = []
+      @logs = []
 		end
 
 		def check

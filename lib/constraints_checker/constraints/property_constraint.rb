@@ -8,7 +8,7 @@ module ConstraintsChecker
       attr_accessor :value
 
       def initialize(target, property, value)
-        super
+        super()
         self.property = property
         self.target = target
         self.value = value

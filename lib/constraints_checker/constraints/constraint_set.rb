@@ -11,7 +11,7 @@ module ConstraintsChecker
       attr_accessor :id
 
       def initialize(id, set_type, type, course, target_ids)
-        super
+        super()
         @id = id
         @set_type = set_type
         @type = type
