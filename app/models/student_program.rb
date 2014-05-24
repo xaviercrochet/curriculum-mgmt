@@ -13,6 +13,16 @@ class StudentProgram < ActiveRecord::Base
     self.program.catalog.find_updated_version.size > 0
   end
 
+  def check
+    self.checked = true
+    self.save
+  end
+
+  def uncheck
+    self.checked = false
+    self.save
+  end
+
   def migrate_program(program)
     p "migrating program ..."
     missing_courses = []
@@ -38,42 +48,49 @@ class StudentProgram < ActiveRecord::Base
 
 
   def check_constraints
-    if self.justification.nil?
-      self.create_justification
-    end
-    c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
-    c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
-    c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
-    
-    mandatories = program.mandatory_courses
 
-    mandatories.each do |m|
-      c.add_constraint(ConstraintsChecker::Constraints::MandatoryCourse.new(c, m.id))
-    end
-
-    self.p_modules.each do |m|
-      c.add_children(m.get_p_module_object(m.mandatory?))
-    end
-    
-    courses = []
-    
-    self.years.each do |year|
-      courses = courses + year.get_course_objects
-    end
-
-    courses.each do |course|
-      p_module = c.find_p_module(course.parent_id)
-      
-      if p_module.nil?
-        c.add_children(course)
-      
-      else
-        p_module.add_children(course)
+    if ! self.checked
+      if self.justification.nil?
+        self.create_justification
       end
+      self.justification.constraint_exceptions.each do |c|
+        c.destroy
+      end
+      c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
+      c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
+      c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
+      
+      mandatories = program.mandatory_courses
+
+      mandatories.each do |m|
+        c.add_constraint(ConstraintsChecker::Constraints::MandatoryCourse.new(c, m.id))
+      end
+
+      self.p_modules.each do |m|
+        c.add_children(m.get_p_module_object(m.mandatory?))
+      end
+      
+      courses = []
+      
+      self.years.each do |year|
+        courses = courses + year.get_course_objects
+      end
+
+      courses.each do |course|
+        p_module = c.find_p_module(course.parent_id)
+        
+        if p_module.nil?
+          c.add_children(course)
+        
+        else
+          p_module.add_children(course)
+        end
+      end
+      results = c.check
+      create_constraint_exceptions(results)
+      self.check
+    else
     end
-    results = c.check
-    create_constraint_exceptions(results)
-    return results
   end
 
   def can_justify?
@@ -252,7 +269,7 @@ private
   def create_constraint_exceptions(results)
     results.each do |result|
       p result.class
-      case result.class
+      case result.class.name
         when "ConstraintsChecker::Constraints::Prerequisite"
           entity = Constraint.find(result.id)
           type = "Prerequisite"
@@ -273,7 +290,7 @@ private
           entity = Constraint.find(result.id)
           type = "OrCorequisite"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
-        when ConstraintsChecker::Constraints::XorCorequisite
+        when "ConstraintsChecker::Constraints::XorCorequisite"
           entity = Constraint.find(result.id)
           type = "XorCorequisite"
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
@@ -283,13 +300,14 @@ private
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::MandatoryCourse"
         when "ConstraintsChecker::Constraints::Min"
-          if result.target.class.eql? "ConstraintsChecker::Catalog"
+          p "coucou"
+          if result.target.class.name.eql? "ConstraintsChecker::Catalog"
             entity = self.program
             type = "Min"
             self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
           end
         when "ConstraintsChecker::Constraints::Max"
-          if result.target.class.eql? "ConstraintsChecker::Catalog"
+          if result.target.class.name.eql? "ConstraintsChecker::Catalog"
             entity = self.program
             type = "Max"
             self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
