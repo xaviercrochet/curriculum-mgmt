@@ -1,7 +1,7 @@
 class Justification < ActiveRecord::Base
   belongs_to :student_program
   has_many :answers, dependent: :destroy
-  validates :content, presence: true
+  has_many :constraint_exceptions, dependent: :destroy
 
   scope :unread, -> {where("read = ?", false)}
   scope :read, -> {where("read = ?", true)}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140523161557) do
+ActiveRecord::Schema.define(version: 20140524093346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,13 +52,12 @@ ActiveRecord::Schema.define(version: 20140523161557) do
   add_index "catalogs", ["academic_year_id"], name: "index_catalogs_on_academic_year_id", using: :btree
 
   create_table "constraint_exceptions", force: true do |t|
+    t.integer  "justification_id"
+    t.string   "message"
     t.integer  "entity_id"
     t.string   "entity_type"
-    t.string   "message"
-    t.string   "why"
-    t.integer  "user_id"
-    t.integer  "student_program_id"
-    t.boolean  "completed",          default: false
+    t.boolean  "completed",        default: false
+    t.string   "constraint_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -194,7 +193,6 @@ ActiveRecord::Schema.define(version: 20140523161557) do
     t.integer  "catalog_id"
     t.integer  "user_id"
     t.integer  "errors_count", default: -1
-    t.boolean  "checked",      default: false
   end
 
   add_index "student_programs", ["catalog_id"], name: "index_student_programs_on_catalog_id", using: :btree

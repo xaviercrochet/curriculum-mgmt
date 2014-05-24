@@ -38,6 +38,9 @@ class StudentProgram < ActiveRecord::Base
 
 
   def check_constraints
+    if self.justification.nil?
+      self.create_justification
+    end
     c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
     c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
     c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
@@ -68,9 +71,11 @@ class StudentProgram < ActiveRecord::Base
         p_module.add_children(course)
       end
     end
-    
-    return c.check
+    results = c.check
+    create_constraint_exceptions(results)
+    return results
   end
+
   def can_justify?
     self.errors_count > 0
   end
@@ -243,6 +248,58 @@ class StudentProgram < ActiveRecord::Base
     self.validated or self.validation_request_already_sent
   end
 private
+  
+  def create_constraint_exceptions(results)
+    results.each do |result|
+      p result.class
+      case result.class
+        when "ConstraintsChecker::Constraints::Prerequisite"
+          entity = Constraint.find(result.id)
+          type = "Prerequisite"
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+        when "ConstraintsChecker::Constraints::Corequisite"
+          entity = Constraint.find(result.id)
+          type = "Corequisite"
+          self.justification.constraint_exceptions.create(entity:entity, constraint_type: type)
+        when "ConstraintsChecker::Constraints::OrPrerequisite"
+          entity = Constraint.find(result.id)
+          type = "OrPrerequisite"
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+        when "ConstraintsChecker::Constraints::XorPrerequisite"
+          entity = Constraint.find(result.id)
+          type = "XorPrerequisite"
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+        when "ConstraintsChecker::Constraints::OrCorequisite"
+          entity = Constraint.find(result.id)
+          type = "OrCorequisite"
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+        when ConstraintsChecker::Constraints::XorCorequisite
+          entity = Constraint.find(result.id)
+          type = "XorCorequisite"
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+        when "ConstraintsChecker::Constraints::Mandatory"
+          entity = PModule.find(result.target.id)
+          type = "MandatoryModule"
+          self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+        when "ConstraintsChecker::Constraints::MandatoryCourse"
+        when "ConstraintsChecker::Constraints::Min"
+          if result.target.class.eql? "ConstraintsChecker::Catalog"
+            entity = self.program
+            type = "Min"
+            self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+          end
+        when "ConstraintsChecker::Constraints::Max"
+          if result.target.class.eql? "ConstraintsChecker::Catalog"
+            entity = self.program
+            type = "Max"
+            self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
+          end
+      end
+    end
+
+  end
+
+
   def self.percentage(value1, value2)
     result = (value1.to_f / value2.to_f) * 100
     if result > 100
