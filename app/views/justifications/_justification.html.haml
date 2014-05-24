@@ -1,12 +1,17 @@
 .panel.panel-default
   .panel-heading
     .text-center
-      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#"+id.to_s}
-        = justification.student_program.user.email
+      - if current_user.admin?
+        %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#"+id.to_s}
+          = justification.student_program.user.email
+      - else
+        %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#"+id.to_s}
+          Messages
   .panel-collapse.collapse{:id => id}
     .panel-body
       %p
         = simple_format(justification.content)
+      / = render justification.constraint_exceptions
       = render 'answers', answers: justification.answers
       = render 'new_answer', justification: justification, answer: answer
 
