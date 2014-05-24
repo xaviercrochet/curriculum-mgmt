@@ -11,12 +11,7 @@ class Semester < ActiveRecord::Base
   end
 
   def course_present?(course)
-    self.courses.each do |c|
-      if course.name.eql? c.name
-        return true
-      end
-    end
-    return false
+    self.courses.where(id: course.id).count > 0
   end
 
   def get_courses_objects_for_migrated_program(program, start_year, end_year)
