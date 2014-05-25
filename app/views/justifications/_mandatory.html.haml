@@ -11,7 +11,7 @@
     - else
       %strong
         Les cours obligatoires du module
-          = exception.entity.name
+        = exception.entity.name
         ne sont pas présents
         %br/
       = render 'courses', courses: exception.entity.courses, type: "Cours obligatoires", student_program: student_program
