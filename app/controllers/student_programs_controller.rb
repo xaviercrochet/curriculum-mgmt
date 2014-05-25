@@ -29,6 +29,7 @@ class StudentProgramsController < ApplicationController
     @student_program = current_user.student_programs.create
     @student_program.program = @program
     @student_program.save
+    @student_program.create_justification
     redirect_to @student_program
   end
 
