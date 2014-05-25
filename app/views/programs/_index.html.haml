@@ -13,6 +13,9 @@
         .panel.panel-heading
           %a{"data-parent" => "main", "data-toggle" => "collapse", :href => "#program_"+i.to_s}
             = p.name
+            .pull-right
+              = link_to p do
+                %span.glyphicon.glyphicon-zoom-in
         .panel-collapse.collapse{id: "program_"+i.to_s}
           - if p.p_modules.count  > 0
             .panel.panel-default

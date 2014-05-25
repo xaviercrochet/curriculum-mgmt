@@ -8,42 +8,17 @@
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la page précédente
     .panel-body
-      %table.table-bordered.table-centered.text-center
+      %table.table.table-bordered.table-striped
         %thead
           %tr
-            %th NOM
-            %th CREDITS
-            %th MIN
-            %th MAX
+            %th.text-center NOM
+            %th.text-center Crédits MIN
+            %th.text-center Crédits MAX
         %tbody
           %tr
-            %td
+            %td.text-center
               = @program.name
-            %td
-              = @program.credits
-            %td
+            %td.text-center
               = @program.min
-            %td
+            %td.text-center
               = @program.max
-      %br
-      #menu.panel-group
-        .panel.panel-default
-          .panel-heading
-            .text-heading.text-center
-              %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#collapseMenu"}
-                MENU
-          #collapseMenu.panel-collapse.collapse
-            .panel-body
-              
-
-              %ul.nav.nav-pills.nav-stacked
-                %li
-                  = link_to program_p_modules_path(@program) do
-                    = content_tag(:label, "Modules")
-                    %span.badge.pull-right
-                      = @program.p_modules.without_parent.count
-                %li
-                  = link_to program_courses_path(@program) do
-                    = content_tag(:label, "Cours")
-                    %span.badge.pull-right
-                      = @program.courses.count

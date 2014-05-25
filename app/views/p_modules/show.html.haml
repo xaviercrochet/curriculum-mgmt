@@ -8,46 +8,20 @@
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la page précédente
     .panel-body
-      %table.table-bordered.table-centered.text-center
+      %table.table.table-striped.table-bordered
         %thead
           %tr
-            %th NOM
-            %th CREDITS
-            %th MIN
-            %th MAX
-            %th OBLIGATOIRE
+            %th.text-center NOM
+            %th.text-center Crédits MIN
+            %th.text-center Crédits MAX
+            %th.text-center OBLIGATOIRE?
         %tbody
-          %tr
+          %tr.text-center
             %td
               = @p_module.name
-            %td
-              = @p_module.credits
             %td
               = @p_module.min
             %td
               = @p_module.max
             %td
               = @p_module.mandatory
-
-      %br
-      #menu.panel-group
-        .panel.panel-default
-          .panel-heading
-            .text-heading.text-center
-              %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#collapseMenu"}
-                MENU
-          #collapseMenu.panel-collapse.collapse
-            .panel-body
-              
-
-              %ul.nav.nav-pills.nav-stacked
-                %li
-                  = link_to p_module_p_modules_path(@p_module) do
-                    = content_tag(:label, "Modules")
-                    %span.badge.pull-right
-                      = @p_module.sub_modules.count
-                %li
-                  = link_to p_module_courses_path(@p_module) do
-                    = content_tag(:label, "Cours")
-                    %span.badge.pull-right
-                      = @p_module.courses.count
