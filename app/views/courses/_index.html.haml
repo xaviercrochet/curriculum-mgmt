@@ -1,11 +1,13 @@
 
-%table.table.table-bordered
+%table.table.table-bordered.table-stripped
   %thead
     %tr
-      %th.text-center SIGLE
-      %th.text-center CRÉDITS
+      %th.text-center Sigle
+      %th.text-center Infos
     %tbody
       - courses.each do |c|
         %tr
-          %td.text-center= link_to c.name, c, class: "btn btn-primary btn-block"
-          %td.text-center= c.credits
+          %td.text-center= c.name
+          %td.text-center
+            = link_to c do
+              %span.glyphicon.glyphicon-zoom-in

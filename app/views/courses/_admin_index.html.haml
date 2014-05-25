@@ -2,10 +2,17 @@
 %table.table.table-bordered
   %thead
     %tr
-      %th.text-center SIGLE 
-      %th
+      %th.text-center Sigle
+      %th.text-center Infos
+      %th.text-center Supprimer
     %tbody
       - courses.each do |c|
         %tr
-          %td= link_to c.name, c, class: "btn btn-primary btn-block"
-          %td= link_to 'Supprimer', c, method: :delete, data: { confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"
+          %td.text-center
+            = c.name
+          %td.text-center
+            = link_to c do
+              %span.glyphicon.glyphicon-zoom-in
+          %td.text-center
+            = link_to c, method: :delete, data: { confirm: 'Are you sure?'} do
+              %span.glyphicon.glyphicon-remove{style: 'color: red;'}

@@ -6,9 +6,9 @@
         = p.name
         .pull-right
           = link_to p, method: :delete, data:{confirm: 'Are you sure?'} do
-            %span.label.label-danger
-              %span.glyphicon.glyphicon-remove
-
+            %span.glyphicon.glyphicon-remove{style: 'color: red;'}
+          = link_to p do
+            %span.glyphicon.glyphicon-zoom-in
     .panel-collapse.collapse{id: id+"program_"+i.to_s}
       - if p.p_modules.count > 0
         .panel.panel-default
