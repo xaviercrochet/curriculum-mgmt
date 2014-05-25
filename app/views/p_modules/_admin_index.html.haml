@@ -1,0 +1,30 @@
+- i = 0
+- p_modules.each do |p|
+  .panel.panel-default
+    .panel-heading
+      %a{"data-parent" => "#"+id, "data-toggle" => "collapse", :href => "#"+id+"module_"+i.to_s}
+        = p.name
+        .pull-right
+          = link_to p, method: :delete, data:{confirm: 'Are you sure?'} do
+            %span.label.label-danger
+              %span.glyphicon.glyphicon-remove
+    .panel-collapse.collapse{id: id+"module_"+i.to_s}
+      - if p.sub_modules.count > 0
+        .panel.panel-default
+          .panel-heading
+            %a{"data-parent" => "#"+id+"module_"+i.to_s, "data-toggle" => "collapse", :href => "#"+id+"module_"+i.to_s+"_sub_modules"}
+              Sous-Modules
+              %span.badge.pull-right
+                = p.sub_modules.count
+          .panel-collapse.collapse{id: id+"module_"+i.to_s+"_sub_modules"}
+            = render 'p_modules/admin_index', p_modules: p.sub_modules, id: id+"module_"+i.to_s+"_sub_modules"
+      - if p.courses.count > 0
+        .panel.panel-default
+          .panel-heading
+            %a{"data-parent" => "#"+id+"module_"+i.to_s, "data-toggle" => "collapse", :href => "#"+id+"module_"+i.to_s+"_courses"}
+              Cours
+              %span.badge.pull-right
+                = p.courses.count
+          .panel-collapse.collapse{id: id+"module_"+i.to_s+"_courses"}
+            = render 'courses/admin_index', courses: p.courses, id: id+"module_"+i.to_s
+  - i += 1

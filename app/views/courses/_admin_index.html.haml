@@ -1,19 +1,11 @@
-%h2
-  .text-center
-    Cours
-.panel.panel-default
-  .panel-heading.text-center
-    = link_to polymorphic_url(context) do
-      %span.glyphicon.glyphicon-chevron-left
-      Retour vers la page précédente
-  .panel-body
-    %table.table.table-bordered
-      %thead
+
+%table.table.table-bordered
+  %thead
+    %tr
+      %th.text-center SIGLE 
+      %th
+    %tbody
+      - courses.each do |c|
         %tr
-          %th.text-center SIGLE 
-          %th
-        %tbody
-          - courses.each do |c|
-            %tr
-              %td= link_to c.name, c, class: "btn btn-primary btn-block"
-              %td= link_to 'Supprimer', c, method: :delete, data: { confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"
+          %td= link_to c.name, c, class: "btn btn-primary btn-block"
+          %td= link_to 'Supprimer', c, method: :delete, data: { confirm: 'Are you sure?'}, class: "btn btn-primary btn-block"

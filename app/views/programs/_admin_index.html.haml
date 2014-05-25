@@ -1,21 +1,37 @@
-%h2
-  .text-center
-    Programmes
-.panel.panel-default
-  .panel-heading.text-center
-    = link_to 'Nouveau Programme', new_catalog_program_path, class: "btn btn-primary btn-lg btn-block"
-  .panel-heading.text-center
-    = link_to catalog do
-      %span.glyphicon.glyphicon-chevron-left
-        Retour vers la page précédente
-  .panel-body
-    %table.table.table-bordered
-      %thead
-        %tr
-          %th.text-center NOM 
-          %th
-      %tbody
-        - programs.each do |p|
-          %tr
-            %td= link_to p.name, p, class: "btn btn-primary btn-block"
-            %td= link_to 'Supprimer', p, method: :delete, data: { confirm: "Êtes vous sûr?"}, class: "btn btn-primary btn-block"
+-i = 0
+- programs.each do |p|
+  .panel.panel-default
+    .panel-heading
+      %a{"data-parent" => "#"+id, "data-toggle" => "collapse", :href => "#"+id+"program_"+i.to_s}
+        = p.name
+        .pull-right
+          = link_to p, method: :delete, data:{confirm: 'Are you sure?'} do
+            %span.label.label-danger
+              %span.glyphicon.glyphicon-remove
+
+    .panel-collapse.collapse{id: id+"program_"+i.to_s}
+      - if p.p_modules.count > 0
+        .panel.panel-default
+          .panel-heading
+            %a{"data-parent" => "#"+id+"program_"+i.to_s, "data-toggle" => "collapse", :href => "#"+id+"program_"+i.to_s+"_modules"}
+              Modules
+              %span.badge.pull-right
+                = p.p_modules.count
+          .panel-collapse.collapse{id: id+"program_"+i.to_s+"_modules"}
+            = render 'p_modules/admin_index', p_modules: p.p_modules, id: id+"program_"+i.to_s+"_modules"
+      - if p.courses.count > 0
+        .panel.panel-default
+          .panel-heading
+            %a{"data-parent" => "#"+id+"program_"+i.to_s, "data-toggle" => "collapse", :href => "#"+id+"program_"+i.to_s+"_courses"}
+              Cours
+              %span.badge.pull-right
+                = p.courses.count
+          .panel-collapse.collapse{id: id+"program_"+i.to_s+"_courses"}
+            = render 'courses/admin_index', courses: p.courses, id: id+"program_"+i.to_s+"_courses"
+
+
+  - i += 1
+
+
+
+= link_to 'Nouveau Programme', new_catalog_program_path(catalog), class: "btn btn-primary btn-lg btn-block"

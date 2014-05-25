@@ -1,4 +1,4 @@
-.col-md-8.col-md-offset-2
+.col-md-10.col-md-offset-1
 	.panel.panel-default
 		.panel-heading.text-center
 			Nom:
@@ -44,23 +44,51 @@
 			.text-center
 				Menu
 		.panel-body
-			%ul.nav.nav-pills.nav-stacked
-				%li
-					= link_to catalog_programs_path(@catalog) do
-						= content_tag(:label, "Programmes")
-						%span.badge.pull-right
-							= @catalog.programs.count
+			.panel.panel-default
+				.panel-heading
+					.text-heading.text-center
+						%a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#programs"}
+							Programmes
+							%span.badge.pull-right
+								= @catalog.programs.count
+				#programs.panel-collapse.collapse
+					= render 'programs/admin_index', programs: @catalog.programs, id: "programs", catalog: @catalog
+			.panel.panel-default
+				.panel-heading
+					.text-heading.text-center
+						%a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#modules"}
+							Modules
+							%span.badge.pull-right
+								= @catalog.p_modules.without_parent.count
+				#modules.panel-collapse.collapse
+					= render 'p_modules/admin_index', p_modules: @catalog.p_modules.without_parent, id: "modules"
+			.panel.panel-default
+				.panel-heading
+					.text-heading.text-center
+						%a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#courses"}
+							Cours
+							%span.badge.pull-right
+								= @catalog.courses.count
+				#courses.panel-collapse.collapse
+					= render 'courses/admin_index', courses: @catalog.courses, id: "courses"
 
-				%li
-					= link_to catalog_p_modules_path(@catalog) do
-						= content_tag(:label, "Modules")
-						%span.badge.pull-right
-							= @catalog.p_modules.without_parent.count
-				%li
-					= link_to catalog_courses_path(@catalog) do
-						= content_tag(:label, "Cours")
-						%span.badge.pull-right
-							= @catalog.courses.count
+			/ %ul.nav.nav-pills.nav-stacked
+			/ 	%li
+			/ 		= link_to catalog_programs_path(@catalog) do
+			/ 			= content_tag(:label, "Programmes")
+			/ 			%span.badge.pull-right
+			/ 				= @catalog.programs.count
+
+			/ 	%li
+			/ 		= link_to catalog_p_modules_path(@catalog) do
+			/ 			= content_tag(:label, "Modules")
+			/ 			%span.badge.pull-right
+			/ 				= @catalog.p_modules.without_parent.count
+			/ 	%li
+			/ 		= link_to catalog_courses_path(@catalog) do
+			/ 			= content_tag(:label, "Cours")
+			/ 			%span.badge.pull-right
+			/ 				= @catalog.courses.count
 
 				
 
