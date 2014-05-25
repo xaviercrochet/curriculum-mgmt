@@ -1,0 +1,4 @@
+- if ! notice.nil?
+  .alert.alert-info.alert-dismissable
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+    #notice= notice

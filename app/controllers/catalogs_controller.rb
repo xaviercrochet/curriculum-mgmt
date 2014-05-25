@@ -41,6 +41,7 @@ class CatalogsController < ApplicationController
 		if ! params[:catalog].nil?
 			@catalog.update(catalog_params)
 			@catalog.parse_ss
+			flash[:notice] = "Votre fichier excel a été correctement importé"
 		end
 		redirect_to @catalog
 	end
