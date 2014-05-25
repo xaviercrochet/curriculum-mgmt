@@ -3,6 +3,15 @@ class StudentProgramsController < ApplicationController
   load_and_authorize_resource
 
   def new
+    if current_user.catalog.nil?
+      catalog = Catalog.main.first
+      if catalog.nil?
+        catalog = Catalog.old.first
+      end
+      current_user.catalog = catalog
+      current_user.save
+    end
+
     @catalog = current_user.catalog
     current_user.student_programs.new
   end
