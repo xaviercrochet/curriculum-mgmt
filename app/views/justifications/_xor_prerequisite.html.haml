@@ -1,5 +1,12 @@
 %tr
   %td.text-center
+    = i
+  %td
+    %strong
+      Le prérequis (XOR) du cours
+      = exception.entity.course.name
+      n'est pas valide
+      %br/
     = render 'courses', courses: exception.entity.courses, type: "Prérequis disjonctif exclusif(XOR)", student_program: student_program
   %td.text-center
     - if exception.message.nil? or exception.message.eql? ""

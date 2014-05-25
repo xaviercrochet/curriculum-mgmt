@@ -1,2 +1,4 @@
+- i = 1
 - constraint_exceptions.each do |exception|
-  = render_constraint(exception, student_program)
+  = render_constraint(exception, student_program, i)
+  - i += 1

@@ -1,10 +1,19 @@
 %tr
   %td.text-center
+    = i
+  %td
     - if exception.entity.class.name.eql? "Course"
-      Le cours obligatoire
-      = exception.entity.name
-      n'est pas présent dans votre programme
+      %strong
+        Le cours obligatoire
+        = exception.entity.name
+        n'est pas présent dans votre programme
+        %br/
     - else
+      %strong
+        Les cours obligatoires du module
+          = exception.entity.name
+        ne sont pas présents
+        %br/
       = render 'courses', courses: exception.entity.courses, type: "Cours obligatoires", student_program: student_program
   %td.text-center
     - if exception.message.nil? or exception.message.eql? ""
