@@ -5,21 +5,29 @@
 	.panel-heading
 		
 	.panel-body
-		%table.table.table-striped
+		%table.table.table-striped.table-bordered
 			%thead
 				%tr
 					%th.text-center Nom
 					%th.text-center Année académique
 					%th.text-center Version
-					%th 
-					%th
+					%th.text-center Infos
+					%th.text-center Supprimer
 			%tbody
 				- @catalogs.each do |c|
 					%tr
-						%td.text-center= c.name
-						%td.text-center= c.academic_year.name
-						%td.text-center= c.status
-						%td= link_to 'Plus d\'informations', c, class: "btn btn-primary btn-block"
-						%td= link_to 'Supprimer', c, method: :delete, data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-primary btn-block"
+						%td.text-center
+							= c.name
+						%td.text-center
+							= c.academic_year.name
+						%td.text-center
+							= c.status
+						%td.text-center
+							= link_to c do
+								%span.glyphicon.glyphicon-zoom-in
+						%td.text-center
+							= link_to c, method: :delete, data: {confirm: 'Êtes vous sûr?'} do
+								%span.glyphicon.glyphicon-remove{style: 'color: red;'}
+
 		= link_to 'Créer un nouveau catalogue', new_catalog_path, class: "btn btn-primary btn-lg btn-block"
 
