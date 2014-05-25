@@ -1,7 +1,27 @@
-- years.each do |c|
-  .btn-group.btn-group-justified 
-    = link_to c.academic_year.name, c, class: "btn btn-primary btn-block"
-    = link_to "Modifier", edit_year_path(c), class: "btn btn-primary btn-block", disabled: (c.passed? or c.failed?)
-    = link_to "Supprimer", c, method: :delete, data: {confirm: 'Êtes vous sûr?'}, class: "btn btn-danger btn-block", disabled: (c.passed? or c.failed?)
+%table.table.table-bordered.table-striped
+  %tbody
+    %tr
+      %th.text-center
+        Année acédémique
+      %th.text-center
+        Infos
+      %th.text-center
+        Modifier
+      %th.text-center
+        Supprimer
+  %tbody
+  - years.each do |c|
+    %tr
+      %td.text-center
+        = c.academic_year.name
+      %td.text-center
+        = link_to c do
+          %span.glyphicon.glyphicon-zoom-in
+      %td.text-center
+        = link_to edit_year_path(c) do
+          %span.glyphicon.glyphicon-wrench
+      %td.text-center
+        = link_to c, method: :delete, data: {confirm: 'Êtes vous sûr?'}, disabled: (c.passed? or c.failed?) do
+          %span.glyphicon.glyphicon-remove{style: 'color: red;  '}
 
 = link_to 'Ajouter une nouvelle année', new_student_program_year_path(@student_program), class: "btn btn-default btn-block"

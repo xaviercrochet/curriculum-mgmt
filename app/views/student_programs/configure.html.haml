@@ -7,12 +7,12 @@
           Retour vers la page précédente
     .panel-body
       %ul.nav.nav-tabs
-        %li.active
-          %a{"data-toggle" => "tab", :href => "#module"} Configuration des modules
         %li.pull-right
+          %a{"data-toggle" => "tab", :href => "#module"} Configuration des modules
+        %li.active
           %a{"data-toggle" => "tab", :href => "#year"} Configuration des années
       .tab-content
-        #module.tab-pane.active
-          = render 'modules', student_program: @student_program
-        #year.tab-pane
+        #module.tab-pane
+          = render 'modules', student_program: @student_program, id: "module"
+        #year.tab-pane.active
           = render 'years', years: @student_program.years

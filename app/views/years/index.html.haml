@@ -7,7 +7,6 @@
         %span.glyphicon.glyphicon-chevron-left
           Retour vers la page précédente
     .panel-body
-      / repalce with property to identify year
       - @years.each do |c|
         .btn-group.btn-group-justified 
           = link_to years.academic_year.name+" - Plus d'infos", c, class: "btn btn-primary btn-block"
