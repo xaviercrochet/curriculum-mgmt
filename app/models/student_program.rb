@@ -88,6 +88,10 @@ class StudentProgram < ActiveRecord::Base
     return results
   end
 
+  def can_update?
+    self.find_updated_programs.size > 0
+  end
+
 
   def check_constraints
 
