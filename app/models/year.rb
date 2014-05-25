@@ -36,6 +36,16 @@ class Year < ActiveRecord::Base
     self.save 
   end
 
+  def status_name
+    if self.status.eql? 2
+      return 'Réussie'
+    elsif self.status.eql? 1
+      return 'Ratée'
+    else
+      return 'En cours'
+    end
+  end 
+
   def fail
     self.status = 1
     self.save

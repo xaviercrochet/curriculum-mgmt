@@ -7,4 +7,32 @@
     Programme de l'étudiant
     = student_program.user.email
   .panel.panel-body
+    %ul.nav.nav-tabs
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#year"} Années
+      %li
+        %a{"data-toggle" => "tab", :href => "#status"} Statut
+      %li
+        %a{"data-toggle" => "tab", :href => "#module"} Modules suivis
+    .tab-content
+      #year.tab-pane.active
+        = render 'admin_years', years: student_program.years
+      #module.tab-pane
+        %table.table.table-striped
+          %thead
+            %tr
+              %th.text-center #
+              %th.text-center
+                Nom
+          %tbody
+            - i = 0
+            - student_program.p_modules.each do |m|
+              %tr
+                %td.text-center
+                  = i
+                %td.text-center
+                  = m.name
+              - i += 1
+      #status.tab-pane
+        = render 'admin_status', student_program: student_program
     

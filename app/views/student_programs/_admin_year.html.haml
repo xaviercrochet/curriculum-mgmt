@@ -1,0 +1,38 @@
+%ul.nav.nav-tabs
+  %li.active
+    %a{"data-toggle" => "tab", :href => "#"+id.to_s+"first_semester"} Premier Quadri
+  %li.pull-right
+    %a{"data-toggle" => "tab", :href => "#"+id.to_s+"second_semester"} Second Quadri
+.tab-content
+  .tab-pane.active{id: id.to_s+"first_semester"}
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th.text-center
+            Nom
+          %th.text-center
+            Crédits
+      %tbody
+      - year.first_semester.courses.each do |course|
+        %tr
+          %td.text-center
+            = course.name
+          %td.text-center
+            = course.credits
+
+
+  .tab-pane{id: id.to_s+"second_semester"}
+    %table.table.table-bordered.table-striped
+      %thead
+        %tr
+          %th.text-center
+            Nom
+          %th.text-center
+            Crédits
+      %tbody
+      - year.second_semester.courses.each do |course|
+        %tr
+          %td.text-center
+            = course.name
+          %td.text-center
+            = course.credits

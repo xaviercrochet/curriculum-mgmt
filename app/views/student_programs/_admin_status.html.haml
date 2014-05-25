@@ -1,0 +1,29 @@
+.panel.panel-default
+  .panel-heading.text-center
+    .row
+      .col-md-4
+        Crédits:
+        .badge
+          = student_program.count_credits
+      .col-md-4
+        Minimum:
+        .label.label-success 
+          = student_program.program.min
+      .col-md-4
+        Maximum:
+        .label.label-danger
+          = student_program.program.max
+  .panel-body
+    - percentages = student_program.credits_percentages
+
+    = render 'status_messages', percentages: percentages
+    
+    .progress
+      .progress-bar.progress-bar-success{"aria-valuemax" => student_program.program.min, "aria-valuemin" => "0", "aria-valuenow" => student_program.count_credits, :role => "progressbar", :style => "width:"+percentages[:min].to_s+"%;"}
+        = student_program.count_credits
+        \/
+        = student_program.program.min.to_s
+        crédits
+      .progress-bar.progress-bar-warning{"aria-valuemax" => student_program.program.max, "aria-valuemin" => "0", "aria-valuenow" => student_program.count_credits, :role => "progressbar", :style => "width:"+percentages[:max].to_s+"%;"}
+
+      .progress-bar.progress-bar-danger{"aria-valuemax" => student_program.program.max+student_program.program.min, "aria-valuemin" => "0", "aria-valuenow" => student_program.count_credits, :role => "progressbar", :style => "width:"+percentages[:overflow].to_s+"%;"}

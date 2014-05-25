@@ -1,0 +1,14 @@
+- i = 0
+- years.each do |year|
+  - i += 1
+  .panel.panel-default
+    .panel-heading
+      .text-heading.text-center
+        %a{"data-parent" => "#main", "data-toggle" => "collapse", :href => "#"+i.to_s}
+          = year.academic_year.name
+          (
+          = year.status_name
+          )
+    .panel-collapse.collapse{id: i}
+      = render 'admin_year', year:year, id: i
+  
