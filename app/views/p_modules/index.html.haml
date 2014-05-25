@@ -2,5 +2,5 @@
 	- if current_user.admin?
 		= render "admin_index", modules: @p_modules, context: @context
 	- else	
-		= render "index", modules: @p_modules, context: @context
+		= render "index", p_modules: @p_modules, context: @context
 
