@@ -36,8 +36,7 @@ class JustificationsController < ApplicationController
     @justification.check_and_mark_constraint_exceptions
     if @justification.errors.any?
       @student_program = @justification.student_program
-      p @justification.errors
-      render action: :edit
+      rerdirect_to @justification.student_program
     else
       @justification.student_program.check
       redirect_to @justification.student_program

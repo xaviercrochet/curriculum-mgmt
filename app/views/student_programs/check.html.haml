@@ -50,6 +50,7 @@
   .panel-body
     .form
       = form_for @justification do |ff|
+        = ff.hidden_field :read
         = render 'student_programs/check/constraints_header',  id: "mandatory", name: "Cours obligatoires manquants", exceptions: @justification.constraint_exceptions.mandatory, student_program: @student_program, f: ff
         = render 'student_programs/check/constraints_header', id: "pre", name: "Prérequis manquants", exceptions: @justification.constraint_exceptions.prerequisite, student_program: @student_program, f: ff
         = render 'student_programs/check/constraints_header',  id: "co", name: "Corequis manquants", exceptions: @justification.constraint_exceptions.corequisite, student_program: @student_program, f: ff
