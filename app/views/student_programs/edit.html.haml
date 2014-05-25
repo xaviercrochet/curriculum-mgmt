@@ -3,7 +3,7 @@
     .panel-heading.text-center
 
     .panel-body
-      - if  @student_program.can_update?
+      - if  @student_program.can_migrate?
         .form-horizontal
           = form_for @student_program, url: student_program_student_program_update_program_path(@student_program) do |f|
             .form-group
