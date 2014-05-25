@@ -25,7 +25,7 @@ class YearsController < ApplicationController
     
     @student_program.uncheck
     @student_program.devalidate
-    redirect_to @year
+    redirect_to @year.student_program
   end
 
   def pass
@@ -57,7 +57,7 @@ class YearsController < ApplicationController
       @year.update(year_params)
       @year.student_program.devalidate
       @year.student_program.uncheck
-      redirect_to student_program_student_program_configure_path(@year.student_program)
+      redirect_to @year.student_program
     end
   end
 
