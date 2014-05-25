@@ -1,17 +1,26 @@
-%h2
-  .text-center
-    Modules
-.panel.panel-default
-  .panel-heading.text-center
-    = link_to :back do
-      %span.glyphicon.glyphicon-chevron-left
-      Retour vers la page précédente
-  .panel-body
-    %table.table.table-bordered
-      %thead
-        %tr
-          %th.text-center NOM
-      %tbody
-        - p_modules.each do |p|
-          %tr
-            %td= link_to p.name, p, class: "btn btn-primary btn-block"
+- i = 0
+- p_modules.each do |p|
+  .panel.panel-default
+    .panel-heading
+      %a{"data-parent" => "#"+id, "data-toggle" => "collapse", :href => "#"+id+"_module_"+i.to_s}
+        = p.name
+    .panel-collapse.collapse{id: id+"_module_"+i.to_s}
+      - if p.sub_modules.count > 0
+        .panel.panel-default
+          .panel-heading
+            %a{"data-parent" => "#"+id+"_module_"+i.to_s, "data-toggle" => "collapse", :href => "#"+id+"_module_"+i.to_s+"_sub_module"}
+              Sous Modules
+              %span.badge.pull-right
+                = p.sub_modules.count
+          .panel-collapse.collapse{id: id+"_module_"+i.to_s+"_sub_module"}
+            = render 'p_modules/index', p_modules: p.sub_modules, id: id+"_module_"+i.to_s+"_sub_module"
+      - if p.courses.count > 0
+        .panel.panel-default
+          .panel-heading
+            %a{"data-parent" => "#"+id+"_module_"+i.to_s, "data-toggle" => "collapse", :href => "#"+id+"_module_"+i.to_s+"_courses"}
+              Cours
+              %span.badge.pull-right
+                = p.courses.count
+          .panel-collapse.collapse{id: id+"_module_"+i.to_s+"_courses"}
+            = render 'courses/index', courses: p.courses, id: id+"_module_"+i.to_s+"_courses" 
+  - i += 1
