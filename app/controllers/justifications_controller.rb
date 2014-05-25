@@ -32,6 +32,7 @@ class JustificationsController < ApplicationController
   def update
     @justification = Justification.find(params[:id])
     @justification.update(justification_params)
+    @justification.update(read: false)
     @justification.check_and_mark_constraint_exceptions
     if @justification.errors.any?
       @student_program = @justification.student_program
