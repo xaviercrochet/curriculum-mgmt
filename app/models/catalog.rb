@@ -31,7 +31,7 @@ class Catalog < ActiveRecord::Base
 	def find_program(name)
 		results = []
 		self.programs.each do |program|
-			if program.name.eql? name
+			if program.name.include? name
 				results << program
 			end
 		end
