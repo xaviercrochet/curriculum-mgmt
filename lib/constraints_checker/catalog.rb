@@ -25,11 +25,11 @@ module ConstraintsChecker
     end
 
     def find_course(id)
-      self.find_children(id, "ConstraintsChecker::Entities::Course")
+      self.find_children(id, ConstraintsChecker::Entities::Course.name)
     end
 
     def find_p_module(id)
-      self.find_children(id, "ConstraintsChecker::Entities::PModule")
+      self.find_children(id, ConstraintsChecker::Entities::PModule.name)
     end
 
 

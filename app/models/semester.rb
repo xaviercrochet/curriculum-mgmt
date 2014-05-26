@@ -44,6 +44,8 @@ class Semester < ActiveRecord::Base
         new_courses << new_course
       end
     end
+
+    self.courses = new_courses
     return courses_not_found
   end
 

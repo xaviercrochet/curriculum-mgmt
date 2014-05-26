@@ -31,7 +31,7 @@ describe ConstraintsChecker::Entity do
 		entity.add_constraint(constraint1)
 		entity.add_constraints([constraint3, constraint2])
 
-		
+
 		expect(course1.find_course(course3.id).id).to be == course3.id
 		expect(course1.find_course(course1.id).id).to be == '1'
 		expect(course1.find_course(entity.id)).to be_nil

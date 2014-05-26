@@ -21,24 +21,3 @@
           = render "constraint_exceptions", constraint_exceptions: justification.constraint_exceptions, student_program: justification.student_program
       = render 'answers', answers: justification.answers
       = render 'new_answer', justification: justification, answer: answer
-
-/ .panel-body
-/   .row
-/     .col-md-3
-/       %div{:style => "float:left"}
-/         %button{"data-target" => "#"+id.to_s, "data-toggle" => "collapse"}
-/           = justification.student_program.user.email
-/   .row
-/     .col-md-9.col-md-offset-3
-/       .collapse.width{:style => "height:500px", :id => id}
-/         .panel.panel-default
-/           .panel-heading.text-center
-/             Envoyé à 
-/             = justification.updated_at
-/           .panel-body
-/             %p
-/               = justification.content
-/             = render 'answers', answers: justification.answers
-/             = render 'new_answer', justification: justification, answer: answer
-
-

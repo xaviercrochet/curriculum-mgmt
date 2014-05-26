@@ -20,8 +20,7 @@ module ConstraintsChecker
       end
 
       def find_course(course_id)
-        p course_id.to_s
-        return search(course_id, ConstraintsChecker::Entities::Course.name)
+        return search(course_id, self.class.name)
       end
     end
   end

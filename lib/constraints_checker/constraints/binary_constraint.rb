@@ -28,8 +28,6 @@ module ConstraintsChecker
         if result.nil?
           @logs =  {prerequisites_missing: [self.target_id]}
           return false
-        # elsif ! result.passed
-        #   return {prerequisites_not_passed: [self.target_id]}
         else
           if course.compare(result).eql? 1
             return true
