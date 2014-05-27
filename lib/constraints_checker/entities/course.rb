@@ -3,6 +3,10 @@ module ConstraintsChecker
   module Entities
     class Course < Entity
 
+      def initialize(properties)
+        super(properties)
+      end
+
 
       # compare academic year of courses.
       def compare(course)
@@ -20,7 +24,7 @@ module ConstraintsChecker
       end
 
       def find_course(course_id)
-        return search(course_id, self.class.name)
+        return search(course_id, ConstraintsChecker::Entities::Course.name)
       end
     end
   end

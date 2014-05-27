@@ -16,8 +16,8 @@ describe ConstraintsChecker::Constraints::PropertyConstraint do
     c4 = ConstraintsChecker::Constraints::Max.new(p_module, "42")
     expect(c1.check).to be == true
     expect(c4.check).to be == true
-    expect(c2.check).to be == {to_few_credits: "42"}
-    expect(c3.check).to be == {to_many_credits: "42"}
+    expect(c2.check).to be == false
+    expect(c3.check).to be == false
     p_module.add_constraints([c1, c2, c3, c4])
     expect(p_module.check.size).to be == 2
   end

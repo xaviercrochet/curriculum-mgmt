@@ -2,8 +2,14 @@ require_relative '../entity'
 module ConstraintsChecker
   module Entities
     class PModule < Entity
-      def find_course(id)
-        self.find_children(id, ConstraintsChecker::Entities::Course.name)
+
+      def initialize(properties)
+        super(properties)
+      end
+
+      
+      def find_course(course_id)
+        self.find_children(course_id, ConstraintsChecker::Entities::Course.name)
       end
     end
   end

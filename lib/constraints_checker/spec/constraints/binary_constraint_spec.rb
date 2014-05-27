@@ -9,7 +9,7 @@ describe ConstraintsChecker::Constraints::BinaryConstraint do
     course1 = ConstraintsChecker::Entities::Course.new(name: "course1", id: '1', passed: true, start_year: "1")
     course2 = ConstraintsChecker::Entities::Course.new(name: "course2", id: '2', passed: false, start_year: "2")
     course3 = ConstraintsChecker::Entities::Course.new(name: "course3", id: '3', start_year: "3")
-    course4 = ConstraintsChecker::Entities::Course.new(name: "course4", id: '4', start_year: "4")
+    course4 = ConstraintsChecker::Entities::Course.new(name: "course4", id: '4', start_year: "4", start_year: "0")
     
     c1 = ConstraintsChecker::Constraints::Prerequisite.new(1, course3, course1.id)
     c2 = ConstraintsChecker::Constraints::Prerequisite.new(2, course4, course2.id)
