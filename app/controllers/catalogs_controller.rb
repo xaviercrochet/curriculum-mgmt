@@ -15,7 +15,7 @@ class CatalogsController < ApplicationController
 		if @catalog.errors.any?
 			render action: :new
 		else	
-			@catalog.parse
+			@catalog.import_graph
 			redirect_to @catalog
 		end
 	end
@@ -28,19 +28,14 @@ class CatalogsController < ApplicationController
 	end
 
 	def show
-		@catalog = Catalog.includes(:academic_year).find(params[:id])
-		p @catalog.id.to_s
-		# File.open(Rails.root.join('', '',  'app/assets/javascripts/coucou.json'),  "w+") do |f|
-		# 	f.write(@catalog.to_json)
-		# end
-
+		@catalog = Catalog.includes(:academic_year, :programs, p_modules: [:courses, sub_modules: :courses]).find(params[:id])
 	end
 
 	def upload
 		@catalog = Catalog.find(params[:catalog_id])
 		if ! params[:catalog].nil?
 			@catalog.update(catalog_params)
-			@catalog.parse_ss
+			@catalog.import_catalog_data
 			flash[:notice] = "Votre fichier excel a été correctement importé"
 		end
 		redirect_to @catalog

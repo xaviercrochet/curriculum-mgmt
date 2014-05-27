@@ -99,56 +99,42 @@ class Catalog < ActiveRecord::Base
  		end
 	end
 
-	def parse
+	def import_graph
 		graph = open(self.graph_url)
 		if ! graph.nil?
 			parser = GraphParser::Parser.new(graph)
 			build(parser)
 			# filename = URI.escape("http://s3.amazonaws.com/curriculum_mgmt/spreadsheets/" + self.id.to_s + "/data.xls")
-			parser = XlsParser::XlsWriter.new("/tmp/data.xls")
-			create_spreadsheets(parser)
-			file = File.open("/tmp/data.xls")
-			update(spreadsheet: file)
-			file.close
+			export_catalog_data
 		end
 	end
 
+	def export_catalog_data
+		parser = XlsParser::XlsWriter.new("/tmp/data.xls")
+		export_data_to_spreadsheet(parser)
+		file = File.open("/tmp/data.xls")
+		self.update(spreadsheet: file)
+		file.close
+	end
 
-
-	def parse_ss
+	def import_catalog_data
 		spreadsheet = open(self.spreadsheet_url)
 		if ! spreadsheet.nil?
 			parser = XlsParser::XlsReader.new(spreadsheet)
-			parse_spreadsheets(parser)
+			import_objects_data(parser)
 		end
 	end
 
-		
-	def parse_spreadsheets(parser)
-		parse_spreadsheet(Course, "SIGLE", parser)
-		parse_spreadsheet(PModule, "NAME", parser)
-		parse_spreadsheet(Program, "NAME", parser)
-
+	def extract_data_from_spreadsheet
+		spreadsheet = open(self.spreadsheet_url)
+		if ! spreadsheet.nil?
+			parser = XlsParser::XlsReader.new(spreadsheet)
+			import_catalog_data(parser)
+		end
 	end
-
 
 	def has_programs?
 		self.programs.count > 0
-	end
-
-	def create_doc
-		if ! self.ss_filename.nil?
-			File.delete(self.ss_filename) if File.exists?(self.ss_filename)
-		end
-
-
-
-		filename = "spreadsheets/"+self.faculty+"-"+self.department+"-"+Time.now.to_formatted_s(:number)+"-data.xls"
-		self.ss_filename = filename
-		self.save
-		parser = XlsParser::XlsWriter.new(filename)
-		create_spreadsheets(parser)
-
 	end
 
 	def graph_url
@@ -159,12 +145,25 @@ class Catalog < ActiveRecord::Base
 		URI.escape("http://s3.amazonaws.com/curriculum_mgmt/spreadsheets/" + self.id.to_s + "/" +self.spreadsheet_file_name)
 	end
 
-	
+private
 
-	
+	def import_objects_data(parser)
+		import_courses_data(parser)
+		import_modules_data(parser)
+		import_programs_data(parser)
+	end
 
-	private
+	def import_courses_data(parser)
+		import_specific_object_data_from_spreadsheet(Course, "SIGLE", parser)
+	end
 
+	def import_modules_data(parser)
+		import_specific_object_data_from_spreadsheet(PModule, "NAME", parser)
+	end
+
+	def import_programs_data(parser)
+		import_specific_object_data_from_spreadsheet(Program, "NAME", parser)
+	end
 
 
 
@@ -293,7 +292,9 @@ class Catalog < ActiveRecord::Base
 		
 	end
 
-	def parse_spreadsheet(entity_model, entity_identificator, parser)
+
+
+	def import_specific_object_data_from_spreadsheet(entity_model, entity_identificator, parser)
 		entities = parser.parse_sheet(entity_model.page_name, entity_identificator.upcase)
 		if ! entities.nil?
 			update_entities_properties(entity_model, entities, entity_identificator)
@@ -316,7 +317,7 @@ class Catalog < ActiveRecord::Base
 
 
 
-	def create_spreadsheets(parser)
+	def export_data_to_spreadsheet(parser)
 		program_header = Program.header
 		course_header = Course.header
 		module_header = PModule.header
@@ -324,11 +325,6 @@ class Catalog < ActiveRecord::Base
 
 		parser.create_spreadsheet(course_header, entities_to_hash(self.courses), 'Cours')
 		parser.create_spreadsheet(module_header, entities_to_hash(self.p_modules.without_parent), 'Modules')
-		#sub_modules = SubModule.joins(p_module: :sub_modules, p_module: :program).where('programs.catalog_id' => self.id)
-		#parser.create_spreadsheet(entities_to_hash(sub_modules), 'SubModules')
-		# parser.create_empty_spreadsheet(PModule.constraints_header, entities_to_hash(p_modules, false), 'PModules Constraints')
-		# parser.create_empty_spreadsheet(SubModule.constraints_header, entities_to_hash(sub_modules, false), 'SubModules Constraints')
-		# parser.create_empty_spreadsheet(Program.constraints_header, entities_to_hash(programs, false), 'Programs Constraints')
 	end
 end
 
