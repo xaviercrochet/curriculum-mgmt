@@ -33,7 +33,7 @@ describe ConstraintsChecker::Entity do
 
 
 		expect(course1.find_course(course3.id).id).to be == course3.id
-		expect(course1.find_course(course1.id).id).to be == '1'
+		expect(course1.find_course(course1.id).id).to be == course1.id
 		expect(course1.find_course(entity.id)).to be_nil
 		expect(entity.childrens.size).to be == 3
 		expect(entity.constraints.size).to be == 3
