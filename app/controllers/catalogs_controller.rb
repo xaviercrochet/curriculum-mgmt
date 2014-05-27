@@ -28,7 +28,7 @@ class CatalogsController < ApplicationController
 	end
 
 	def show
-		@catalog = Catalog.find(params[:id])
+		@catalog = Catalog.includes(:academic_year).find(params[:id])
 		p @catalog.id.to_s
 		# File.open(Rails.root.join('', '',  'app/assets/javascripts/coucou.json'),  "w+") do |f|
 		# 	f.write(@catalog.to_json)

@@ -2,9 +2,11 @@ class Semester < ActiveRecord::Base
   has_and_belongs_to_many :courses
   belongs_to :year
 
+
+
   def get_courses_objects(start_year, end_year)
     courses = []
-    self.courses.each do |course|
+    self.courses.includes(:properties).each do |course|
       courses << course.get_course_object(start_year, end_year)
     end
     return courses
@@ -26,7 +28,7 @@ class Semester < ActiveRecord::Base
   def coresponding_courses(program)
     courses = []
     self.courses.each do |course|
-      migrated_course = Course.find_by_property("SIGLE", course.name, program.catalog)
+      migrated_course = Course.includes(:properties).find_by_property("SIGLE", course.name, program.catalog)
       courses << migrated_course unless migrated_course.nil?
     end
     return courses 
@@ -36,7 +38,7 @@ class Semester < ActiveRecord::Base
     p  "migrating semester"
     new_courses = []
     courses_not_found = []
-    self.courses.each do |course|
+    self.courses.includes(:properties).each do |course|
       new_course = Course.find_by_property("SIGLE", course.name, catalog)
       if new_course.nil?
          courses_not_found << course

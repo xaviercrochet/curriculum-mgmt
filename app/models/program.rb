@@ -6,7 +6,6 @@ class Program < ActiveRecord::Base
 	has_many :student_programs, dependent: :destroy
 	has_and_belongs_to_many :p_modules
 	has_and_belongs_to_many :courses
-
 	accepts_nested_attributes_for :properties
 	validates_associated :properties
 
@@ -62,9 +61,8 @@ class Program < ActiveRecord::Base
 	end
 
 	def first_semester_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
-		result = prgrm.courses.first_semester
-		prgrm.p_modules.each do |pm|
+		result = self.courses.first_semester
+		self.p_modules.includes(:sub_modules).each do |pm|
 			result += pm.courses.first_semester
 			pm.sub_modules.each do |sm|
 				result +=  sm.courses.first_semester
@@ -74,9 +72,8 @@ class Program < ActiveRecord::Base
 	end
 
 	def second_semester_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
-		result = prgrm.courses.second_semester
-		prgrm.p_modules.each do |pm|
+		result = self.courses.second_semester
+		self.p_modules.includes(:sub_modules).each do |pm|
 			result +=  pm.courses.second_semester
 			pm.sub_modules.each do |sm|
 				result +=  sm.courses.second_semester
@@ -86,9 +83,8 @@ class Program < ActiveRecord::Base
 	end
 
 	def first_semester_optional_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
 		result = prgrm.courses.first_semester.optional
-		prgrm.p_modules.each do |pm|
+		self.p_modules.each do |pm|
 			result = result +  pm.courses.first_semester.optional
 			pm.sub_modules.each do |sm|
 				result = result +  sm.courses.first_semester.optional
@@ -98,9 +94,8 @@ class Program < ActiveRecord::Base
 	end
 
 	def second_semester_optional_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).where(id: self.id).first
-		result = prgrm.courses.second_semester.mandatory
-		prgrm.p_modules.each do |pm|
+		result = self.courses.second_semester.mandatory
+		self.p_modules.each do |pm|
 			result = result +  pm.courses.second_semester.optional
 			pm.sub_modules.each do |sm|
 				result = result +  sm.courses.second_semester.optional
@@ -110,9 +105,8 @@ class Program < ActiveRecord::Base
 	end
 
 	def mandatory_courses
-		prgrm = Program.includes(:courses, p_modules: [:courses, {sub_modules: :courses}]).find(self.id)
 		result = self.courses.mandatory
-		prgrm.p_modules.each do |pm|
+		self.p_modules.each do |pm|
 			result += pm.courses.mandatory
 			pm.sub_modules.each do |sm|
 				result +=  sm.courses.mandatory

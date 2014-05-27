@@ -34,6 +34,9 @@ GEM
     bcrypt (3.1.7)
     bcrypt-ruby (3.1.2)
     builder (3.1.4)
+    bullet (4.9.0)
+      activesupport
+      uniform_notifier (~> 1.6.0)
     cancancan (1.8.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -158,6 +161,7 @@ GEM
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    uniform_notifier (1.6.1)
     uuidtools (2.1.4)
     warden (1.2.3)
       rack (>= 1.0)
@@ -168,6 +172,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk
   bcrypt-ruby
+  bullet
   cancancan
   coffee-rails (~> 4.0.0)
   d3-rails

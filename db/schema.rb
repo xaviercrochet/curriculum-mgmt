@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140524101948) do
+ActiveRecord::Schema.define(version: 20140527080920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,16 +187,13 @@ ActiveRecord::Schema.define(version: 20140524101948) do
 
   create_table "student_programs", force: true do |t|
     t.integer  "program_id"
-    t.boolean  "validated",    default: false
+    t.boolean  "validated",  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "catalog_id"
     t.integer  "user_id"
-    t.integer  "errors_count", default: -1
-    t.boolean  "checked",      default: false
+    t.boolean  "checked",    default: false
   end
 
-  add_index "student_programs", ["catalog_id"], name: "index_student_programs_on_catalog_id", using: :btree
   add_index "student_programs", ["program_id"], name: "index_student_programs_on_program_id", using: :btree
 
   create_table "users", force: true do |t|

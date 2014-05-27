@@ -38,6 +38,7 @@ gem "therubyracer"
  #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "haml"
 gem 'haml-rails', '>= 0.3.4', :group => :development
+gem 'bullet', group: :development
 gem 'bcrypt-ruby'
 gem 'nokogiri'
 gem "paperclip", "~> 3.5.3"

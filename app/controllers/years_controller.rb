@@ -35,19 +35,19 @@ class YearsController < ApplicationController
   end
 
   def edit
-    @year = Year.find(params[:id])
+    @year = Year.includes(:first_semester, :second_semester).find(params[:id])
   end
 
   def update
-    @year = Year.find(params[:id])
+    @year = Year.includes(:first_semester, :second_semester).find(params[:id])
     @year.first_semester.courses = []
     @year.second_semester.courses = []
     params[:first_semester][:ids].each do |id|
-      @year.first_semester.courses << Course.find(id.to_i) unless id.eql? "0"
+      @year.first_semester.courses << Course.includes(:properties).find(id.to_i) unless id.eql? "0"
     end unless params[:first_semester].nil?
 
     params[:second_semester][:ids].each do |id|
-      @year.second_semester.courses << Course.find(id.to_i) unless id.eql? "0"
+      @year.second_semester.courses << Course..includes(:properties).find(id.to_i) unless id.eql? "0"
     end unless params[:second_semester].nil?
 
     if current_user.admin?
@@ -74,7 +74,7 @@ class YearsController < ApplicationController
   end
 
   def show
-    @year = Year.find(params[:id])
+    @year = Year.includes(:first_semester, :second_semester).find(params[:id])
     @student_program = @year.student_program
   end
 

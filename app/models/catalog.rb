@@ -39,7 +39,7 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def find_updated_version
-		candidates = Catalog.available_for_student
+		candidates = Catalog.includes(:academic_year).available_for_student
 		result = []
 		candidates.each do |catalog|
 			if catalog.academic_year.start_year > self.academic_year.start_year

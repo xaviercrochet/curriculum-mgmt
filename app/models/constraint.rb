@@ -5,7 +5,6 @@ class Constraint < ActiveRecord::Base
   belongs_to :constraint_type
   belongs_to :course
   has_and_belongs_to_many :courses
-  default_scope includes(:constraint_type)
 
   scope :prerequisites, -> {where(constraint_types: {name: "PREREQUISITE"})}
   scope :corequisites, -> {where(constraint_types: {name: "COREQUISITE"})}

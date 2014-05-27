@@ -4,6 +4,7 @@ class Year < ActiveRecord::Base
   has_one :first_semester, dependent: :destroy
   has_one :second_semester, dependent: :destroy
 
+  
   scope :passed, -> {where("status = ?", 2)}
   scope :failed, -> {where("status = ?", 1)}
   scope :current, -> {where("status = ?", 0)}

@@ -20,7 +20,7 @@ class JustificationsController < ApplicationController
   end
 
   def show
-    @justification = Justification.find(params[:id])
+    @justification = Justification.includes(constraint_exceptions: :entity).find(params[:id])
     @answer = Answer.new
   end
 

@@ -34,12 +34,12 @@ class StudentProgramsController < ApplicationController
   end
 
   def configure
-    @student_program = StudentProgram.find(params[:student_program_id])
+    @student_program = StudentProgram.includes(years: :academic_year).find(params[:student_program_id])
     @years = @student_program.years
   end
 
   def edit
-    @student_program = StudentProgram.find(params[:id])
+    @student_program = StudentProgram.includes(program: [catalog: :academic_year]).find(params[:id])
   end
 
   def status
@@ -55,7 +55,7 @@ class StudentProgramsController < ApplicationController
   end
 
   def update
-    @student_program = StudentProgram.find(params[:id])
+    @student_program = StudentProgram.includes(program: [catalog: :academic_year]).find(params[:id])
     @student_program.p_modules = []
     params[:mandatory_modules][:ids].each do |id|
       @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
@@ -70,7 +70,7 @@ class StudentProgramsController < ApplicationController
   end
 
   def show
-    @student_program = StudentProgram.find(params[:id])
+    @student_program = StudentProgram.includes(years: [first_semester: :courses, second_semester: :courses]).find(params[:id])
   end
 
   def index
@@ -78,7 +78,7 @@ class StudentProgramsController < ApplicationController
   end
 
   def check
-    @student_program = StudentProgram.find(params[:student_program_id])
+    @student_program = StudentProgram.includes(justification: [constraint_exceptions: :entity], years: [first_semester: :courses, second_semester: :courses], program: [p_modules: :sub_modules]).find(params[:student_program_id])
     @program = @student_program.program
     if ! @student_program.checked?
       @student_program.check_constraints

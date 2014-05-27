@@ -211,7 +211,7 @@ class StudentProgram < ActiveRecord::Base
 
   def first_semester_available_courses
     courses = self.program.first_semester_courses
-    self.years.each do |year|
+    self.years.includes(first_semester: [courses: :properties], second_semester: [courses: :properties]).each do |year|
       if year.status.eql? "0"
         courses -= year.first_semester.courses
         courses -= year.second_semester.courses
@@ -225,7 +225,7 @@ class StudentProgram < ActiveRecord::Base
 
   def second_semester_available_courses
     courses = self.program.second_semester_courses
-    self.years.each do |year|
+    self.years.includes(first_semester: [courses: :properties], second_semester: [courses: :properties]).each do |year|
       if year.status.eql? "0"
         courses -= year.first_semester.courses
         courses -= year.second_semester.courses

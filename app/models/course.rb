@@ -6,14 +6,13 @@ class Course < ActiveRecord::Base
   belongs_to :catalog
   has_many :properties, :as => :entity, dependent: :destroy
   has_many :constraints, dependent: :destroy
-
   scope :without_parent, -> {where(p_module_id: nil)}
   # scope :first_semester, -> {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" =>  "1")}
-  scope :first_semester, ->{joins(:properties).merge(Property.first_semester)}
-  scope :second_semester, -> {joins(:properties).merge(Property.second_semester)}
-  scope :mandatory, -> {joins(:properties).merge(Property.mandatory)}
-  scope :both_semesters, -> {joins(:properties).merge(Property.both_semesters)}
-  scope :optional, -> {joins(:properties).merge(Property.optional)}
+  scope :first_semester, ->{includes(:properties).merge(Property.first_semester)}
+  scope :second_semester, -> {includes(:properties).merge(Property.second_semester)}
+  scope :mandatory, -> {includes(:properties).merge(Property.mandatory)}
+  scope :both_semesters, -> {includes(:properties).merge(Property.both_semesters)}
+  scope :optional, -> {includes(:properties).merge(Property.optional)}
   scope :optional_and_from_first_semester, -> {Course.optional & Course.first_semester}
   scope :mandatory_and_from_first_semester, -> {Course.mandatory & Course.first_semester}
   
