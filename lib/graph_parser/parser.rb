@@ -41,9 +41,6 @@ module GraphParser
           parse_edge(c)
         end
       end
-      p  "#Courses : " + @catalog.count_courses.to_s
-      p "#Modules : " + @catalog.count_p_modules.to_s
-      p "#CosntraintSet : " + @catalog.constraint_sets.size.to_s
     end
 
 
