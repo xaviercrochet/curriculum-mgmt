@@ -21,14 +21,14 @@ class CatalogsController < ApplicationController
 	end
 
 	def upgrade
-		@catalog = Catalog.includes(:academic_year, :programs, p_modules: [:courses, sub_modules: :courses]).find(params[:catalog_id])
+		@catalog = Catalog.includes(:academic_year, :programs, programs: :courses, p_modules: [:courses, sub_modules: :courses]).find(params[:catalog_id])
 		@catalog.upgrade_version
 		redirect_to @catalog
 
 	end
 
 	def show
-		@catalog = Catalog.includes(:academic_year, :programs, p_modules: [:courses, sub_modules: :courses]).find(params[:id])
+		@catalog = Catalog.includes(:academic_year, programs: [:courses, :p_modules], p_modules: [:courses, sub_modules: :courses]).find(params[:id])
 	end
 
 	def upload
