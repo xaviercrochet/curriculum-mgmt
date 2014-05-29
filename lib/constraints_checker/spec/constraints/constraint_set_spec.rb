@@ -1,10 +1,10 @@
 require 'constraints/constraint_set'
-require 'catalog'
+require 'student_program'
 require 'entities/course'
 
 describe ConstraintsChecker::Constraints::ConstraintSet do
   it "test constraint set" do
-    catalog2 = ConstraintsChecker::Catalog.new(id: "5", name: "catalog2")
+    catalog2 = ConstraintsChecker::StudentProgram.new(id: "5", name: "catalog2")
 
     c1 = ConstraintsChecker::Entities::Course.new(id: "1", name: "course1", id: "1", start_year: 1)
     c2 = ConstraintsChecker::Entities::Course.new(id: "2", name: "course2", id: "2", start_year: 1)
@@ -21,7 +21,6 @@ describe ConstraintsChecker::Constraints::ConstraintSet do
     expect(c2.parent).not_to be_nil
     expect(c3.parent).to be_nil
     expect(catalog2.check).to be == []
-    #expect(catalog1.check).to be ==  {:or_corequisites_missing=>[], :prerequisites_missing=>[], :corequisites_missing=>[], :prerequisites_not_passed=>[]}
   end
 end
 

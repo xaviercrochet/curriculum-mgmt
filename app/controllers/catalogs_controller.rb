@@ -3,7 +3,7 @@ class CatalogsController < ApplicationController
 	load_and_authorize_resource
 
 	def index
-		@catalogs = Catalog.all
+		@catalogs = Catalog.includes(:academic_year).all
 	end
 
 	def new

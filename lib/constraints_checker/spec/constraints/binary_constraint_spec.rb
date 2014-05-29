@@ -2,7 +2,7 @@ require 'entity'
 require 'entities/course'
 require 'entities/p_module'
 require 'constraints/binary_constraint'
-require 'catalog'
+require 'student_program'
 
 describe ConstraintsChecker::Constraints::BinaryConstraint do 
   it "Check Binary Contraint" do
@@ -39,7 +39,7 @@ describe ConstraintsChecker::Constraints::BinaryConstraint do
     expect(p_module1.check).to be == []
     expect(p_module2.check).not_to be_empty
 
-    catalog = ConstraintsChecker::Catalog.new(id: "1", name: "catalog")
+    catalog = ConstraintsChecker::StudentProgram.new(id: "1", name: "catalog")
     catalog.add_childrens([p_module1, p_module2])
 
     expect(catalog.check).not_to be_empty

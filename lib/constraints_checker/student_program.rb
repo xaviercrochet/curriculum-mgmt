@@ -2,7 +2,7 @@ require_relative 'entity'
 require_relative 'entities/p_module'
 require_relative 'entities/course'
 module ConstraintsChecker
-  class Catalog < Entity
+  class StudentProgram < Entity
     attr_accessor :logs
 
     def initialize(properties)

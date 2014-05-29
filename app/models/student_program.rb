@@ -1,4 +1,4 @@
-require 'constraints_checker/catalog'
+require 'constraints_checker/student_program'
 require 'constraints_checker/constraints/property_constraint'
 
 class StudentProgram < ActiveRecord::Base
@@ -101,7 +101,7 @@ class StudentProgram < ActiveRecord::Base
     self.justification.constraint_exceptions.each do |c|
       c.destroy
     end
-    c = ConstraintsChecker::Catalog.new(id: self.id, name: "Student Program")
+    c = ConstraintsChecker::StudentProgram.new(id: self.id, name: "Student Program")
     c.add_constraint(ConstraintsChecker::Constraints::Min.new(c, program.min))
     c.add_constraint(ConstraintsChecker::Constraints::Max.new(c, program.max))
     

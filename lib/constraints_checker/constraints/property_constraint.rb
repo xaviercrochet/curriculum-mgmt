@@ -34,7 +34,7 @@ module ConstraintsChecker
 
       def check
         if ! target.check_min(self.value)
-          if target.class.name.eql? ConstraintsChecker::Catalog.name
+          if target.class.name.eql? ConstraintsChecker::StudentProgram.name
             @logs =  {to_few_credits_in_program: [self.target.id]}
             return false
           else
@@ -55,7 +55,7 @@ module ConstraintsChecker
 
       def check
         if ! target.check_max(self.value)
-          if target.class.name.eql? ConstraintsChecker::Catalog.name
+          if target.class.name.eql? ConstraintsChecker::StudentProgram.name
             @logs = {to_many_credits_in_program: [self.target.id]}
             return false
           else

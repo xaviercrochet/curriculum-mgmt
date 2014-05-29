@@ -125,7 +125,6 @@ class PModule < ActiveRecord::Base
 			end
 			p_module.add_constraint(ConstraintsChecker::Constraints::Mandatory.new(p_module, course_ids))
 		end
-
 		return p_module
 	end
 

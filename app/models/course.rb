@@ -8,11 +8,11 @@ class Course < ActiveRecord::Base
   has_many :constraints, dependent: :destroy
   scope :without_parent, -> {where(p_module_id: nil)}
   # scope :first_semester, -> {joins(:properties).where("properties.p_type" => "SEMESTRE", "properties.value" =>  "1")}
-  scope :first_semester, ->{includes(:properties).merge(Property.first_semester)}
-  scope :second_semester, -> {includes(:properties).merge(Property.second_semester)}
-  scope :mandatory, -> {includes(:properties).merge(Property.mandatory)}
-  scope :both_semesters, -> {includes(:properties).merge(Property.both_semesters)}
-  scope :optional, -> {includes(:properties).merge(Property.optional)}
+  scope :first_semester, ->{includes(:properties).merge(Property.first_semester).references(:properties)}
+  scope :second_semester, -> {includes(:properties).merge(Property.second_semester).references(:properties)}
+  scope :mandatory, -> {includes(:properties).merge(Property.mandatory).references(:properties)}
+  scope :both_semesters, -> {includes(:properties).merge(Property.both_semesters).references(:properties)}
+  scope :optional, -> {includes(:properties).merge(Property.optional).references(:properties)}
   scope :optional_and_from_first_semester, -> {Course.optional & Course.first_semester}
   scope :mandatory_and_from_first_semester, -> {Course.mandatory & Course.first_semester}
   
