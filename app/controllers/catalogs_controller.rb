@@ -35,6 +35,7 @@ class CatalogsController < ApplicationController
 		@catalog = Catalog.find(params[:catalog_id])
 		if ! params[:catalog].nil?
 			@catalog.update(catalog_params)
+			p @catalog.errors
 			@catalog.import_catalog_data
 			flash[:notice] = "Votre fichier excel a été correctement importé"
 		end
