@@ -21,7 +21,7 @@ class CatalogsController < ApplicationController
 	end
 
 	def upgrade
-		@catalog = Catalog.find(params[:catalog_id])
+		@catalog = Catalog.includes(:academic_year, :programs, p_modules: [:courses, sub_modules: :courses]).find(params[:catalog_id])
 		@catalog.upgrade_version
 		redirect_to @catalog
 
@@ -32,14 +32,20 @@ class CatalogsController < ApplicationController
 	end
 
 	def upload
-		@catalog = Catalog.find(params[:catalog_id])
+		@catalog = Catalog.includes(:academic_year, :programs, p_modules: [:courses, sub_modules: :courses]).find(params[:catalog_id])
 		if ! params[:catalog].nil?
 			@catalog.update(catalog_params)
-			p @catalog.errors
-			@catalog.import_catalog_data
-			flash[:notice] = "Votre fichier excel a été correctement importé"
+			if ! @catalog.errors.any?
+				@catalog.import_catalog_data
+				flash[:notice] = "Votre fichier excel a été correctement importé"
+				redirect_to @catalog
+			else
+				render action: :show
+			end
+		else
+			@catalog.errors.add(:spreadsheet, " - Veuillez sélectionner un fichier Excel")
+			render action: :show
 		end
-		redirect_to @catalog
 	end
 
 	def destroy

@@ -117,7 +117,6 @@ class Catalog < ActiveRecord::Base
 	end
 
 	def import_catalog_data
-		p self.spreadsheet_url
 		spreadsheet = open(self.spreadsheet_url)
 		if ! spreadsheet.nil?
 			parser = XlsParser::XlsReader.new(spreadsheet)

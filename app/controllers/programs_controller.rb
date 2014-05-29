@@ -29,8 +29,6 @@ class ProgramsController < ApplicationController
     @properties_type = ["credits", "name"]
     @catalog = Catalog.find(params[:catalog_id])
     @program = @catalog.programs.create(program_params)
-    p @program.errors
-    p @program.errors.any?
     if @program.errors.any? 
       render action: :new
     else

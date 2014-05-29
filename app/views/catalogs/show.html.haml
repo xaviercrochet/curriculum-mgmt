@@ -20,6 +20,7 @@
 				.text-center
 					3 - Mettre à jour le fichier excel
 			= render 'success_message', notice: notice
+			= render 'error_messages', object: @catalog
 			= link_to '1 - Télécharger le fichier excel', @catalog.spreadsheet_url, class: "btn btn-danger btn-lg btn-block"
 			= form_for @catalog, :url => catalog_catalog_upload_path(@catalog) do |f|
 				.form-group
