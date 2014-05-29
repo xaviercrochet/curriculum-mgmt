@@ -20,12 +20,12 @@ class JustificationsController < ApplicationController
   end
 
   def show
-    @justification = Justification.includes(answers: :user, constraint_exceptions: :entity, student_program: [years: [:first_semester, :second_semester]]).find(params[:id])
+    @justification = Justification.includes(answers: :user, constraint_exceptions: :entity, student_program: [:user, p_modules: [:courses, :sub_modules], years: [:first_semester, :second_semester]]).find(params[:id])
     @answer = Answer.new
   end
 
   def index
-    @justifications = Justification.includes(answers: :user, constraint_exceptions: :entity, student_program: [years: [:first_semester, :second_semester]], student_program: :user).all
+    @justifications = Justification.includes(answers: :user, constraint_exceptions: :entity, student_program: [:user, p_modules: [:courses, :sub_modules], years: [:first_semester, :second_semester]]).all
     @answer = Answer.new
   end
 
