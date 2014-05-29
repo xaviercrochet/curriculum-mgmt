@@ -189,6 +189,7 @@ private
 	def build_constraint(constraint)
 		source = Course.find(constraint.source.real_id)
 		destination = Course.find(constraint.destination.real_id)
+		p constraint.type
 		Constraint.create_binary_constraint(source, destination, constraint.type)
 	end
 

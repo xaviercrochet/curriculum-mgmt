@@ -6,8 +6,8 @@ class Constraint < ActiveRecord::Base
   belongs_to :course
   has_and_belongs_to_many :courses
 
-  scope :prerequisites, -> {where(constraint_types: {name: "PREREQUISITE"})}
-  scope :corequisites, -> {where(constraint_types: {name: "COREQUISITE"})}
+  scope :prerequisites, -> {includes(:constraint_type).merge(ConstraintType.prerequisites).references(:constraint_type)}
+  scope :corequisites, -> {includes(:constraint_type).merge(ConstraintType.corequisites).references(:constraint_type)}
   scope :binary, -> {where(set_type: "BINARY")}
   scope :xor, -> {where(set_type: "X")}
   scope :o_r, -> {where(set_type: "OR")}

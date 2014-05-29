@@ -40,15 +40,15 @@
           #collapseMain.panel-collapse.collapse
             .panel-body
               #accordion.panel-group
-                - if @course.constraints.binary.corequisites.size > 0
+                - if @course.constraints.binary.corequisites.count > 0
                   = render 'constraints', constraints: @course.constraints.binary.corequisites, name: "Corequis", div: "collapseOne"
-                - if @course.constraints.binary.prerequisites.size > 0
+                - if @course.constraints.binary.prerequisites.count > 0
                   = render 'constraints', constraints: @course.constraints.binary.prerequisites, name: "Prerequis", div: "collapseTwo"
-                - if @course.constraints.o_r.prerequisites.size > 0
+                - if @course.constraints.o_r.prerequisites.count > 0
                   = render 'constraints', constraints: @course.constraints.o_r.prerequisites, name: "Prérequis disjonctifs (OR)", div: "collapseTree"
-                - if @course.constraints.o_r.corequisites.size > 0
+                - if @course.constraints.o_r.corequisites.count > 0
                   = render 'constraints', constraints: @course.constraints.o_r.corequisites, name: "Corequis disjonctif (OR)", div: "collapseFour"
-                - if @course.constraints.xor.prerequisites.size > 0
+                - if @course.constraints.xor.prerequisites.count > 0
                   = render 'constraints', constraints: @course.constraints.xor.prerequisites, name: "Prérequis disjonctifs exclusifs (XOR)", div: "collapseFive"
-                - if @course.constraints.xor.corequisites.size > 0
+                - if @course.constraints.xor.corequisites.count > 0
                   = render 'constraints', constraints: @course.constraints.xor.corequisites, name: "Corequis disjonctifs exclusif (XOR)", div: "collapseSix"

@@ -5,6 +5,9 @@ class ConstraintType < ActiveRecord::Base
 		self.name = name.upcase
 	}
 
+	scope :prerequisites, -> {where(name: "PREREQUISITE")}
+	scope :corequisites, -> {where(name: "COREQUISITE")}
+
 		def self.create_type(type, catalog)
 		c_type = catalog.constraint_types.where(name: type).first
 		if c_type.nil?

@@ -74,12 +74,11 @@ ActiveRecord::Schema.define(version: 20140527080920) do
   create_table "constraints", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "constraint_type_id"
     t.integer  "course_id"
     t.string   "set_type",           default: "binary"
+    t.integer  "constraint_type_id"
   end
 
-  add_index "constraints", ["constraint_type_id"], name: "index_constraints_on_constraint_type_id", using: :btree
   add_index "constraints", ["course_id"], name: "index_constraints_on_course_id", using: :btree
 
   create_table "constraints_courses", id: false, force: true do |t|
