@@ -2,7 +2,5 @@
   .panel-heading.text-center
     Discussions
   .panel-body
-    - @justifications.unread.each do |justification|
-      = render 'justification', justification: justification, id: justification.id, answer: @answer
-    - @justifications.read.each do |justification|
+    - @justifications.each do |justification|
       = render 'justification', justification: justification, id: justification.id, answer: @answer
