@@ -14,6 +14,11 @@ class StudentProgram < ActiveRecord::Base
     self.program.catalog.find_updated_version.size > 0
   end
 
+  def unvalidate
+    self.validated =false
+    self.save
+  end
+
   def count_credits_for_module(p_module)
     result = 0
     sub_module_ids = []
@@ -73,7 +78,9 @@ class StudentProgram < ActiveRecord::Base
       missing_courses += year.migrate(program.catalog)
     end
     self.program = program
+    self.user.update(catalog: program.catalog)
     self.save
+
     return missing_courses
   end
 

@@ -72,7 +72,7 @@ module ConstraintsChecker
 		end
 
 		def check_max(value)
-			return count_credits < value.to_i
+			return count_credits <= value.to_i
 		end
 
 		def check_min(value)

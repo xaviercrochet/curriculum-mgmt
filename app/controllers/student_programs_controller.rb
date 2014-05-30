@@ -73,7 +73,7 @@ class StudentProgramsController < ApplicationController
   end
 
   def index
-    @student_programs = current_user.student_programs
+    @student_programs = current_user.student_programs.includes(:program, :justification)
   end
 
   def check
@@ -90,6 +90,8 @@ class StudentProgramsController < ApplicationController
   def new_validation
     @student_program = StudentProgram.find(params[:student_program_id])
     @student_program.create_validation
+    @student_program.unvalidate
+    @student_program.uncheck
     redirect_to @student_program
   end
 
