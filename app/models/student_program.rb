@@ -364,7 +364,7 @@ private
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::Min"
           type = "Min"
-          if result.target.class.name.eql? "ConstraintsChecker::Catalog"
+          if result.target.class.name.eql? "ConstraintsChecker::StudentProgram"
             entity = self.program
           else
             entity = PModule.find(result.target.id)
@@ -372,7 +372,7 @@ private
           self.justification.constraint_exceptions.create(entity: entity, constraint_type: type)
         when "ConstraintsChecker::Constraints::Max"
           type = "Max"
-          if result.target.class.name.eql? "ConstraintsChecker::Catalog"
+          if result.target.class.name.eql? "ConstraintsChecker::StudentProgram"
             entity = self.program
           else
             entity = PModule.find(result.target.id)
