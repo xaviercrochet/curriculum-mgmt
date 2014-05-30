@@ -5,6 +5,8 @@
         Année acédémique
       %th.text-center
         Infos
+      %td.text-center
+        Statut
       %th.text-center
         Modifier
       %th.text-center
@@ -18,10 +20,18 @@
         = link_to c do
           %span.glyphicon.glyphicon-zoom-in
       %td.text-center
-        = link_to edit_year_path(c) do
-          %span.glyphicon.glyphicon-wrench
+        = c.status_name
       %td.text-center
-        = link_to c, method: :delete, data: {confirm: 'Êtes vous sûr?'}, disabled: (c.passed? or c.failed?) do
-          %span.glyphicon.glyphicon-remove{style: 'color: red;  '}
+        - if (c.passed? or c.failed?)
+          %span.glyphicon.glyphicon-ban-circle{style: 'color: red;'}
+        - else
+          = link_to edit_year_path(c)do
+            %span.glyphicon.glyphicon-wrench
+      %td.text-center
+        - if (c.passed? or c.failed?)
+          %span.glyphicon.glyphicon-ban-circle{style: 'color: red;'}
+        - else
+          = link_to c, method: :delete, data: {confirm: 'Êtes vous sûr?'} do
+            %span.glyphicon.glyphicon-remove{style: 'color: red;  '}
 
 = link_to 'Ajouter une nouvelle année', new_student_program_year_path(@student_program), class: "btn btn-default btn-block"
