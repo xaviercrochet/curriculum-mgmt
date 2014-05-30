@@ -91,8 +91,8 @@ class Course < ActiveRecord::Base
     return course
   end
 
-  def get_old_course_object(student_program)
-    course = ConstraintsChecker::Entities::Course.new(name: self.name, id:self.id, credits: 0, parent_id: student_program.id)
+  def get_old_course_object(student_program, start_year, end_year)
+    course = ConstraintsChecker::Entities::Course.new(name: self.name, id:self.id, credits: 0, parent_id: student_program.id, start_year: start_year, end_year: end_year)
     return course
   end 
 

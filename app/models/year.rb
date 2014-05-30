@@ -61,8 +61,8 @@ class Year < ActiveRecord::Base
 
   def get_old_courses_objects(student_program)
     courses = []
-    courses += self.first_semester.get_old_courses_objects(student_program)
-    courses += self.second_semester.get_old_courses_objects(student_program)
+    courses += self.first_semester.get_old_courses_objects(student_program, self.academic_year.start_year, self.academic_year.end_year) unless  self.first_semester.nil?
+    courses += self.second_semester.get_old_courses_objects(student_program, self.academic_year.start_year, self.academic_year.end_year) unless  self.second_semester.nil?
     return courses
   end
 

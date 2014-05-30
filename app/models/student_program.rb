@@ -161,6 +161,8 @@ class StudentProgram < ActiveRecord::Base
       p cc.childrens
       
     end
+    # add constraint from older programs
+    self.get_old_courses_objects(c)
     results = c.check
     create_constraint_exceptions(results)
     self.check
