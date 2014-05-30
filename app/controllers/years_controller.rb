@@ -47,7 +47,7 @@ class YearsController < ApplicationController
     end unless params[:first_semester].nil?
 
     params[:second_semester][:ids].each do |id|
-      @year.second_semester.courses << Course..includes(:properties).find(id.to_i) unless id.eql? "0"
+      @year.second_semester.courses << Course.includes(:properties).find(id.to_i) unless id.eql? "0"
     end unless params[:second_semester].nil?
 
     if current_user.admin?
