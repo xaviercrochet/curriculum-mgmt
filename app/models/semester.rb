@@ -14,7 +14,7 @@ class Semester < ActiveRecord::Base
 
   def get_old_course_objects(start_year, end_year)
     courses = []
-    self.courses.each do |course|
+    self.courses.includes(:properties).each do |course|
       courses << course.get_old_course_object(start_year, end_year)
     end
     return courses
@@ -33,7 +33,18 @@ class Semester < ActiveRecord::Base
     return results
   end
 
+  def get_old_course_objects_for_migrated_program(program, start_year, end_year)
+    results = []
+    courses = coresponding_courses(program)
+    courses.each do |course|
+      results << course.get_old_course_object(start_year, end_year)
+    end
+    return results
+  end
+
   def coresponding_courses(program)
+    p "looking for coresponding_courses ..."
+    p program.catalog.id.to_s
     courses = []
     self.courses.each do |course|
       migrated_course = Course.includes(:properties).find_by_property("SIGLE", course.name, program.catalog)

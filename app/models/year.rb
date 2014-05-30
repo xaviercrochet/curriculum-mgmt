@@ -59,10 +59,17 @@ class Year < ActiveRecord::Base
     return result
   end
 
-  def get_old_course_objects()
+  def get_old_course_objects(catalog)
     courses = []
-    courses += self.first_semester.get_old_course_objects(self.academic_year.start_year, self.academic_year.end_year) unless  self.first_semester.nil?
-    courses += self.second_semester.get_old_course_objects(self.academic_year.start_year, self.academic_year.end_year) unless  self.second_semester.nil?
+    if ! catalog.id.eql? self.student_program.program.catalog
+      p "*********************************************************"
+      new_program = catalog.find_program(self.student_program.program.name).first
+      courses += self.first_semester.get_old_course_objects_for_migrated_program(new_program, self.academic_year.start_year, self.academic_year.end_year) unless self.first_semester.nil?
+      courses += self.second_semester.get_old_course_objects_for_migrated_program(new_program, self.academic_year.start_year, self.academic_year.end_year) unless self.second_semester.nil?
+    else
+      courses += self.first_semester.get_old_course_objects(self.academic_year.start_year, self.academic_year.end_year) unless  self.first_semester.nil?
+      courses += self.second_semester.get_old_course_objects(self.academic_year.start_year, self.academic_year.end_year) unless  self.second_semester.nil?
+    end
     return courses
   end
 

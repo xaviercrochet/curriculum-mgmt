@@ -80,7 +80,6 @@ class StudentProgram < ActiveRecord::Base
     self.program = program
     self.user.update(catalog: program.catalog)
     self.save
-
     return missing_courses
   end
 
@@ -101,15 +100,15 @@ class StudentProgram < ActiveRecord::Base
   end
 
   def add_old_courses_to_student_program(student_program)
-    self.user.student_programs.validated.each do |p|
-      student_program.add_childrens(p.get_old_course_objects.flatten!)
+    self.user.student_programs.validated.where.not(id: self.id).each do |p|
+      student_program.add_childrens(p.get_old_course_objects(self.program.catalog).flatten!)
     end
   end
 
-  def get_old_course_objects()
+  def get_old_course_objects(catalog)
     courses = []
     self.years.each do |year|
-      courses << year.get_old_course_objects
+      courses << year.get_old_course_objects(catalog)
     end
     return courses
   end
@@ -158,7 +157,6 @@ class StudentProgram < ActiveRecord::Base
         c.add_children(course)
       
       else
-        p "PMODULE FOUND"
         p_module.add_children(course)
       end
     end
