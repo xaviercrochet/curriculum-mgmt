@@ -12,10 +12,10 @@ class Semester < ActiveRecord::Base
     return courses
   end
 
-  def get_old_courses_objects(student_program, start_year, end_year)
+  def get_old_course_objects(start_year, end_year)
     courses = []
-    self.courses.includes(:properties).each do |course|
-      courses << get_old_course_object(student_program, start_year, end_year)
+    self.courses.each do |course|
+      courses << course.get_old_course_object(start_year, end_year)
     end
     return courses
   end

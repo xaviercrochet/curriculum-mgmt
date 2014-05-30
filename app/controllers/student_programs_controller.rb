@@ -64,8 +64,7 @@ class StudentProgramsController < ApplicationController
     params[:optional_modules][:ids].each do |id|
       @student_program.p_modules << PModule.find(id.to_i) unless id.eql? "0"
     end unless params[:optional_modules].nil?
-    
-    @student_program.set_count(-1)
+    @student_program.uncheck
     redirect_to student_program_student_program_configure_path(@student_program)
   end
 

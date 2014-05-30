@@ -8,7 +8,7 @@ class StudentProgram < ActiveRecord::Base
   has_one :validation, dependent: :destroy
   has_one :justification, dependent: :destroy
   has_and_belongs_to_many :p_modules
-  scope :checked, -> {where(checked: true)}
+  scope :validated, -> {where(validated: true)}
 
   def can_migrate?
     self.program.catalog.find_updated_version.size > 0
@@ -94,15 +94,15 @@ class StudentProgram < ActiveRecord::Base
   end
 
   def add_old_courses_to_student_program(student_program)
-    self.user.student_programs.checked.each do |p|
-      student_program.add_childrens(p.get_old_courses_objects(p))
+    self.user.student_programs.validated.each do |p|
+      student_program.add_childrens(p.get_old_course_objects.flatten!)
     end
   end
 
-  def get_old_courses_object(student_program)
+  def get_old_course_objects()
     courses = []
     self.years.each do |year|
-      courses << year.get_old_courses_objects(student_program)
+      courses << year.get_old_course_objects
     end
     return courses
   end
@@ -162,7 +162,7 @@ class StudentProgram < ActiveRecord::Base
       
     end
     # add constraint from older programs
-    self.get_old_courses_objects(c)
+    self.add_old_courses_to_student_program(c)
     results = c.check
     create_constraint_exceptions(results)
     self.check
@@ -213,19 +213,11 @@ class StudentProgram < ActiveRecord::Base
 
   def can_validates?
     self.checked? and ! self.justification.has_uncompleted_exceptions? and self.validation.nil?
-    # (self.errors_count == 0 or ! self.justification.nil?) and (self.enough_credits?) and (self.validation.nil?)
   end
 
   def enough_credits?
     (self.count_credits >= self.program.min and self.count_credits <= self.program.max) or (self.count_credits >= self.program.count_credits)
   end
-
-
-  def set_count(count)
-    self.errors_count = count
-    self.save
-  end
-
   def first_semester_available_courses
     courses = self.program.first_semester_courses
     self.years.includes(first_semester: [courses: :properties], second_semester: [courses: :properties]).each do |year|
