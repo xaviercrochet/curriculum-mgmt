@@ -69,7 +69,7 @@ class StudentProgramsController < ApplicationController
   end
 
   def show
-    @student_program = StudentProgram.includes(years: [first_semester: :courses, second_semester: :courses]).find(params[:id])
+    @student_program = StudentProgram.includes(years: [:academic_year, first_semester: :courses, second_semester: :courses]).find(params[:id])
   end
 
   def index

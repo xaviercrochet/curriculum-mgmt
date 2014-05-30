@@ -10,7 +10,7 @@ load_and_authorize_resource
   end
 
   def show
-    @course = Course.includes(:properties).find(params[:id])
+    @course = Course.find(params[:id])
     @catalog = @course.catalog
   end
 

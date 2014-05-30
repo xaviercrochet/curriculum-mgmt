@@ -25,7 +25,7 @@ class JustificationsController < ApplicationController
   end
 
   def index
-    @justifications = Justification.includes(answers: :user, constraint_exceptions: :entity, student_program: [:user, p_modules: [:courses, :sub_modules], years: [:first_semester, :second_semester]]).all
+    @justifications = Justification.includes(answers: :user, constraint_exceptions: :entity, student_program: [:user, p_modules: [:courses, :sub_modules], years: [:first_semester, :second_semester], program: [ :courses, p_modules: [:courses, :sub_modules]]]).all
     @answer = Answer.new
   end
 

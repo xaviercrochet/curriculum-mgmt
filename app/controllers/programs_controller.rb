@@ -4,7 +4,7 @@ class ProgramsController < ApplicationController
 
   def index
     @catalog = Catalog.find(params[:catalog_id])
-    @programs = @catalog.programs.includes(p_modules: [:courses, {sub_modules: :courses}])
+    @programs = @catalog.programs.includes(:courses, p_modules: [:courses, {sub_modules: :courses}])
   end
 
 
