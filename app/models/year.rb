@@ -59,6 +59,13 @@ class Year < ActiveRecord::Base
     return result
   end
 
+  def get_old_courses_objects(student_program)
+    courses = []
+    courses += self.first_semester.get_old_courses_objects(student_program)
+    courses += self.second_semester.get_old_courses_objects(student_program)
+    return courses
+  end
+
   def get_course_objects
     courses = []
     if self.status.eql? "0"

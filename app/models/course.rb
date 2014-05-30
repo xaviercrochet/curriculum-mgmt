@@ -91,6 +91,11 @@ class Course < ActiveRecord::Base
     return course
   end
 
+  def get_old_course_object(student_program)
+    course = ConstraintsChecker::Entities::Course.new(name: self.name, id:self.id, credits: 0, parent_id: student_program.id)
+    return course
+  end 
+
   def properties_to_hash
     props = Hash.new
     props["SIGLE"] = self.name

@@ -8,6 +8,7 @@ class StudentProgram < ActiveRecord::Base
   has_one :validation, dependent: :destroy
   has_one :justification, dependent: :destroy
   has_and_belongs_to_many :p_modules
+  scope :checked, -> {where(checked: true)}
 
   def can_migrate?
     self.program.catalog.find_updated_version.size > 0
@@ -90,6 +91,20 @@ class StudentProgram < ActiveRecord::Base
 
   def can_update?
     self.find_updated_programs.size > 0
+  end
+
+  def add_old_courses_to_student_program(student_program)
+    self.user.student_programs.checked.each do |p|
+      student_program.add_childrens(p.get_old_courses_objects(p))
+    end
+  end
+
+  def get_old_courses_object(student_program)
+    courses = []
+    self.years.each do |year|
+      courses << year.get_old_courses_objects(student_program)
+    end
+    return courses
   end
 
 

@@ -12,6 +12,14 @@ class Semester < ActiveRecord::Base
     return courses
   end
 
+  def get_old_courses_objects(student_program)
+    courses = []
+    self.courses.includes(:properties).each do |course|
+      courses << get_old_course_object(student_program)
+    end
+    return courses
+  end
+
   def course_present?(course)
     self.courses.where(id: course.id).count > 0
   end
