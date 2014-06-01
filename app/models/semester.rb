@@ -24,6 +24,7 @@ class Semester < ActiveRecord::Base
     self.courses.where(id: course.id).count > 0
   end
 
+  # Get course object for an old student_program who's catalog has been migrated
   def get_courses_objects_for_migrated_program(program, start_year, end_year)
     results = []
     courses = coresponding_courses(program)
@@ -33,6 +34,7 @@ class Semester < ActiveRecord::Base
     return results
   end
 
+  #get course for and old student program
   def get_old_course_objects_for_migrated_program(program, start_year, end_year)
     results = []
     courses = coresponding_courses(program)

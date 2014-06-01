@@ -26,6 +26,7 @@ class Program < ActiveRecord::Base
 		get_property("CREDITS")
 	end
 
+
 	def mandatory_modules
 		modules = []
 		self.p_modules.without_parent.each do |m|
@@ -60,6 +61,7 @@ class Program < ActiveRecord::Base
 		return modules
 	end
 
+	# return courses (with semester property == 1) that belong to the program, his modules or his modules sub_modules 
 	def first_semester_courses
 		result = self.courses.first_semester
 		self.p_modules.includes(:sub_modules).each do |pm|
@@ -70,7 +72,7 @@ class Program < ActiveRecord::Base
 		end
 		return result
 	end
-
+	# ... (with semester property ==2) ...
 	def second_semester_courses
 		result = self.courses.second_semester
 		self.p_modules.includes(:sub_modules).each do |pm|
@@ -82,6 +84,9 @@ class Program < ActiveRecord::Base
 		return result
 	end
 
+
+	# ... ... ... (with mandatory property == false)
+
 	def first_semester_optional_courses
 		result = prgrm.courses.first_semester.optional
 		self.p_modules.each do |pm|
@@ -92,6 +97,8 @@ class Program < ActiveRecord::Base
 		end
 		return result
 	end
+
+	# ... ... ... (with mandatory property == true)
 
 	def second_semester_optional_courses
 		result = self.courses.second_semester.mandatory

@@ -23,6 +23,8 @@ module ConstraintsChecker
         super(id, course, target_id)
       end
 
+      #first we look for the course
+      #second we check if the course has been folowed  "au plus tard" during the previous year (see prerequisite definition)
       def check
         result = self.course.find_course(self.target_id)
         if result.nil?
@@ -44,6 +46,8 @@ module ConstraintsChecker
         super(id, course, target_id)
       end
 
+      #first we look for the course
+      #second we check if the course has been folowed "au plu tard" during the current year
       def check
         result = self.course.find_course(self.target_id)
         if result.nil?

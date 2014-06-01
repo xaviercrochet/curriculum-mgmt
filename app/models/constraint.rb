@@ -47,6 +47,7 @@ class Constraint < ActiveRecord::Base
     return self.constraint_type.name.eql? "PREREQUISITE"
   end
 
+  #parse constraints received from constrant module and insert the coresponding constraint object in the database
   def get_constraint_object(course)
     constraint = nil
     case self.set_type

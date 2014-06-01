@@ -60,10 +60,12 @@ class Course < ActiveRecord::Base
   end
 
 
+  #default properties name used in the Excel file
   def self.header
     return ["SIGLE", "CREDITS", "SEMESTRE", "OBLIGATOIRE"]
   end
 
+  #Look for a course object using a property type and value
   def self.find_by_property(property_type, property_value, catalog)
     catalog.courses.includes(:properties).where('properties.p_type' => property_type, 'properties.value' => property_value.to_s).first
   end
@@ -82,6 +84,8 @@ class Course < ActiveRecord::Base
     end
   end
 
+  #return a ConstraintChecker::Entity object with all his constraints
+
   def get_course_object(start_year, end_year)
     course = ConstraintsChecker::Entities::Course.new(name: self.name, id: self.id, start_year: start_year, end_year: end_year, parent_id: self.p_module_id, credits: self.credits, mandatory: self.mandatory?)
     self.constraints.each do |c|
@@ -90,6 +94,9 @@ class Course < ActiveRecord::Base
     end
     return course
   end
+
+  #return a  ConstraintChecker::Entity object that's used only for checking dependancies crossing programs (Master having dependancies in Program i.e. )
+  # No need for credits or his own dependencies
 
   def get_old_course_object(start_year, end_year)
     course = ConstraintsChecker::Entities::Course.new(name: self.name, id:self.id, credits: 0, start_year: start_year, end_year: end_year)

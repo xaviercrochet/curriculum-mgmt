@@ -33,6 +33,9 @@ module GraphParser
 
     end
 
+    #Graphml structur is a tree but
+    #first we have the nodes
+    #Then we have the edges
     def parse
       @graph.children.each do |c|
         if c.name.eql? "node"
@@ -46,6 +49,7 @@ module GraphParser
 
   private
 
+    #look in the edge metadata to retrieve constraint type
     def get_edge_type(edge)
       edge.children.each do |c|
         if c.key?("key") and c.children.size > 0
@@ -85,6 +89,8 @@ module GraphParser
       parse_program(node)
     end
 
+    #look for nodes that are programs
+    #programs are group node without parent
     def parse_program(node)
       if node.key?("id") and node.key?("yfiles.foldertype") and check_attributes(node.values, 1, "group")
         if node.values[0].size == 2
@@ -103,12 +109,16 @@ module GraphParser
       end
     end
 
+    #after parsing programs, we parse the rest of the nodes
+    #
     def parse_entities(parent, node)
       if node.key?("edgedefault") 
         node.children.each do |c|
           if c.key?("id") and c.values.size == 1
+            #course or constraint set
             parse_sub_graph(parent, c)
           elsif check_attributes(c.values, 1, "group")
+            #sub modules
             parse_entity(parent, c)
           end
         end

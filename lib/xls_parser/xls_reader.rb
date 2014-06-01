@@ -13,6 +13,7 @@ module XlsParser
 			sheet.row(0)
 		end
 
+		#not used atm
 		def self.meta_header(sheet)
 			sheet.row(1)
 		end
@@ -31,6 +32,7 @@ module XlsParser
 
 	private
 
+		#Resource identifier are properties used to perform a search on the object. For example, we look for a course using SIGLE
 		def find_resource_identifier(sheet, name)
 			i = 0
 			header = XlsReader.header(sheet)

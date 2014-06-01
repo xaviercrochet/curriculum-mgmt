@@ -33,10 +33,15 @@ module ConstraintsChecker
 			end
 		end
 
+		#look for an entity using his id and his class name
+		#the trick to first look for the root of the tree
+		#then call the find_children method on the root
 		def search(children_id, children_type)
 			root = find_root
 			root.find_children(children_id, children_type)
 		end
+
+		#look for an entity using his id and his class name
 
 		def find_children(children_id, children_type)
 			result

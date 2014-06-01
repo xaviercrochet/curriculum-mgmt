@@ -59,6 +59,10 @@ class Year < ActiveRecord::Base
     return result
   end
 
+
+  #look for old version of course when checking years that belongs to older programs
+  #first case : catalog is the same
+  #second case : A catalog migration occurs; we have to check for an older catalog
   def get_old_course_objects(catalog)
     courses = []
     if ! catalog.id.eql? self.student_program.program.catalog

@@ -113,7 +113,8 @@ class StudentProgram < ActiveRecord::Base
     return courses
   end
 
-
+  # call ConstraintsChecker module and give him constriant checker entity objects
+  # create constraintExceptions objects!
   def check_constraints
 
     if self.justification.nil?
@@ -196,6 +197,8 @@ class StudentProgram < ActiveRecord::Base
     return result
   end
 
+
+  #compute the data needed to build the program status view
   def credits_percentages
     result = {min: 0, max: 0, overflow: 0}
     # percentage = (self.count_credits.to_f / self.program.min.to_f)
@@ -223,6 +226,8 @@ class StudentProgram < ActiveRecord::Base
   def enough_credits?
     (self.count_credits >= self.program.min and self.count_credits <= self.program.max) or (self.count_credits >= self.program.count_credits)
   end
+
+  # get first_semester course that aren't been selected in the student program yet
   def first_semester_available_courses
     courses = self.program.first_semester_courses
     self.years.includes(first_semester: [courses: :properties], second_semester: [courses: :properties]).each do |year|
@@ -237,6 +242,7 @@ class StudentProgram < ActiveRecord::Base
     return courses
   end
 
+  # (...) second_semester courses (...)
   def second_semester_available_courses
     courses = self.program.second_semester_courses
     self.years.includes(first_semester: [courses: :properties], second_semester: [courses: :properties]).each do |year|
@@ -340,6 +346,7 @@ class StudentProgram < ActiveRecord::Base
   end
 private
   
+  #parse ConstraintChecker results an create ConstraintExceptions Objects
   def create_constraint_exceptions(results)
     results.each do |result|
       p result.class
@@ -398,6 +405,8 @@ private
   end
 
 
+
+  #compute percentage value between value 1 and value 2
   def self.percentage(value1, value2)
     result = (value1.to_f / value2.to_f) * 100
     if result > 100

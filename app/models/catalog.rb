@@ -38,6 +38,7 @@ class Catalog < ActiveRecord::Base
 		return results
 	end
 
+	#look for updated version of the program
 	def find_updated_version
 		candidates = Catalog.includes(:academic_year).available_for_student
 		result = []
@@ -85,6 +86,7 @@ class Catalog < ActiveRecord::Base
 		end
 		self.version
 	end
+
 
 	def as_json(option={})
 		if self.has_programs?

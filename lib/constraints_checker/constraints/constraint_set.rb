@@ -19,6 +19,7 @@ module ConstraintsChecker
         @target_ids = target_ids
       end
 
+      # search recursively (through the parent-child renlation) for courses related to the target_ids array attribute
       def find_missing_dependencies
         results = []
         @target_ids.each do |id|
@@ -35,7 +36,7 @@ module ConstraintsChecker
       def initialize(id, set_type, course, target_ids)
         super(id, set_type, "COREQUISITE", course, target_ids)
       end
-
+      # same as parent method, but compare the year attribute for each course, to match the corequisite behaviour
       def find_missing_dependencies
         results = []
         @target_ids.each do |id|
@@ -55,7 +56,7 @@ module ConstraintsChecker
       def initialize(id, set_type, course, target_ids)
         super(id, set_type, "PREREQUISITE", course, target_ids)
       end
-
+      #same as corequisite_set methods
       def find_missing_dependencies
         results = []
         @target_ids.each do |id|

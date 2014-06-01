@@ -79,6 +79,8 @@ class PModule < ActiveRecord::Base
 		self.includes(:properties).where('properties.p_type' => p_type).first
 	end
 
+
+	#build constraints related to the module
 	def contraints(p_module_object)
 		constraints = []
 		min = self.find_property('MIN')
@@ -110,6 +112,7 @@ class PModule < ActiveRecord::Base
 		"MODULES"
 	end
 
+	# retrieve the object when checking student program constraints
 	def get_p_module_object(mandatory)
 		p_module = ConstraintsChecker::Entities::PModule.new(id: self.id, name: self.name)
 		p_module.add_constraint(ConstraintsChecker::Constraints::Min.new(p_module, self.min))

@@ -77,7 +77,6 @@ module ConstraintsChecker
       end
 
       def check
-        p " hhhh"
         p self.target.name
         p self.target.children
         missing_ids = []
