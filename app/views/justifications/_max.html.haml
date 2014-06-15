@@ -17,7 +17,7 @@
     
     - if exception.entity.class.name.eql? "Program"
       %span.badge
-        = exception.entity.count_credits
+        = student_program.count_credits
     - else
       %span.badge
         = student_program.count_credits_for_module(exception.entity) 
